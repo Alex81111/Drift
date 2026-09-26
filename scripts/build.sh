@@ -16,6 +16,8 @@
 #                    errors and dlopen failures that get misattributed to something else.
 #   DRIFT_CHANNEL               stable (default) or nightly; sets the reported version string
 #   DRIFT_BUILD_ID              nightly build stamp, YYYYMMDD.<short sha>
+#   DRIFT_DISTRIBUTION          package type reported to the marketplace: android-github,
+#                               android-play, or source (default, local builds)
 #   DRIFT_ANDROID_PACKAGE_NAME  application id (default org.cutwire.drift.debug for a local
 #                               non-Release build, org.cutwire.drift for Release; CI uses .ci)
 #   DRIFT_ANDROID_APP_NAME      launcher label (default "Drift Debug" / "Drift", same rule)
@@ -75,6 +77,7 @@ fi
 # decides the version string the app reports (0.7.0-nightly.<stamp>).
 : "${DRIFT_CHANNEL:=stable}"
 : "${DRIFT_BUILD_ID:=}"
+: "${DRIFT_DISTRIBUTION:=source}"
 : "${QT_ANDROID_ABIS:=$ABI}"
 : "${BUILD_AAB:=0}"
 : "${SKIP_APK:=0}"
@@ -127,6 +130,7 @@ CMAKE_ARGS=(
     -DDRIFT_ANDROID_APP_NAME="$DRIFT_ANDROID_APP_NAME"
     -DDRIFT_CHANNEL="$DRIFT_CHANNEL"
     -DDRIFT_BUILD_ID="$DRIFT_BUILD_ID"
+    -DDRIFT_DISTRIBUTION="$DRIFT_DISTRIBUTION"
 )
 if [ -n "${DRIFT_ANDROID_VERSION_CODE:-}" ]; then
     CMAKE_ARGS+=(-DDRIFT_ANDROID_VERSION_CODE="$DRIFT_ANDROID_VERSION_CODE")

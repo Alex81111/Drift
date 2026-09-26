@@ -29,6 +29,9 @@
 #ifndef DRIFT_VERSION
 #define DRIFT_VERSION "0"
 #endif
+#ifndef DRIFT_DISTRIBUTION
+#define DRIFT_DISTRIBUTION "source"
+#endif
 
 namespace drift::market {
 namespace {
@@ -186,6 +189,11 @@ QString makeNonce()
 QString appHeader()
 {
     return QStringLiteral("Drift/%1 (%2)").arg(QLatin1String(DRIFT_VERSION), platformId());
+}
+
+QString distributionId()
+{
+    return QStringLiteral(DRIFT_DISTRIBUTION);
 }
 
 bool isAuthCallbackUrl(const QUrl &url)

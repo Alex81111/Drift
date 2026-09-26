@@ -119,6 +119,7 @@ modules:
         -DDRIFT_FETCH_JUCE=OFF
         -DDRIFT_JUCE_DIR=juce
         -DDRIFT_UPDATE_FEED_URL=
+        -DDRIFT_DISTRIBUTION=flathub
         -DDRIFT_AUTO_UPDATE_TRANSLATIONS=OFF
       - cmake --build build -j${FLATPAK_BUILDER_N_JOBS}
       - cmake --install build

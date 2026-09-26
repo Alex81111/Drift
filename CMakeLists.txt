@@ -122,6 +122,16 @@ if(DRIFT_CHANNEL STREQUAL "nightly")
 endif()
 message(STATUS "Drift channel: ${DRIFT_CHANNEL} (${DRIFT_VERSION_STRING}, ${DRIFT_APP_ID})")
 
+# Which package this build ships as. Sent to the marketplace so it can hide sources per store
+# (e.g. Play Store moderation) without a separate client build. Every packaging path sets it.
+set(DRIFT_DISTRIBUTIONS source windows macos appimage flatpak flathub arch android-github android-play)
+set(DRIFT_DISTRIBUTION "source" CACHE STRING "Package type reported to the marketplace")
+set_property(CACHE DRIFT_DISTRIBUTION PROPERTY STRINGS ${DRIFT_DISTRIBUTIONS})
+if(NOT DRIFT_DISTRIBUTION IN_LIST DRIFT_DISTRIBUTIONS)
+    message(FATAL_ERROR "DRIFT_DISTRIBUTION must be one of ${DRIFT_DISTRIBUTIONS}, not '${DRIFT_DISTRIBUTION}'")
+endif()
+message(STATUS "Drift distribution: ${DRIFT_DISTRIBUTION}")
+
 find_package(Qt6 6.10 REQUIRED COMPONENTS Quick QuickControls2 Multimedia Test Concurrent Widgets OpenGL Network QuickEffects Svg Xml)
 find_package(Qt6 COMPONENTS LinguistTools QUIET)
 
@@ -1394,6 +1404,7 @@ target_compile_definitions(drift PRIVATE
     DRIFT_MARKET_CLIENT_KEY="${DRIFT_MARKET_CLIENT_KEY}"
     DRIFT_UPDATE_FEED_URL="${DRIFT_UPDATE_FEED_URL}"
     DRIFT_VERSION="${DRIFT_VERSION_STRING}"
+    DRIFT_DISTRIBUTION="${DRIFT_DISTRIBUTION}"
 )
 
 # Ship a file-based package directory next to the binaries that load the catalog.

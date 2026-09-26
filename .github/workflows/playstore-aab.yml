@@ -263,6 +263,7 @@ jobs:
         env:
           DRIFT_ANDROID_PACKAGE_NAME: org.cutwire.drift
           DRIFT_ANDROID_APP_NAME: Drift
+          DRIFT_DISTRIBUTION: android-play
           DRIFT_ANDROID_VERSION_CODE: ${{ steps.meta.outputs.version_code }}
           QT_ANDROID_ABIS: "arm64-v8a;armeabi-v7a;x86_64"
           BUILD_AAB: '1'

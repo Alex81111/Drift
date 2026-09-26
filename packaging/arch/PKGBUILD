@@ -58,6 +58,7 @@ build() {
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DDRIFT_BUNDLE_ONNXRUNTIME=OFF \
         -DDRIFT_WITH_SKIA=ON \
+        -DDRIFT_DISTRIBUTION=arch \
         -DDRIFT_UPDATE_FEED_URL=
     cmake --build build --parallel
 }

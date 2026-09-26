@@ -263,6 +263,7 @@ jobs:
             -DFETCHCONTENT_BASE_DIR="${FETCHCONTENT_BASE_DIR}" \
             -DDRIFT_BUNDLE_ONNXRUNTIME=OFF \
             -DDRIFT_WITH_SKIA=ON \
+            -DDRIFT_DISTRIBUTION=appimage \
             ${DRIFT_CHANNEL_ARGS}
 
       - name: Build
@@ -479,6 +480,7 @@ jobs:
             -DZLIB_LIBRARY=${{ github.workspace }}\vcpkg\installed\x64-windows-static-md\lib\zs.lib `
             -DDRIFT_BUNDLE_ONNXRUNTIME=OFF `
             -DDRIFT_WITH_SKIA=ON `
+            -DDRIFT_DISTRIBUTION=windows `
             ${{ env.DRIFT_CHANNEL_ARGS }}
 
       # No --target list any more: the tests have to be built here, and building everything is
@@ -671,6 +673,7 @@ jobs:
             -DFETCHCONTENT_BASE_DIR="${FETCHCONTENT_BASE_DIR}" \
             -DDRIFT_BUNDLE_ONNXRUNTIME=OFF \
             -DDRIFT_WITH_SKIA=ON \
+            -DDRIFT_DISTRIBUTION=macos \
             ${DRIFT_CHANNEL_ARGS}
 
       - name: Build
@@ -980,6 +983,7 @@ jobs:
           DRIFT_ANDROID_VERSION_CODE: ${{ steps.identity.outputs.version_code }}
           DRIFT_CHANNEL: ${{ inputs.channel }}
           DRIFT_BUILD_ID: ${{ inputs.build_id }}
+          DRIFT_DISTRIBUTION: android-github
           CMAKE_C_COMPILER_LAUNCHER: ccache
           CMAKE_CXX_COMPILER_LAUNCHER: ccache
           CCACHE_MAXSIZE: 2G

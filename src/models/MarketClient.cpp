@@ -777,6 +777,7 @@ void MarketClient::sign(QNetworkRequest *request, const QByteArray &method, cons
     request->setRawHeader("X-Cutwire-Nonce", nonce.toUtf8());
     request->setRawHeader("X-Cutwire-Signature", signature.toUtf8());
     request->setRawHeader("X-Cutwire-App", appHeader().toUtf8());
+    request->setRawHeader("X-Cutwire-Distribution", distributionId().toUtf8());
     request->setHeader(QNetworkRequest::UserAgentHeader, appHeader());
     applyAuthHeader(request);
 }
