@@ -82,6 +82,10 @@ private slots:
     void compositeFromSelectionUndoRedo();
     void compositeClipGetsAPreviewBox();
     void importedMediaIsCentredAndResetsToItsFit();
+    void transformTogetherWrapsTheSelection();
+    void transformLayerParentsPreviewBoxes();
+    void transformSpanOptionsAndValidation();
+    void transformLayerEntryPoints();
     void compositeTabEditUndoesFromMain();
     void compositeSeparateAudioAndRemoval();
     void retimeKeepsDisabledKeyframeTrackDisabled();
@@ -673,6 +677,183 @@ void EditorStateTest::importedMediaIsCentredAndResetsToItsFit()
     const drift::Clip &text = state.project()->tracks().at(textTrack).clips.at(0);
     QCOMPARE(text.transformX.evaluateAt(0), 0.0);
     QCOMPARE(text.transformW.evaluateAt(0), 1920.0);
+}
+
+namespace {
+
+drift::Clip boxShape(const QString &id, const QRectF &rect)
+{
+    drift::Clip clip;
+    clip.id = id;
+    clip.name = id;
+    clip.type = drift::ClipType::Shape;
+    clip.timelineDuration = drift::secondsToUs(5.0);
+    clip.srcOut = clip.timelineDuration;
+    clip.shapeStyle.kind = drift::ShapeKind::Rectangle;
+    clip.transformX.setKeyframe(0, rect.x());
+    clip.transformY.setKeyframe(0, rect.y());
+    clip.transformW.setKeyframe(0, rect.width());
+    clip.transformH.setKeyframe(0, rect.height());
+    return clip;
+}
+
+// Two graphic tracks and a video track under them, one box each.
+void setUpTransformTracks(AppController &state)
+{
+    drift::Project &project = *state.project();
+    project.setResolution(1920, 1080);
+    project.tracks().clear();
+    for (const QString &id : {QStringLiteral("s1"), QStringLiteral("s2"), QStringLiteral("s3")}) {
+        drift::Track track{.type = drift::TrackType::Shape};
+        track.id = id;
+        project.tracks().append(track);
+    }
+    project.tracks()[0].clips.append(boxShape(QStringLiteral("a"), QRectF(100, 100, 200, 100)));
+    project.tracks()[1].clips.append(boxShape(QStringLiteral("b"), QRectF(500, 500, 100, 100)));
+    project.tracks()[2].clips.append(boxShape(QStringLiteral("c"), QRectF(900, 100, 100, 100)));
+    state.setPlayheadSeconds(1.0);
+}
+
+QVariantMap previewBoxFor(AppController &state, const QString &name)
+{
+    for (const QVariant &entry : state.previewClipsAtPlayhead()) {
+        const QVariantMap box = entry.toMap();
+        if (box.value(QStringLiteral("name")).toString() == name)
+            return box;
+    }
+    return {};
+}
+
+} // namespace
+
+void EditorStateTest::transformTogetherWrapsTheSelection()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    setUpTransformTracks(state);
+    state.setSelection({QVariantMap{{QStringLiteral("track"), 0}, {QStringLiteral("clip"), 0}},
+                        QVariantMap{{QStringLiteral("track"), 1}, {QStringLiteral("clip"), 0}}});
+    QVERIFY(state.canTransformSelectionTogether());
+    state.triggerAction(QStringLiteral("transformTogether"));
+
+    const QList<drift::Track> &tracks = state.project()->tracks();
+    QCOMPARE(tracks.size(), 4);
+    QVERIFY(tracks.at(0).isTransformLayer());
+    QCOMPARE(tracks.at(0).spanEndTrackId, QStringLiteral("s2"));
+    QCOMPARE(drift::transformSpanTrackIndexes(tracks, 0), (QList<int>{1, 2}));
+    QCOMPARE(tracks.at(0).clips.size(), 1);
+    QCOMPARE(tracks.at(0).clips.at(0).timelineDuration, drift::secondsToUs(5.0));
+    QCOMPARE(state.selectedTrack(), 0);
+    QCOMPARE(state.selectedClip(), 0);
+
+    // The child reports its layer, and Shift+G walks up to it.
+    const QVariantList parents = state.clipAt(2, 0).value(QStringLiteral("transformParents")).toList();
+    QCOMPARE(parents.size(), 1);
+    QCOMPARE(parents.constFirst().toMap().value(QStringLiteral("track")).toInt(), 0);
+    state.selectClip(2, 0);
+    state.triggerAction(QStringLiteral("selectTransformLayer"));
+    QCOMPARE(state.selectedTrack(), 0);
+    state.selectTransformChildren(0, 0);
+    QCOMPARE(state.selectedClipData().value(QStringLiteral("id")).toString(), QStringLiteral("b"));
+
+    state.undo();
+    QCOMPARE(state.project()->tracks().size(), 3);
+}
+
+void EditorStateTest::transformLayerParentsPreviewBoxes()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    setUpTransformTracks(state);
+    state.addTransformLayerAbove(0);
+    drift::Clip &layer = state.project()->tracks()[0].clips[0];
+    layer.transformX.setKeyframe(0, 50.0);
+    layer.transformY.setKeyframe(0, 20.0);
+
+    const QVariantMap child = previewBoxFor(state, QStringLiteral("a"));
+    QVERIFY(child.value(QStringLiteral("parentActive")).toBool());
+    QVERIFY(child.value(QStringLiteral("parentAffine")).toBool());
+    // The box stays in the child's own pixels; the parent carries the offset.
+    QCOMPARE(child.value(QStringLiteral("x")).toDouble(), 100.0);
+    QCOMPARE(state.previewMapFromClipSpace(child, 100, 100), QPointF(150, 120));
+    const QVariantList quad = child.value(QStringLiteral("quad")).toList();
+    QCOMPARE(quad.size(), 4);
+    QCOMPARE(quad.at(0).toPointF(), QPointF(150, 120));
+    QVERIFY(!previewBoxFor(state, QStringLiteral("b")).value(QStringLiteral("parentActive")).toBool());
+
+    const QVariantMap frame = previewBoxFor(state, QStringLiteral("Transform"));
+    QCOMPARE(frame.value(QStringLiteral("kind")).toString(), QStringLiteral("transform"));
+    QCOMPARE(frame.value(QStringLiteral("childCount")).toInt(), 1);
+
+    // Picking goes through the parent and never lands on the layer's own frame.
+    QCOMPARE(state.previewClipAtCanvasPoint(160, 130).value(QStringLiteral("name")).toString(),
+             QStringLiteral("a"));
+    QVERIFY(state.previewClipAtCanvasPoint(110, 105).isEmpty());
+}
+
+void EditorStateTest::transformSpanOptionsAndValidation()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    setUpTransformTracks(state);
+    state.addTransformTrack();
+    QCOMPARE(state.project()->tracks().at(0).spanEndTrackId, QStringLiteral("s3"));
+
+    QVariantList options = state.transformSpanOptions(0);
+    QCOMPARE(options.size(), 3);
+    QCOMPARE(options.at(0).toMap().value(QStringLiteral("kind")).toString(), QStringLiteral("only"));
+    QCOMPARE(options.at(1).toMap().value(QStringLiteral("kind")).toString(), QStringLiteral("range"));
+    QCOMPARE(options.at(2).toMap().value(QStringLiteral("kind")).toString(), QStringLiteral("all"));
+    QVERIFY(options.at(2).toMap().value(QStringLiteral("current")).toBool());
+
+    QVERIFY(state.setTransformSpan(0, QStringLiteral("s1")));
+    QCOMPARE(state.transformLayerCoverage(0).value(QStringLiteral("count")).toInt(), 1);
+    QVERIFY(!state.setTransformSpan(0, QStringLiteral("nope")));
+    state.undo();
+    QCOMPARE(state.project()->tracks().at(0).spanEndTrackId, QStringLiteral("s3"));
+
+    // A nested layer over s2..s3 means the outer one cannot end at s2, cutting through it.
+    state.addTransformLayerAbove(2);
+    state.setTransformSpan(2, QStringLiteral("s3"));
+    options = state.transformSpanOptions(0);
+    QStringList ends;
+    for (const QVariant &option : options)
+        ends << option.toMap().value(QStringLiteral("endId")).toString();
+    QCOMPARE(ends, (QStringList{QStringLiteral("s1"), QStringLiteral("s3")}));
+    QVariantList inner;
+    for (const QVariant &option : state.transformSpanOptions(2))
+        inner << option.toMap().value(QStringLiteral("endId"));
+    QCOMPARE(inner, (QVariantList{QStringLiteral("s2"), QStringLiteral("s3")}));
+}
+
+void EditorStateTest::transformLayerEntryPoints()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    setUpTransformTracks(state);
+    state.addAdjustmentTrack(QStringLiteral("transform"));
+    QVERIFY(state.project()->tracks().at(0).isTransformLayer());
+    const QVariantMap track = state.tracks().at(0).toMap();
+    QCOMPARE(track.value(QStringLiteral("adjustmentKind")).toString(), QStringLiteral("transform"));
+    QCOMPARE(track.value(QStringLiteral("spanEndIndex")).toInt(), 3);
+    QCOMPARE(state.tracks().at(2).toMap().value(QStringLiteral("transformCoveredBy")).toList(),
+             QVariantList{0});
+
+    // With nothing selected the toolbar entry covers everything below from the playhead.
+    state.clearSelection();
+    state.addTransformLayerForSelection();
+    QVERIFY(state.project()->tracks().at(0).isTransformLayer());
+    QCOMPARE(state.project()->tracks().at(0).clips.at(0).timelineStart, drift::secondsToUs(1.0));
+
+    // Effects and masks are refused on a transform layer.
+    QVERIFY(!state.planAssetDrop(QStringLiteral("effect"), QStringLiteral("adjust.brightness"), 0, 1.0, -1)
+                 .value(QStringLiteral("accepted")).toBool());
+
+    // A transform clip moved onto a video row is refused, and so is a clip onto a layer.
+    state.moveClipToTrack(0, 0, 3, 1.0);
+    QVERIFY(state.project()->tracks().at(0).clips.size() == 1);
+    state.moveClipToTrack(3, 0, 0, 1.0);
+    QCOMPARE(state.project()->tracks().at(3).clips.size(), 1);
 }
 
 void EditorStateTest::compositeTabEditUndoesFromMain()

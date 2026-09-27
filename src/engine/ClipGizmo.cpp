@@ -29,18 +29,35 @@ struct Space
     double d = 2000.0;
     QSizeF canvas;
     double scale = 1.0;
+    QTransform parent;
 
     double w(const QVector3D &p) const { return 1.0 - double(p.z()) / d; }
 
-    // Overlay px; false at or behind the eye.
+    // Overlay px; false at or behind the eye (the clip's, or its parent card's).
     bool project(const QVector3D &p, QPointF *out) const
     {
         const double pw = w(p);
         if (pw <= kNear)
             return false;
-        *out = QPointF((canvas.width() * 0.5 + p.x() / pw) * scale,
-                       (canvas.height() * 0.5 + p.y() / pw) * scale);
+        QPointF onCanvas(canvas.width() * 0.5 + p.x() / pw, canvas.height() * 0.5 + p.y() / pw);
+        if (!parent.isIdentity()) {
+            const double cw = parent.m13() * onCanvas.x() + parent.m23() * onCanvas.y() + parent.m33();
+            if (cw <= 1e-6)
+                return false;
+            onCanvas = parent.map(onCanvas);
+        }
+        *out = onCanvas * scale;
         return true;
+    }
+
+    // An overlay point on the parented canvas back to the clip's own overlay px.
+    QPointF unparent(QPointF overlay) const
+    {
+        if (parent.isIdentity())
+            return overlay;
+        bool invertible = false;
+        const QTransform inverse = parent.inverted(&invertible);
+        return invertible ? inverse.map(overlay / scale) * scale : overlay;
     }
 
     QVector3D eye() const { return QVector3D(0.f, 0.f, float(d)); }
@@ -60,6 +77,7 @@ Space spaceFor(const Pose &pose, double scale)
     s.d = std::max(1.0, pose.pose3d.perspective);
     s.canvas = pose.canvas;
     s.scale = scale;
+    s.parent = pose.parent;
     return s;
 }
 
@@ -199,8 +217,14 @@ Geometry geometry(const Pose &pose, Tool tool, Orientation orientation, double s
     if (!s.project(origin, &g.origin))
         return g;
     g.valid = true;
-    // Overlay px per world px at the origin, so handles keep their on-screen size at any depth.
-    const double magnify = scale / s.w(origin);
+    // Overlay px per world px at the origin, so handles keep their on-screen size at any depth
+    // and under any parent scale.
+    double magnify = scale / s.w(origin);
+    if (!s.parent.isIdentity()) {
+        QPointF step;
+        if (s.project(origin + QVector3D(1.f, 0.f, 0.f), &step))
+            magnify = std::max(1e-6, QLineF(g.origin, step).length());
+    }
 
     if (tool == Tool::Rotate) {
         const double radius = kRingRadius * size / magnify;
@@ -354,6 +378,16 @@ DragResult drag(const Pose &start, Tool tool, Orientation orientation, const QSt
 {
     DragResult result;
     result.pose = start;
+    if (!start.parent.isIdentity()) {
+        // Solve in the clip's own space: pointer back through the parent, gizmo without it.
+        const Space parented = spaceFor(start, scale);
+        Pose own = start;
+        own.parent = QTransform();
+        result = drag(own, tool, orientation, handle, parented.unparent(press),
+                      parented.unparent(now), snap, scale);
+        result.pose.parent = start.parent;
+        return result;
+    }
     const Space s = spaceFor(start, scale);
     const QVector3D origin = originOf(start);
     const double d = s.d;

@@ -428,6 +428,7 @@ class AppController : public QObject
     Q_PROPERTY(QVariantList recentProjects READ recentProjects NOTIFY recentProjectsChanged)
     Q_PROPERTY(bool separateAudioAvailable READ canSeparateAudioSelection NOTIFY editCapabilitiesChanged)
     Q_PROPERTY(bool makeCompositeAvailable READ canMakeCompositeFromSelection NOTIFY editCapabilitiesChanged)
+    Q_PROPERTY(bool transformTogetherAvailable READ canTransformSelectionTogether NOTIFY editCapabilitiesChanged)
     // Open composite tabs as [{id, name}], main timeline excluded; "" is the main timeline's id.
     Q_PROPERTY(QVariantList sequenceTabs READ sequenceTabs NOTIFY sequenceTabsChanged)
     Q_PROPERTY(QString activeSequenceId READ activeSequenceId NOTIFY sequenceTabsChanged)
@@ -1476,6 +1477,52 @@ public:
     // its linked partners) into a new sequence and leaves a composite clip in its place.
     Q_INVOKABLE bool canMakeCompositeFromSelection() const;
     Q_INVOKABLE void makeCompositeFromSelection();
+
+    // Transform layers: a Range adjustment track whose Transform clips move, scale, rotate, tilt
+    // and fade every visual track from just below it down to its span end, as one.
+    //
+    // A layer at the top spanning to the lowest visual track, with one identity clip over the
+    // whole timeline (at least 5 s).
+    Q_INVOKABLE void addTransformTrack();
+    // An identity transform clip on the layer at `trackIndex`; `atSeconds` < 0 is the playhead.
+    Q_INVOKABLE void addTransformClip(int trackIndex, double atSeconds = -1.0,
+                                      double durationSeconds = -1.0);
+    // A layer covering just `trackIndex`, with a clip spanning that track's content.
+    Q_INVOKABLE void addTransformLayerAbove(int trackIndex);
+    // The toolbar/Add entry: "Transform together" with a selection, otherwise a layer at the top
+    // covering everything below with a 5 s clip at the playhead.
+    Q_INVOKABLE void addTransformLayerForSelection();
+    bool canTransformSelectionTogether() const;
+    Q_INVOKABLE void makeTransformLayerFromSelection();
+    // A layer directly above the topmost track holding one of `clipIds`, spanning to the lowest,
+    // with one clip over their time range (or [atSeconds, +durationSeconds) when given). One undo
+    // step; selects the new clip. Returns {track, clip, id}, empty when no clip is on a visual track.
+    QVariantMap makeTransformLayerForClips(const QStringList &clipIds, double atSeconds = -1.0,
+                                           double durationSeconds = -1.0);
+    // Sets the last track the layer at `trackIndex` covers; `endTrackId` must be one of
+    // transformSpanOptions. One undo step. False when refused.
+    Q_INVOKABLE bool setTransformSpan(int trackIndex, const QString &endTrackId);
+    // The valid span ends for the layer at `trackIndex`, top to bottom:
+    // [{endId, endIndex, firstIndex, count, kind: "only" | "range" | "all", current}]. An end never
+    // cuts through a nested layer's span or reaches past an enclosing layer's end.
+    Q_INVOKABLE QVariantList transformSpanOptions(int trackIndex) const;
+    // {endIndex, endId, covers: [track indexes], count, depth} for the layer at `trackIndex`.
+    Q_INVOKABLE QVariantMap transformLayerCoverage(int trackIndex) const;
+    // The clips on covered tracks overlapping clips[clipIndex] of the layer, as [{track, clip}].
+    Q_INVOKABLE QVariantList transformLayerCoveredClips(int trackIndex, int clipIndex) const;
+    // The layers covering `trackIndex`, outermost first.
+    Q_INVOKABLE QVariantList transformLayersCovering(int trackIndex) const;
+    // What the layers over `trackIndex` do at the playhead: {active, affine, parent: [9], matrix, opacity}.
+    Q_INVOKABLE QVariantMap transformParentAt(int trackIndex) const;
+    // Canvas px ↔ the box's own (child) canvas px, through its parent.
+    Q_INVOKABLE QPointF previewMapToClipSpace(const QVariantMap &box, double x, double y) const;
+    Q_INVOKABLE QPointF previewMapFromClipSpace(const QVariantMap &box, double x, double y) const;
+    // The parent as an overlay-px to overlay-px matrix at `scale` overlay px per canvas px.
+    Q_INVOKABLE QMatrix4x4 previewParentOverlayMatrix(const QVariantMap &box, double scale) const;
+    // Selects the innermost transform clip over the selected clip (Shift+G).
+    Q_INVOKABLE void selectTransformParent();
+    // Selects the clips the transform clip at (trackIndex, clipIndex) moves.
+    Q_INVOKABLE void selectTransformChildren(int trackIndex, int clipIndex);
     QVariantList sequenceTabs() const;
     // Every composite in the project as [{id, name}], open or not, for the timeline's switcher.
     Q_INVOKABLE QVariantList compositeSequences() const;

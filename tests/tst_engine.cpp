@@ -994,6 +994,21 @@ void EngineTest::clipGizmoSolvesDrags()
     QCOMPARE(moved.pose.rect.y(), flat.rect.y());
     QVERIFY(std::abs(moved.pose.pose3d.positionZ) < 1e-3);
 
+    // Under a parent that halves and shifts the canvas, the handles are drawn through it and a
+    // drag is read back through it: the same on-screen travel moves the clip twice as far.
+    Pose parented = flat;
+    parented.parent = QTransform::fromTranslate(100, 50).scale(0.5, 0.5);
+    const Geometry parentedMove = geometry(parented, Tool::Move, Orientation::Global, scale);
+    QVERIFY(parentedMove.valid);
+    QVERIFY(QLineF(parentedMove.origin, parented.parent.map(flat.rect.center()) * scale).length() < 1e-3);
+    const QPointF parentedTip = handleOf(parentedMove, QStringLiteral("x")).front.first().last();
+    QVERIFY(QLineF(parentedTip, parentedMove.origin).length() > 60); // handles keep their size
+    const DragResult parentedDrag = drag(parented, Tool::Move, Orientation::Global, QStringLiteral("x"),
+                                         parentedTip, parentedTip + QPointF(50, 0), true, scale);
+    QVERIFY2(std::abs(parentedDrag.pose.rect.x() - (flat.rect.x() + 200)) < 0.5,
+             qPrintable(QString::number(parentedDrag.pose.rect.x())));
+    QCOMPARE(parentedDrag.pose.rect.y(), flat.rect.y());
+
     // Global vs local on a clip turned 40° about Y: a global X move keeps depth, a local one
     // travels along the clip's own face and so changes depth too.
     Pose turned = flat;

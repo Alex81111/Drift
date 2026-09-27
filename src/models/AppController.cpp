@@ -32,6 +32,7 @@
 #include "engine/ClipReaderPool.h"
 #include "engine/ClipGizmo.h"
 #include "engine/ClipTransform3d.h"
+#include "engine/TransformLayer.h"
 #include "engine/DebugReport.h"
 #include "engine/HwAccel.h"
 #include "engine/ProjectDependencies.h"
@@ -1510,13 +1511,26 @@ QVariantList AppController::tracks() const
                     || (clip.type == drift::ClipType::Video
                         && (!asset || !asset->hasAudioKnown || asset->hasAudio));
             }
-            clips.append(QVariantMap{
+            QVariantMap clipEntry{
                 {QStringLiteral("id"), clip.id},
                 {QStringLiteral("name"), clip.name},
                 {QStringLiteral("start"), drift::usToSeconds(clip.timelineStart)},
                 {QStringLiteral("duration"), drift::usToSeconds(clip.timelineDuration)},
-            });
+            };
+            if (clip.type == drift::ClipType::Adjustment)
+                clipEntry.insert(QStringLiteral("adjustmentKind"),
+                                 drift::adjustmentKindToString(clip.adjustmentKind));
+            clips.append(clipEntry);
         }
+
+        QString trackAdjustmentKind;
+        if (track.isTransformLayer())
+            trackAdjustmentKind = QStringLiteral("transform");
+        else if (track.isAdjustment() && !track.clips.isEmpty())
+            trackAdjustmentKind = drift::adjustmentKindToString(track.clips.constFirst().adjustmentKind);
+        QVariantList coveredBy;
+        for (const int layer : drift::transformLayersCovering(m_project.tracks(), ti))
+            coveredBy.append(layer);
 
         QVariantList transitions;
         transitions.reserve(track.transitions.size());
@@ -1531,6 +1545,14 @@ QVariantList AppController::tracks() const
             // The timeline draws a lane inside its parent's row instead of giving it one of its
             // own, so it needs to tell the two apart without re-deriving the rule.
             {QStringLiteral("isAdjustmentLane"), track.isAdjustmentLane()},
+            {QStringLiteral("adjustmentKind"), trackAdjustmentKind},
+            // Transform layers: the span a Range track covers, how deeply it nests, and for any
+            // track the layers over it, outermost first.
+            {QStringLiteral("isTransformLayer"), track.isTransformLayer()},
+            {QStringLiteral("spanEndTrackId"), track.spanEndTrackId},
+            {QStringLiteral("spanEndIndex"), drift::transformSpanEndIndex(m_project.tracks(), ti)},
+            {QStringLiteral("spanDepth"), track.isTransformLayer() ? coveredBy.size() : 0},
+            {QStringLiteral("transformCoveredBy"), coveredBy},
             {QStringLiteral("name"), track.name},
             {QStringLiteral("clips"), clips},
             {QStringLiteral("hasAudio"), hasAudio},
@@ -2719,7 +2741,9 @@ bool clipAcceptsPreviewTransform(const drift::Clip &clip)
     return clip.type == drift::ClipType::Shape || clip.type == drift::ClipType::Image
            || clip.type == drift::ClipType::Vector || clip.type == drift::ClipType::Model3d
            || clip.type == drift::ClipType::Text || clip.type == drift::ClipType::Subtitle
-           || clip.type == drift::ClipType::Video || clip.type == drift::ClipType::Composite;
+           || clip.type == drift::ClipType::Video || clip.type == drift::ClipType::Composite
+           || (clip.type == drift::ClipType::Adjustment
+               && clip.adjustmentKind == drift::AdjustmentKind::Transform);
 }
 
 double clipTransformValue(const drift::KeyframeTrack<double> &track, drift::TimeUs relative, double defaultValue)
@@ -4279,6 +4303,8 @@ QHash<QString, QString> defaultShortcuts()
         // QML owns the window, so triggerAction only raises the request — same shape as the
         // file actions above.
         {QStringLiteral("multicam"), QStringLiteral("Ctrl+Shift+C")},
+        {QStringLiteral("transformTogether"), QStringLiteral("Ctrl+G")},
+        {QStringLiteral("selectTransformLayer"), QStringLiteral("Shift+G")},
     };
 }
 
@@ -5758,6 +5784,8 @@ QVariantList AppController::actions() const
         action(QStringLiteral("pasteAttributes"), tr("Paste attributes…")),
         action(QStringLiteral("split"), tr("Split at current time")),
         action(QStringLiteral("merge"), tr("Merge adjacent clips")),
+        action(QStringLiteral("transformTogether"), tr("Transform selection together")),
+        action(QStringLiteral("selectTransformLayer"), tr("Select transform layer")),
         action(QStringLiteral("separateAudio"), tr("Separate audio")),
         action(QStringLiteral("unlink"), tr("Unlink audio")),
         action(QStringLiteral("clearSelection"), tr("Clear selection")),
@@ -7095,6 +7123,77 @@ drift::TimeUs AppController::sourceDurationForClip(const drift::Clip &clip) cons
     return drift::sourceDurationForClip(m_project, clip);
 }
 
+namespace {
+
+QVariantList transformToList(const QTransform &t)
+{
+    return {t.m11(), t.m12(), t.m13(), t.m21(), t.m22(), t.m23(), t.m31(), t.m32(), t.m33()};
+}
+
+// A 2D homography as a 4x4 on (x, y, z, w) that leaves z alone: what a QtQuick Matrix4x4 needs.
+QMatrix4x4 liftHomography(const QTransform &t)
+{
+    return QMatrix4x4(float(t.m11()), float(t.m21()), 0.f, float(t.m31()),
+                      float(t.m12()), float(t.m22()), 0.f, float(t.m32()),
+                      0.f, 0.f, 1.f, 0.f,
+                      float(t.m13()), float(t.m23()), 0.f, float(t.m33()));
+}
+
+QTransform previewBoxParent(const QVariantMap &box)
+{
+    if (!box.value(QStringLiteral("parentActive")).toBool())
+        return {};
+    const QVariantList m = box.value(QStringLiteral("parent")).toList();
+    if (m.size() != 9)
+        return {};
+    return QTransform(m.at(0).toDouble(), m.at(1).toDouble(), m.at(2).toDouble(),
+                      m.at(3).toDouble(), m.at(4).toDouble(), m.at(5).toDouble(),
+                      m.at(6).toDouble(), m.at(7).toDouble(), m.at(8).toDouble());
+}
+
+QVariantMap transformParentToMap(const drift::TransformParent &parent)
+{
+    return {{QStringLiteral("active"), parent.hasParent},
+            {QStringLiteral("affine"), parent.matrix.isAffine()},
+            {QStringLiteral("parent"), transformToList(parent.matrix)},
+            {QStringLiteral("matrix"), liftHomography(parent.matrix)},
+            {QStringLiteral("opacity"), parent.opacity}};
+}
+
+// The transform clips over `clip` on `trackIndex`, innermost layer first: on each covering layer,
+// the clip live at the playhead, else the first one overlapping `clip`.
+QVariantList transformParentsForClip(const drift::Project &project, int trackIndex,
+                                     const drift::Clip &clip, drift::TimeUs playheadUs)
+{
+    QVariantList out;
+    const QList<int> layers = drift::transformLayersCovering(project.tracks(), trackIndex);
+    for (auto it = layers.crbegin(); it != layers.crend(); ++it) {
+        const drift::Track &layer = project.tracks().at(*it);
+        int best = -1;
+        bool atPlayhead = false;
+        for (int c = 0; c < layer.clips.size(); ++c) {
+            const drift::Clip &candidate = layer.clips.at(c);
+            if (candidate.containsTime(playheadUs) && clip.containsTime(playheadUs)) {
+                best = c;
+                atPlayhead = true;
+                break;
+            }
+            if (best < 0 && candidate.timelineStart < clip.timelineEnd()
+                && candidate.timelineEnd() > clip.timelineStart)
+                best = c;
+        }
+        if (best < 0)
+            continue;
+        out.append(QVariantMap{{QStringLiteral("track"), *it},
+                               {QStringLiteral("clip"), best},
+                               {QStringLiteral("name"), layer.clips.at(best).name},
+                               {QStringLiteral("atPlayhead"), atPlayhead}});
+    }
+    return out;
+}
+
+} // namespace
+
 QVariantMap AppController::clipAt(int trackIndex, int clipIndex) const
 {
     const QList<drift::Track> &tracks = m_project.tracks();
@@ -7109,12 +7208,16 @@ QVariantMap AppController::clipAt(int trackIndex, int clipIndex) const
     const drift::ClipRef source = sourceClipRef(trackIndex, clipIndex);
     const bool redirected = source.trackIndex >= 0
                             && (source.trackIndex != trackIndex || source.clipIndex != clipIndex);
-    return clipToMap(tracks[trackIndex].clips.at(clipIndex),
-                     effectHostClip(trackIndex, clipIndex, drift::AdjustmentKind::VideoEffects),
-                     effectHostClip(trackIndex, clipIndex, drift::AdjustmentKind::AudioEffects),
-                     effectHostClip(trackIndex, clipIndex, drift::AdjustmentKind::Mask),
-                     redirected ? &tracks.at(source.trackIndex).clips.at(source.clipIndex)
-                                : nullptr);
+    QVariantMap map =
+        clipToMap(tracks[trackIndex].clips.at(clipIndex),
+                  effectHostClip(trackIndex, clipIndex, drift::AdjustmentKind::VideoEffects),
+                  effectHostClip(trackIndex, clipIndex, drift::AdjustmentKind::AudioEffects),
+                  effectHostClip(trackIndex, clipIndex, drift::AdjustmentKind::Mask),
+                  redirected ? &tracks.at(source.trackIndex).clips.at(source.clipIndex) : nullptr);
+    map.insert(QStringLiteral("transformParents"),
+               transformParentsForClip(m_project, trackIndex, tracks.at(trackIndex).clips.at(clipIndex),
+                                       m_playheadUs));
+    return map;
 }
 
 QVariantMap AppController::activeVideoClipAtPlayhead() const
@@ -13555,6 +13658,10 @@ drift::AdjustmentKind adjustmentKindFromArg(const QString &kind)
 
 void AppController::addAdjustmentTrack(const QString &kind)
 {
+    if (kind.trimmed() == QLatin1String("transform")) {
+        addTransformTrack();
+        return;
+    }
     const drift::Project before = m_project;
 
     drift::Track track;
@@ -14143,6 +14250,7 @@ drift::gizmo::Pose gizmoPoseFromBox(const QVariantMap &box)
     pose.pose3d = previewBoxPose(box);
     pose.canvas = QSizeF(box.value(QStringLiteral("canvasWidth")).toDouble(),
                          box.value(QStringLiteral("canvasHeight")).toDouble());
+    pose.parent = previewBoxParent(box);
     return pose;
 }
 
@@ -14280,6 +14388,8 @@ QMatrix4x4 AppController::previewClipPoseMatrix(const QVariantMap &box, double x
     QMatrix4x4 m;
     m.scale(float(scaleX), float(scaleY));
     m.translate(float(-x), float(-y));
+    // A parented box, flat or not, is placed through its transform layers too.
+    m *= liftHomography(previewBoxParent(box));
     m *= drift::clipLocalToCanvas(QRectF(x, y, w, h), rotation, previewBoxPose(box), canvas);
     m.scale(float(1.0 / scaleX), float(1.0 / scaleY));
     return m;
@@ -14290,6 +14400,11 @@ QVariantMap AppController::previewClipAtCanvasPoint(double canvasX, double canva
     // previewClipsAtPlayhead lists the top track first, so the first hit is the one on top.
     for (const QVariant &item : previewClipsAtPlayhead()) {
         const QVariantMap box = item.toMap();
+        // A transform layer's box is the group's frame, not something drawn: picking through it
+        // reaches the clips it moves.
+        if (box.value(QStringLiteral("kind")).toString() == QLatin1String("transform"))
+            continue;
+        const QPointF local = previewMapToClipSpace(box, canvasX, canvasY);
         const double x = box.value(QStringLiteral("x")).toDouble();
         const double y = box.value(QStringLiteral("y")).toDouble();
         const double w = box.value(QStringLiteral("width")).toDouble();
@@ -14300,7 +14415,7 @@ QVariantMap AppController::previewClipAtCanvasPoint(double canvasX, double canva
                 QRectF(x, y, w, h), box.value(QStringLiteral("rotation")).toDouble(), pose,
                 QSizeF(box.value(QStringLiteral("canvasWidth")).toDouble(),
                        box.value(QStringLiteral("canvasHeight")).toDouble()));
-            if (quad.containsPoint(QPointF(canvasX, canvasY), Qt::OddEvenFill))
+            if (quad.containsPoint(local, Qt::OddEvenFill))
                 return box;
             continue;
         }
@@ -14308,8 +14423,8 @@ QVariantMap AppController::previewClipAtCanvasPoint(double canvasX, double canva
         const double cx = x + w / 2.0;
         const double cy = y + h / 2.0;
         // Into the box's own frame: undo its rotation about its centre.
-        const double dx = canvasX - cx;
-        const double dy = canvasY - cy;
+        const double dx = local.x() - cx;
+        const double dy = local.y() - cy;
         const double lx = dx * std::cos(-radians) - dy * std::sin(-radians);
         const double ly = dx * std::sin(-radians) + dy * std::cos(-radians);
         if (qAbs(lx) <= w / 2.0 && qAbs(ly) <= h / 2.0)
@@ -14419,13 +14534,36 @@ QVariantList AppController::previewClipsAtPlayhead() const
         return out;
 
     const QList<drift::Track> &tracks = m_project.tracks();
+    const QList<drift::TransformParent> parents =
+        drift::transformParentsAt(m_project, m_playheadUs, 1.0);
     for (int trackIndex = 0; trackIndex < tracks.size(); ++trackIndex) {
         const drift::Track &track = tracks.at(trackIndex);
         if (track.hidden)
             continue;
         if (track.type != drift::TrackType::Video && track.type != drift::TrackType::Shape
-            && track.type != drift::TrackType::Text && track.type != drift::TrackType::Subtitle)
+            && track.type != drift::TrackType::Text && track.type != drift::TrackType::Subtitle
+            && !track.isTransformLayer())
             continue;
+        const drift::TransformParent parent =
+            parents.isEmpty() ? drift::TransformParent{} : parents.at(trackIndex);
+        QVariantList parentChain;
+        for (const int layer : drift::transformLayersCovering(tracks, trackIndex)) {
+            for (int c = 0; c < tracks.at(layer).clips.size(); ++c) {
+                const drift::Clip &candidate = tracks.at(layer).clips.at(c);
+                if (tracks.at(layer).hidden || !candidate.containsTime(m_playheadUs))
+                    continue;
+                parentChain.prepend(QVariantMap{{QStringLiteral("track"), layer},
+                                                {QStringLiteral("clip"), c},
+                                                {QStringLiteral("name"), candidate.name}});
+            }
+        }
+        const QVariantList parentMatrix = transformToList(parent.matrix);
+        QString parentSig;
+        if (parent.hasParent) {
+            for (const QVariant &v : parentMatrix)
+                parentSig += QString::number(v.toDouble(), 'g', 6) + QLatin1Char(',');
+        }
+        parentSig += QString::number(parent.opacity, 'g', 4);
 
         for (int clipIndex = 0; clipIndex < track.clips.size(); ++clipIndex) {
             const drift::Clip &clip = track.clips.at(clipIndex);
@@ -14439,10 +14577,29 @@ QVariantList AppController::previewClipsAtPlayhead() const
             const double h = clipTransformValue(clip.transformH, relative, static_cast<double>(canvasHeight));
             const double rotation = clipTransformValue(clip.rotation, relative, 0.0);
 
+            const bool isTransform = track.isTransformLayer();
+            int childCount = 0;
+            if (isTransform) {
+                for (const int t : drift::transformSpanTrackIndexes(tracks, trackIndex)) {
+                    if (tracks.at(t).hidden)
+                        continue;
+                    for (const drift::Clip &child : tracks.at(t).clips)
+                        childCount += child.containsTime(m_playheadUs) ? 1 : 0;
+                }
+            }
             QVariantMap entry{
                 {QStringLiteral("track"), trackIndex},
                 {QStringLiteral("clip"), clipIndex},
-                {QStringLiteral("kind"), drift::clipTypeToString(clip.type)},
+                {QStringLiteral("kind"), isTransform ? QStringLiteral("transform")
+                                                     : drift::clipTypeToString(clip.type)},
+                {QStringLiteral("childCount"), childCount},
+                {QStringLiteral("parentActive"), parent.hasParent},
+                {QStringLiteral("parentAffine"), parent.matrix.isAffine()},
+                {QStringLiteral("parent"), parentMatrix},
+                {QStringLiteral("parentMatrix"), liftHomography(parent.matrix)},
+                {QStringLiteral("parentOpacity"), parent.opacity},
+                {QStringLiteral("parentSig"), parentSig},
+                {QStringLiteral("parents"), parentChain},
                 {QStringLiteral("name"), clip.name},
                 {QStringLiteral("pixelSize"), clip.textStyle.pixelSize},
                 {QStringLiteral("x"), x},
@@ -14483,6 +14640,25 @@ QVariantList AppController::previewClipsAtPlayhead() const
                 entry.insert(QStringLiteral("rotationX"), 0.0);
                 entry.insert(QStringLiteral("rotationY"), 0.0);
                 entry.insert(QStringLiteral("z"), 0.0);
+            }
+            // Where the box lands on screen, through its own pose and every parent.
+            {
+                const QRectF rect(entry.value(QStringLiteral("x")).toDouble(),
+                                  entry.value(QStringLiteral("y")).toDouble(),
+                                  entry.value(QStringLiteral("width")).toDouble(),
+                                  entry.value(QStringLiteral("height")).toDouble());
+                const double spin = entry.value(QStringLiteral("rotation")).toDouble();
+                const drift::ClipPose3d pose = previewBoxPose(entry);
+                const QMatrix4x4 quadMatrix =
+                    pose.isActive() ? drift::clipQuadToCanvas(rect, spin, false, false, pose,
+                                                              QSizeF(canvasWidth, canvasHeight))
+                                    : drift::flatQuadToCanvas(rect, spin, false, false);
+                QVariantList quad;
+                for (const QPointF &p : drift::projectedQuad(
+                         parent.hasParent ? drift::parentedQuadToCanvas(parent.matrix, quadMatrix)
+                                          : quadMatrix))
+                    quad.append(p);
+                entry.insert(QStringLiteral("quad"), quad);
             }
             out.append(entry);
         }
@@ -16860,6 +17036,359 @@ void AppController::makeCompositeFromSelection()
     finishEdit(tr("Composite created"));
     selectClip(trackIndex, insertAt);
     emit sequenceTabsChanged();
+}
+
+namespace {
+
+bool isTransformClipData(const drift::Clip &clip)
+{
+    return clip.type == drift::ClipType::Adjustment
+           && clip.adjustmentKind == drift::AdjustmentKind::Transform;
+}
+
+// The track a clip on `trackIndex` is covered through: lanes ride with their parent.
+int coveredTrackFor(const drift::Project &project, int trackIndex)
+{
+    const int parent = drift::adjustmentLaneParentIndex(project, trackIndex);
+    return parent >= 0 ? parent : trackIndex;
+}
+
+QString lowestTransformableTrackId(const QList<drift::Track> &tracks, int below = -1)
+{
+    QString id;
+    for (int i = below + 1; i < tracks.size(); ++i) {
+        if (drift::isTransformableTrack(tracks.at(i)))
+            id = tracks.at(i).id;
+    }
+    return id;
+}
+
+} // namespace
+
+void AppController::addTransformTrack()
+{
+    const drift::Project before = m_project;
+    m_project.ensureTrackIds();
+    const int layer = drift::insertTransformTrack(m_project.tracks(), 0,
+                                                  lowestTransformableTrackId(m_project.tracks()));
+    const drift::Clip clip = drift::makeTransformClip(
+        0, qMax(m_project.durationUs(), drift::kImageClipDurationUs));
+    m_project.tracks()[layer].clips.append(clip);
+    if (m_selectedTransitionTrack >= 0)
+        ++m_selectedTransitionTrack;
+    pushProjectEdit(before, tr("Add transform layer"));
+    finishEdit(tr("Transform layer added"));
+    selectClipById(clip.id);
+}
+
+void AppController::addTransformClip(int trackIndex, double atSeconds, double durationSeconds)
+{
+    if (trackIndex < 0 || trackIndex >= m_project.tracks().size()
+        || !m_project.tracks().at(trackIndex).isTransformLayer())
+        return;
+    const drift::TimeUs durUs = durationSeconds > 0.0 ? drift::secondsToUs(durationSeconds)
+                                                      : drift::kImageClipDurationUs;
+    const drift::TimeUs wanted = atSeconds < 0.0 ? m_playheadUs : drift::secondsToUs(atSeconds);
+    const drift::Project before = m_project;
+    drift::Track &track = m_project.tracks()[trackIndex];
+    const drift::TimeUs start = drift::resolveClipStart(m_project, track, -1, wanted, durUs,
+                                                        m_snapEnabled, m_playheadUs);
+    const drift::Clip clip = drift::makeTransformClip(start, durUs);
+    track.clips.append(clip);
+    pushProjectEdit(before, tr("Add transform clip"));
+    finishEdit(tr("Transform clip added"));
+    selectClipById(clip.id);
+}
+
+void AppController::addTransformLayerAbove(int trackIndex)
+{
+    if (trackIndex < 0 || trackIndex >= m_project.tracks().size())
+        return;
+    const int covered = coveredTrackFor(m_project, trackIndex);
+    if (covered < 0 || !drift::isTransformableTrack(m_project.tracks().at(covered)))
+        return;
+    const drift::Track &target = m_project.tracks().at(covered);
+    drift::TimeUs start = std::numeric_limits<drift::TimeUs>::max();
+    drift::TimeUs end = 0;
+    for (const drift::Clip &clip : target.clips) {
+        start = qMin(start, clip.timelineStart);
+        end = qMax(end, clip.timelineEnd());
+    }
+    if (end <= start) {
+        start = m_playheadUs;
+        end = start + drift::kImageClipDurationUs;
+    }
+
+    const drift::Project before = m_project;
+    m_project.ensureTrackIds();
+    const int layer = drift::insertTransformTrack(m_project.tracks(), covered,
+                                                  m_project.tracks().at(covered).id);
+    const drift::Clip clip = drift::makeTransformClip(start, end - start);
+    m_project.tracks()[layer].clips.append(clip);
+    pushProjectEdit(before, tr("Add transform layer"));
+    finishEdit(tr("Transform layer added"));
+    selectClipById(clip.id);
+}
+
+void AppController::addTransformLayerForSelection()
+{
+    if (canTransformSelectionTogether()) {
+        makeTransformLayerFromSelection();
+        return;
+    }
+    const drift::Project before = m_project;
+    m_project.ensureTrackIds();
+    const int layer = drift::insertTransformTrack(m_project.tracks(), 0,
+                                                  lowestTransformableTrackId(m_project.tracks()));
+    const drift::Clip clip = drift::makeTransformClip(m_playheadUs, drift::kImageClipDurationUs);
+    m_project.tracks()[layer].clips.append(clip);
+    if (m_selectedTransitionTrack >= 0)
+        ++m_selectedTransitionTrack;
+    pushProjectEdit(before, tr("Add transform layer"));
+    finishEdit(tr("Transform layer added"));
+    selectClipById(clip.id);
+}
+
+bool AppController::canTransformSelectionTogether() const
+{
+    QList<QPair<int, int>> pairs = m_selection;
+    if (pairs.isEmpty() && m_selectedTrack >= 0 && m_selectedClip >= 0)
+        pairs.append(qMakePair(m_selectedTrack, m_selectedClip));
+    for (const QPair<int, int> &pair : pairs) {
+        if (!isValidClipIndex(pair.first, pair.second))
+            continue;
+        const int covered = coveredTrackFor(m_project, pair.first);
+        if (covered >= 0 && drift::isTransformableTrack(m_project.tracks().at(covered)))
+            return true;
+    }
+    return false;
+}
+
+void AppController::makeTransformLayerFromSelection()
+{
+    QList<QPair<int, int>> pairs = m_selection;
+    if (pairs.isEmpty() && m_selectedTrack >= 0 && m_selectedClip >= 0)
+        pairs.append(qMakePair(m_selectedTrack, m_selectedClip));
+    QStringList ids;
+    for (const QPair<int, int> &pair : pairs) {
+        if (isValidClipIndex(pair.first, pair.second))
+            ids << m_project.tracks().at(pair.first).clips.at(pair.second).id;
+    }
+    makeTransformLayerForClips(ids);
+}
+
+QVariantMap AppController::makeTransformLayerForClips(const QStringList &clipIds, double atSeconds,
+                                                      double durationSeconds)
+{
+    int top = -1;
+    int bottom = -1;
+    drift::TimeUs start = std::numeric_limits<drift::TimeUs>::max();
+    drift::TimeUs end = 0;
+    const QList<drift::Track> &tracks = m_project.tracks();
+    for (int t = 0; t < tracks.size(); ++t) {
+        const int covered = coveredTrackFor(m_project, t);
+        if (covered < 0 || !drift::isTransformableTrack(tracks.at(covered)))
+            continue;
+        for (const drift::Clip &clip : tracks.at(t).clips) {
+            if (!clipIds.contains(clip.id))
+                continue;
+            top = top < 0 ? covered : qMin(top, covered);
+            bottom = qMax(bottom, covered);
+            start = qMin(start, clip.timelineStart);
+            end = qMax(end, clip.timelineEnd());
+        }
+    }
+    if (top < 0 || end <= start)
+        return {};
+    if (atSeconds >= 0.0)
+        start = drift::secondsToUs(atSeconds);
+    const drift::TimeUs durUs = durationSeconds > 0.0 ? drift::secondsToUs(durationSeconds)
+                                                      : end - start;
+    if (durUs <= 0)
+        return {};
+
+    const drift::Project before = m_project;
+    m_project.ensureTrackIds();
+    const QString endId = m_project.tracks().at(bottom).id;
+    const int layer = drift::insertTransformTrack(m_project.tracks(), top, endId);
+    drift::Clip clip = drift::makeTransformClip(start, durUs);
+    m_project.tracks()[layer].clips.append(clip);
+    if (m_selectedTransitionTrack >= layer)
+        ++m_selectedTransitionTrack;
+    pushProjectEdit(before, tr("Transform together"));
+    finishEdit(tr("Transform layer added"));
+    selectClipById(clip.id);
+
+    int trackIndex = -1;
+    int clipIndex = -1;
+    findClipById(m_project, clip.id, &trackIndex, &clipIndex);
+    return {{QStringLiteral("track"), trackIndex},
+            {QStringLiteral("clip"), clipIndex},
+            {QStringLiteral("id"), clip.id}};
+}
+
+QVariantList AppController::transformSpanOptions(int trackIndex) const
+{
+    const QList<drift::Track> &tracks = m_project.tracks();
+    if (trackIndex < 0 || trackIndex >= tracks.size() || !tracks.at(trackIndex).isTransformLayer())
+        return {};
+
+    // An enclosing layer bounds how far down this one may reach.
+    int limit = int(tracks.size()) - 1;
+    for (const int outer : drift::transformLayersCovering(tracks, trackIndex))
+        limit = qMin(limit, drift::transformSpanEndIndex(tracks, outer));
+
+    const int current = drift::transformSpanEndIndex(tracks, trackIndex);
+    QVariantList out;
+    int first = -1;
+    int count = 0;
+    for (int i = trackIndex + 1; i <= limit; ++i) {
+        if (!drift::isTransformableTrack(tracks.at(i)))
+            continue;
+        if (first < 0)
+            first = i;
+        ++count;
+        // Ending here must not cut through a nested layer's span.
+        bool cuts = false;
+        for (int nested = trackIndex + 1; nested < i && !cuts; ++nested) {
+            if (tracks.at(nested).isTransformLayer())
+                cuts = drift::transformSpanEndIndex(tracks, nested) > i;
+        }
+        if (cuts)
+            continue;
+        out.append(QVariantMap{
+            {QStringLiteral("endId"), tracks.at(i).id},
+            {QStringLiteral("endIndex"), i},
+            {QStringLiteral("firstIndex"), first},
+            {QStringLiteral("count"), count},
+            {QStringLiteral("kind"), count == 1 ? QStringLiteral("only") : QStringLiteral("range")},
+            {QStringLiteral("current"), i == current},
+        });
+    }
+    if (!out.isEmpty()) {
+        QVariantMap last = out.constLast().toMap();
+        if (last.value(QStringLiteral("count")).toInt() > 1
+            && lowestTransformableTrackId(tracks, trackIndex) == last.value(QStringLiteral("endId"))) {
+            last.insert(QStringLiteral("kind"), QStringLiteral("all"));
+            out.last() = last;
+        }
+    }
+    return out;
+}
+
+bool AppController::setTransformSpan(int trackIndex, const QString &endTrackId)
+{
+    bool valid = false;
+    for (const QVariant &option : transformSpanOptions(trackIndex))
+        valid = valid || option.toMap().value(QStringLiteral("endId")).toString() == endTrackId;
+    if (!valid)
+        return false;
+    if (m_project.tracks().at(trackIndex).spanEndTrackId == endTrackId)
+        return true;
+    const drift::Project before = m_project;
+    m_project.tracks()[trackIndex].spanEndTrackId = endTrackId;
+    pushProjectEdit(before, tr("Change transform span"));
+    finishEdit(tr("Transform layer now covers %n track(s)", "",
+                  int(drift::transformSpanTrackIndexes(m_project.tracks(), trackIndex).size())));
+    return true;
+}
+
+QVariantMap AppController::transformLayerCoverage(int trackIndex) const
+{
+    const QList<drift::Track> &tracks = m_project.tracks();
+    if (trackIndex < 0 || trackIndex >= tracks.size() || !tracks.at(trackIndex).isTransformLayer())
+        return {};
+    QVariantList covers;
+    for (const int i : drift::transformSpanTrackIndexes(tracks, trackIndex))
+        covers.append(i);
+    const int end = drift::transformSpanEndIndex(tracks, trackIndex);
+    return {{QStringLiteral("endIndex"), end},
+            {QStringLiteral("endId"), end >= 0 ? tracks.at(end).id : QString()},
+            {QStringLiteral("covers"), covers},
+            {QStringLiteral("count"), covers.size()},
+            {QStringLiteral("depth"), drift::transformLayersCovering(tracks, trackIndex).size()}};
+}
+
+QVariantList AppController::transformLayerCoveredClips(int trackIndex, int clipIndex) const
+{
+    if (!isValidClipIndex(trackIndex, clipIndex))
+        return {};
+    const QList<drift::Track> &tracks = m_project.tracks();
+    const drift::Clip &layerClip = tracks.at(trackIndex).clips.at(clipIndex);
+    if (!isTransformClipData(layerClip))
+        return {};
+    QVariantList out;
+    for (const int t : drift::transformSpanTrackIndexes(tracks, trackIndex)) {
+        for (int c = 0; c < tracks.at(t).clips.size(); ++c) {
+            const drift::Clip &clip = tracks.at(t).clips.at(c);
+            if (clip.timelineStart < layerClip.timelineEnd()
+                && clip.timelineEnd() > layerClip.timelineStart) {
+                out.append(QVariantMap{{QStringLiteral("track"), t}, {QStringLiteral("clip"), c}});
+            }
+        }
+    }
+    return out;
+}
+
+QVariantList AppController::transformLayersCovering(int trackIndex) const
+{
+    QVariantList out;
+    for (const int layer : drift::transformLayersCovering(m_project.tracks(), trackIndex))
+        out.append(layer);
+    return out;
+}
+
+QVariantMap AppController::transformParentAt(int trackIndex) const
+{
+    const QList<drift::TransformParent> parents =
+        drift::transformParentsAt(m_project, m_playheadUs, 1.0);
+    if (trackIndex < 0 || trackIndex >= parents.size())
+        return {{QStringLiteral("active"), false}, {QStringLiteral("opacity"), 1.0}};
+    return transformParentToMap(parents.at(trackIndex));
+}
+
+QPointF AppController::previewMapToClipSpace(const QVariantMap &box, double x, double y) const
+{
+    bool invertible = false;
+    const QTransform inverse = previewBoxParent(box).inverted(&invertible);
+    return invertible ? inverse.map(QPointF(x, y)) : QPointF(x, y);
+}
+
+QPointF AppController::previewMapFromClipSpace(const QVariantMap &box, double x, double y) const
+{
+    return previewBoxParent(box).map(QPointF(x, y));
+}
+
+QMatrix4x4 AppController::previewParentOverlayMatrix(const QVariantMap &box, double scale) const
+{
+    if (scale <= 0.0)
+        return {};
+    QMatrix4x4 m;
+    m.scale(float(scale), float(scale));
+    m *= liftHomography(previewBoxParent(box));
+    m.scale(float(1.0 / scale), float(1.0 / scale));
+    return m;
+}
+
+void AppController::selectTransformParent()
+{
+    if (!isValidClipIndex(m_selectedTrack, m_selectedClip))
+        return;
+    const QVariantList parents = clipAt(m_selectedTrack, m_selectedClip)
+                                     .value(QStringLiteral("transformParents"))
+                                     .toList();
+    if (parents.isEmpty())
+        return;
+    const QVariantMap innermost = parents.constFirst().toMap();
+    selectClip(innermost.value(QStringLiteral("track")).toInt(),
+               innermost.value(QStringLiteral("clip")).toInt());
+}
+
+void AppController::selectTransformChildren(int trackIndex, int clipIndex)
+{
+    const QVariantList children = transformLayerCoveredClips(trackIndex, clipIndex);
+    if (!children.isEmpty())
+        setSelection(children);
 }
 
 QVariantList AppController::sequenceTabs() const
@@ -22735,6 +23264,10 @@ void AppController::triggerAction(const QString &actionId)
         selectAllClips();
     else if (actionId == QStringLiteral("duplicate"))
         duplicateSelectedClip();
+    else if (actionId == QStringLiteral("transformTogether"))
+        addTransformLayerForSelection();
+    else if (actionId == QStringLiteral("selectTransformLayer"))
+        selectTransformParent();
     else if (actionId == QStringLiteral("copyEffects"))
         copyClipEffectsToClipboard(m_selectedTrack, m_selectedClip);
     else if (actionId == QStringLiteral("pasteEffects"))

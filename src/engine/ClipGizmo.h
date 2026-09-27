@@ -8,6 +8,7 @@
 #include <QRectF>
 #include <QSizeF>
 #include <QString>
+#include <QTransform>
 
 // The preview's 3D transform gizmo for a clip that is a 3D layer: arrows to move, rings to
 // rotate, square-tipped handles to scale. Pure geometry, so the maths is testable without QML.
@@ -33,6 +34,9 @@ struct Pose
     double rotation = 0.0; // in-plane spin, degrees
     ClipPose3d pose3d;
     QSizeF canvas;
+    // Transform layers over the clip, canvas px to canvas px: the handles are drawn through it and
+    // the pointer is read back through its inverse, so the solving stays in the clip's own space.
+    QTransform parent;
 };
 
 enum class HandleKind {
