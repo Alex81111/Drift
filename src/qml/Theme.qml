@@ -279,6 +279,8 @@ QtObject {
     readonly property color clipAdjustmentVideo: clipEffect
     readonly property color clipAdjustmentAudio: "#9B6BC9"
     readonly property color clipAdjustmentMask: "#BA9B5D"
+    // Transform layers: their clips, the span bracket, the coverage tint and the parent frame.
+    readonly property color clipTransform: "#8FBA5D"
     // Video in the overview strip only. On the timeline a video clip shows its thumbnails over
     // clipVideoPlaceholder, which at three pixels tall reads as a hole in the strip — so the
     // minimap gives footage a neutral slate that stays distinct from the coloured clip types.
@@ -642,6 +644,7 @@ QtObject {
         rewind: "rewind",
         fastForward: "fast-forward",
         maximize: "maximize",
+        group: "group",
         locateFixed: "locate-fixed",
         minimize: "minimize",
         folder: "folder",

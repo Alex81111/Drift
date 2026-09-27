@@ -80,7 +80,16 @@ Popup {
         }
     }
 
-    readonly property var trackTypes: [
+    readonly property bool hasVisualTrack: {
+        const tracks = EditorState.tracks
+        for (let i = 0; i < tracks.length; ++i) {
+            if (["video", "text", "subtitle", "shape"].indexOf(tracks[i].type) !== -1)
+                return true
+        }
+        return false
+    }
+    readonly property var trackTypes: allTrackTypes.filter((t) => !t.needsVisualTrack || hasVisualTrack)
+    readonly property var allTrackTypes: [
         { type: "video", label: qsTr("Video"), icon: Theme.icons.film },
         { type: "audio", label: qsTr("Audio"), icon: Theme.icons.music },
         { type: "text", label: qsTr("Text"), icon: Theme.icons.type },
@@ -91,6 +100,9 @@ Popup {
         { type: "adjustment:videoEffects", label: qsTr("Adjustment"), icon: Theme.icons.wand },
         { type: "adjustment:audioEffects", label: qsTr("Audio adjustment"),
           icon: Theme.icons.audioLines },
+        // A transform layer moves the tracks below it, so it is only offered once there is one.
+        { type: "adjustment:transform", label: qsTr("Transform"), icon: Theme.icons.maximize,
+          needsVisualTrack: true },
     ]
 
     background: Rectangle {

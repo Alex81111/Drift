@@ -113,6 +113,11 @@ Item {
     property var clipEffects: clipData.effects || []
     property var clipAudioEffects: clipData.audioEffects || []
     readonly property bool hasAnyEffects: clipEffects.length > 0 || clipAudioEffects.length > 0
+    readonly property bool isTransformClip: clipData.kind === "adjustment"
+                                            && clipData.adjustmentKind === "transform"
+    // A transform layer moves this clip's track.
+    readonly property bool hasTransformParent:
+        (panel.tracks[trackIndex].transformCoveredBy || []).length > 0
     // Named so tooling (and a screen reader) can address a clip by what the user sees on it
     // rather than by pixel position. The timeline is the app's main interaction surface and had
     // no accessible identity at all.
@@ -353,6 +358,39 @@ Item {
                 visible: EditorState.makeCompositeAvailable
                 onTriggered: EditorState.makeCompositeFromSelection()
             }
+            ThemedMenuItem {
+                text: EditorState.selection.length > 1 ? qsTr("Transform together")
+                                                       : qsTr("Add transform layer")
+                icon.name: Theme.icons.group
+                visible: EditorState.transformTogetherAvailable && !clipItem.isTransformClip
+                onTriggered: EditorState.makeTransformLayerFromSelection()
+            }
+            ThemedMenuItem {
+                text: qsTr("Select transform layer")
+                icon.name: Theme.icons.maximize
+                visible: clipItem.hasTransformParent && !clipItem.isTransformClip
+                onTriggered: {
+                    EditorState.selectClip(clipItem.trackIndex, clipItem.clipIndex)
+                    EditorState.selectTransformParent()
+                }
+            }
+            ThemedMenuItem {
+                text: qsTr("Covers…")
+                icon.name: Theme.icons.layers
+                visible: clipItem.isTransformClip
+                onTriggered: {
+                    if (!clipItem.selected)
+                        EditorState.selectClip(clipItem.trackIndex, clipItem.clipIndex)
+                    if (typeof panel.openClipProperties === "function")
+                        panel.openClipProperties()
+                }
+            }
+            ThemedMenuItem {
+                text: qsTr("Select covered clips")
+                icon.name: Theme.icons.maximize
+                visible: clipItem.isTransformClip
+                onTriggered: EditorState.selectTransformChildren(clipItem.trackIndex, clipItem.clipIndex)
+            }
             ThemedMenuSeparator { }
             ThemedMenuItem {
                 text: qsTr("Split at current time")
@@ -450,7 +488,7 @@ Item {
                 icon.name: Theme.icons.pencil
                 onTriggered: clipItem.panel.requestRenameClip(clipItem.trackIndex, clipItem.clipIndex)
             }
-            ThemedMenuSeparator { }
+            ThemedMenuSeparator { visible: !clipItem.isTransformClip }
             ThemedMenuItem {
                 text: qsTr("Copy effects")
                 icon.name: Theme.icons.wand
@@ -461,6 +499,7 @@ Item {
             ThemedMenuItem {
                 text: qsTr("Paste effects")
                 icon.name: Theme.icons.clipboardPaste
+                visible: !clipItem.isTransformClip
                 enabled: clipContextMenu.canPasteEffects
                 onTriggered: EditorState.pasteEffectsFromClipboard(clipItem.trackIndex,
                                                                    clipItem.clipIndex)
@@ -472,7 +511,7 @@ Item {
                 onTriggered: clipItem.panel.requestSaveEffectPreset(clipItem.trackIndex,
                                                                      clipItem.clipIndex)
             }
-            ThemedMenuSeparator { visible: clipItem.clipData.kind === "adjustment" }
+            ThemedMenuSeparator { visible: clipItem.clipData.kind === "adjustment" && !clipItem.isTransformClip }
             ThemedMenuItem {
                 text: qsTr("Unlink from clip")
                 icon.name: Theme.icons.unlink

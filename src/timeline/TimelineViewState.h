@@ -58,6 +58,7 @@ public:
         QColor adjustmentVideo{"#5d93ba"};
         QColor adjustmentAudio{"#9B6BC9"};
         QColor adjustmentMask{"#BA9B5D"};
+        QColor adjustmentTransform{"#8FBA5D"};
         QColor primary{"#F8B81C"};
         QColor scrim{0, 0, 0, 102};
         QColor proxyBand{0x17, 0x4A, 0x36, 0xD9};
@@ -91,6 +92,8 @@ public:
         QString editFriendlyLabel;
         QString editFriendlyTooltip;
         QString vfrTooltip;
+        // Hovering a transform clip: what it does to the tracks under it.
+        QString spanToolTip;
     };
 
     explicit TimelineViewState(QObject *parent = nullptr);

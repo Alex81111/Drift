@@ -16,6 +16,12 @@ Item {
     // A model clip is a full-canvas layer placed by its camera: x/y shift the model, the box
     // size and spin mean nothing (its own size and rotation live on the 3D Model tab).
     readonly property bool isModel3d: clipKind === "model3d"
+    readonly property bool isTransformLayer: clipKind === "adjustment"
+                                             && clipData.adjustmentKind === "transform"
+    // The transform clips over this one, innermost first; the nearest names its frame.
+    readonly property var transformParents: hasSelection ? (clipData.transformParents || []) : []
+    readonly property string parentName: transformParents.length > 0
+                                         ? (transformParents[0].name || qsTr("Transform")) : ""
     readonly property int canvasW: {
         void EditorState.tracksRevision
         return Math.max(1, EditorState.projectWidth())
@@ -125,6 +131,33 @@ Item {
             spacing: 10
             visible: root.clipKind !== "audio"
 
+            TransformLayerCard {
+                visible: root.isTransformLayer
+                width: parent.width
+                clipData: root.clipData
+            }
+
+            Row {
+                visible: root.transformParents.length > 0 && !root.isTransformLayer
+                width: parent.width
+                spacing: Theme.spacingMd
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: parent.width - selectParentButton.width - parent.spacing
+                    wrapMode: Text.WordWrap
+                    text: qsTr("Also moved by %1").arg(root.parentName)
+                    color: Theme.clipTransform
+                    font.family: Theme.fontFamily
+                    font.pixelSize: Theme.fontSizeXs
+                }
+                ThemedButton {
+                    id: selectParentButton
+                    text: qsTr("Select")
+                    onClicked: EditorState.selectTransformParent()
+                }
+            }
+
             Text {
                 width: parent.width
                 wrapMode: Text.WordWrap
@@ -146,6 +179,16 @@ Item {
                 font.family: Theme.fontFamily
                 font.pixelSize: Theme.fontSizeXs
                 font.weight: Font.Medium
+            }
+
+            Text {
+                visible: root.transformParents.length > 0 && !root.isTransformLayer
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: qsTr("Measured inside %1's frame").arg(root.parentName)
+                color: Theme.mutedForeground
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontSizeXs
             }
 
             PropertyKeyframeRow {
@@ -322,7 +365,9 @@ Item {
             ThemedSwitch {
                 visible: !root.isModel3d
                 text: qsTr("3D layer")
-                tooltip: qsTr("Tilt the clip and push it in depth, with 3D grips on the preview. Turning it off flattens the clip again.")
+                tooltip: root.isTransformLayer
+                         ? qsTr("Tilt the whole group as one flat card")
+                         : qsTr("Tilt the clip and push it in depth, with 3D grips on the preview. Turning it off flattens the clip again.")
                 // A Binding rather than a plain one: the click itself assigns `checked`, which
                 // would otherwise sever it and leave the switch stale on the next clip.
                 Binding on checked {

@@ -7,6 +7,7 @@
 #include "core/Time.h"
 #include "engine/AudioOnsets.h"
 #include "engine/SceneDetect.h"
+#include "engine/TransformLayer.h"
 #include "engine/FilmstripTileCache.h"
 #include "engine/MediaWaveform.h"
 #include "engine/WaveformBlockCache.h"
@@ -2502,6 +2503,8 @@ protected:
     // can insert or reorder tracks, so the selection is carried across by id. Idempotent and
     // cheap when nothing is out of place, which is why it can run on every edit.
     void normalizeProjectStructure(const drift::Project *before = nullptr);
+    // What the transform layers over `trackIndex` do at the playhead; identity when none.
+    drift::TransformParent transformParentFor(int trackIndex) const;
     // Keeps open tabs pointing at sequences that exist, and the active one among them.
     void reconcileSequenceTabs();
     // A composite asset's duration follows its sequence's content.

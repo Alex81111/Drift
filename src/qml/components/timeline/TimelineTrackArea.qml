@@ -94,7 +94,17 @@ Item {
                      : { "track": panel.trackIndexAtY(pos.y), "lane": -1 }
         const isAdjustment = info.kind === "adjustment"
         const wasInLane = panel.tracks[originTrack].isAdjustmentLane === true
-        if (isAdjustment && target.lane >= 0) {
+        // Transform clips live on transform rows only, and nothing else lands on one; the C++
+        // side (Track::acceptsClip) refuses the rest too, this just keeps the clip in its row.
+        const isTransform = info.adjustmentKind === "transform"
+        const targetIsTransform = target.track >= 0 && target.lane < 0
+                                  && panel.tracks[target.track].isTransformLayer === true
+        if (isTransform || targetIsTransform) {
+            if (isTransform && targetIsTransform && target.track !== originTrack)
+                EditorState.moveClipToTrack(originTrack, originClip, target.track, newStart)
+            else
+                EditorState.moveClip(originTrack, originClip, newStart)
+        } else if (isAdjustment && target.lane >= 0) {
             if (target.lane !== originTrack)
                 EditorState.moveClipToTrack(originTrack, originClip, target.lane, newStart)
             else

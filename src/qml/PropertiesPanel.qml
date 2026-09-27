@@ -168,6 +168,9 @@ PanelFrame {
         // an adjustment — the layer is the whole canvas, and there is no source to retime.
         if (root.clipKind === "adjustment") {
             const kind = root.clipData.adjustmentKind || "videoEffects"
+            // A transform layer is its transform: the box, plus Animation for group slide-ins.
+            if (kind === "transform")
+                return tabId === "general" || tabId === "transform" || tabId === "animation"
             if (tabId === "general" || tabId === "blending")
                 return true
             if (tabId === "effects")
@@ -237,6 +240,8 @@ PanelFrame {
             return "masks"
         if (kind === "audioEffects")
             return "audioEffects"
+        if (kind === "transform")
+            return "transform"
         return "effects"
     }
 

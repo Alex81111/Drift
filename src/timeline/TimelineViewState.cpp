@@ -69,6 +69,7 @@ void TimelineViewState::setStyle(const QVariantMap &style)
     color("adjustmentVideo", m_style.adjustmentVideo);
     color("adjustmentAudio", m_style.adjustmentAudio);
     color("adjustmentMask", m_style.adjustmentMask);
+    color("adjustmentTransform", m_style.adjustmentTransform);
     color("primary", m_style.primary);
     color("scrim", m_style.scrim);
     color("proxyBand", m_style.proxyBand);
@@ -102,5 +103,6 @@ void TimelineViewState::setStyle(const QVariantMap &style)
     text("editFriendlyLabel", m_style.editFriendlyLabel);
     text("editFriendlyTooltip", m_style.editFriendlyTooltip);
     text("vfrTooltip", m_style.vfrTooltip);
+    text("spanToolTip", m_style.spanToolTip);
     emit styleChanged();
 }

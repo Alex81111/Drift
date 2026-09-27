@@ -251,7 +251,8 @@ Item {
             }
             Text {
                 // Human label rather than the raw internal id.
-                text: root.clipKindLabel(root.clipKind)
+                text: root.clipKind === "adjustment" && root.clipData.adjustmentKind === "transform"
+                      ? qsTr("Transform layer") : root.clipKindLabel(root.clipKind)
                 color: Theme.panelForeground
                 font.family: Theme.fontFamily
                 font.pixelSize: Theme.fontSizeSm

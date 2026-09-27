@@ -1060,6 +1060,7 @@ qt_add_qml_module(drift
         src/qml/components/properties/TextAnimPresetTile.qml
         src/qml/components/properties/TextLookPicker.qml
         src/qml/components/properties/TransformInspector.qml
+        src/qml/components/properties/TransformLayerCard.qml
         src/qml/components/properties/StabilizeInspector.qml
         src/qml/components/properties/AudioInspector.qml
         src/qml/components/properties/AudioEffectsInspector.qml
@@ -1102,6 +1103,8 @@ qt_add_qml_module(drift
         src/qml/components/timeline/TimelineToolbarCustomizeDialog.qml
         src/qml/components/timeline/TimelineOverview.qml
         src/qml/components/timeline/TrackHeaderColumn.qml
+        src/qml/components/timeline/TransformSpanBracket.qml
+        src/qml/components/timeline/TransformCoverageOverlay.qml
         src/qml/components/timeline/VoiceoverControlBar.qml
         src/qml/components/timeline/AudioMixerStrip.qml
         src/qml/components/timeline/TimelineClipItem.qml

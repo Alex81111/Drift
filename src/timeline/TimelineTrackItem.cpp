@@ -554,6 +554,7 @@ QVariantMap TimelineTrackItem::clipInfo(int index) const
         {QStringLiteral("start"), row.start},
         {QStringLiteral("duration"), row.duration},
         {QStringLiteral("kind"), row.kind},
+        {QStringLiteral("adjustmentKind"), row.adjustmentKind},
     };
 }
 
@@ -815,6 +816,7 @@ void TimelineTrackItem::appendClip(int index, const QRectF &baseRect, bool selec
     if (isAdjustment) {
         base = row.adjustmentKind == QLatin1String("audioEffects") ? s.adjustmentAudio
                : row.adjustmentKind == QLatin1String("mask")       ? s.adjustmentMask
+               : row.adjustmentKind == QLatin1String("transform")  ? s.adjustmentTransform
                                                                    : s.adjustmentVideo;
     } else {
         const QString type = row.kind == QLatin1String("composite") ? QStringLiteral("composite")
@@ -957,8 +959,11 @@ void TimelineTrackItem::appendClip(int index, const QRectF &baseRect, bool selec
         if (text.isEmpty()) {
             text = row.adjustmentKind == QLatin1String("audioEffects") ? tr("Audio adjustment")
                    : row.adjustmentKind == QLatin1String("mask")       ? tr("Mask")
+                   : row.adjustmentKind == QLatin1String("transform")  ? tr("Transform")
                                                                        : tr("Adjustment");
         }
+        if (row.adjustmentKind == QLatin1String("transform") && !s.spanToolTip.isEmpty())
+            visual.toolTips.append({rect, s.spanToolTip});
         const QString elided = tinyMetrics.elidedText(text, Qt::ElideRight,
                                                       std::max(0.0, rect.width() - 12.0));
         if (!elided.isEmpty())

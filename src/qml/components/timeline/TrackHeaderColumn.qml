@@ -23,6 +23,26 @@ Item {
     // Desktop: a handle on the right edge drags EditorState.trackLabelsWidth.
     property bool resizable: false
 
+    // Transform layer brackets. Desktop reserves a gutter on the left for them (one indent per
+    // nesting level); the compact header draws them over the grip instead.
+    readonly property int bracketLevels: {
+        let levels = 0
+        for (let i = 0; i < tracks.length; ++i) {
+            if (tracks[i].isTransformLayer)
+                levels = Math.max(levels, (tracks[i].spanDepth || 0) + 1)
+        }
+        return levels
+    }
+    readonly property real bracketIndent: compact ? 4 : 8
+    readonly property real bracketGutter: compact ? 0 : bracketLevels * bracketIndent
+    Behavior on bracketGutter {
+        NumberAnimation { duration: Theme.durationBase; easing.type: Theme.easing }
+    }
+    // A foot being dragged: the layer and the end it would snap to, for the header tint.
+    property int spanPreviewLayer: -1
+    property int spanPreviewEnd: -1
+    signal scrollRequested(real dy)
+
     // Track-header reorder: source index and live drop target while dragging,
     // plus the insertion boundary the indicator line is drawn at.
     property int draggingTrackFrom: -1
@@ -168,7 +188,8 @@ Item {
     // Single-letter stand-in for the type glyph plus name band, which do not fit a 72px
     // compact header. "V1"/"A2" is the fallback identification a phone gets until the track
     // has a custom name — see trackCompactLabel, which prefers that name when it's set.
-    function trackTypeShortLabel(type) {
+    function trackTypeShortLabel(type, isTransform) {
+        if (isTransform) return qsTr("TF");
         if (type === "adjustment") return qsTr("FX");
         if (type === "audio") return qsTr("A");
         if (type === "text") return qsTr("T");
@@ -178,7 +199,8 @@ Item {
     }
 
     // Human label for a track type.
-    function trackTypeLabel(type) {
+    function trackTypeLabel(type, isTransform) {
+        if (isTransform) return qsTr("Transform");
         if (type === "adjustment") return qsTr("Adjustment");
         if (type === "audio") return qsTr("Audio");
         if (type === "text") return qsTr("Text");
@@ -193,10 +215,13 @@ Item {
     function trackTypeOrdinal(index) {
         if (index < 0 || index >= tracks.length)
             return 1
+        // Transform layers are adjustment tracks by type but count on their own, so an
+        // adjustment and a transform layer never share a number.
         const type = tracks[index].type
+        const transform = tracks[index].isTransformLayer === true
         var ordinal = 0
         for (var i = 0; i <= index; i++) {
-            if (tracks[i].type === type)
+            if (tracks[i].type === type && (tracks[i].isTransformLayer === true) === transform)
                 ordinal++
         }
         return Math.max(1, ordinal)
@@ -239,6 +264,43 @@ Item {
         return Math.max(0, Math.min(tracks.length - 1, to))
     }
 
+    // "Video 1 only", "Video 1 to Text 2", "Everything below" — built here so the track names
+    // match the headers.
+    function spanOptionLabel(option) {
+        if (option.kind === "all")
+            return qsTr("Everything below")
+        const last = trackNameAt(option.endIndex)
+        if (option.kind === "only")
+            return qsTr("%1 only").arg(last)
+        return qsTr("%1 to %2").arg(trackNameAt(option.firstIndex)).arg(last)
+    }
+
+    function trackNameAt(i) {
+        if (i < 0 || i >= tracks.length)
+            return ""
+        if (tracks[i].name && tracks[i].name.length > 0)
+            return tracks[i].name
+        return trackTypeLabel(tracks[i].type, tracks[i].isTransformLayer) + " " + trackTypeOrdinal(i)
+    }
+
+    function selectCoveredClips(layerIndex) {
+        const clips = tracks[layerIndex].clips || []
+        const picked = []
+        const seen = {}
+        for (let c = 0; c < clips.length; ++c) {
+            const covered = EditorState.transformLayerCoveredClips(layerIndex, c)
+            for (let k = 0; k < covered.length; ++k) {
+                const key = covered[k].track + ":" + covered[k].clip
+                if (!seen[key]) {
+                    seen[key] = true
+                    picked.push(covered[k])
+                }
+            }
+        }
+        if (picked.length > 0)
+            EditorState.setSelection(picked)
+    }
+
     function clearTrackDrag() {
         draggingTrackFrom = -1
         draggingTrackTo = -1
@@ -263,16 +325,25 @@ Item {
             readonly property string trackDisplayName:
                 root.tracks[index].name && root.tracks[index].name.length > 0
                 ? root.tracks[index].name
-                : root.trackTypeLabel(root.tracks[index].type)
+                : root.trackTypeLabel(root.tracks[index].type, root.tracks[index].isTransformLayer)
                   + " " + root.trackTypeOrdinal(index)
             // Same, but falling back to the short "V1"/"A2" form the compact header uses when
             // there's no custom name to show instead.
             readonly property string trackCompactLabel:
                 root.tracks[index].name && root.tracks[index].name.length > 0
                 ? root.tracks[index].name
-                : root.trackTypeShortLabel(root.tracks[index].type)
+                : root.trackTypeShortLabel(root.tracks[index].type, root.tracks[index].isTransformLayer)
                   + root.trackTypeOrdinal(index)
-            width: root.labelsWidth
+            readonly property bool isTransformLayer: root.tracks[index].isTransformLayer === true
+            readonly property bool transformable: ["video", "text", "subtitle", "shape"]
+                                                  .indexOf(root.tracks[index].type) !== -1
+            readonly property bool insideBracket: (root.tracks[index].transformCoveredBy || []).length > 0
+            // Tinted while a bracket foot is dragged over it: this is what the span would cover.
+            readonly property bool spanPreviewed: root.spanPreviewLayer >= 0
+                                                  && index > root.spanPreviewLayer
+                                                  && index <= root.spanPreviewEnd
+            x: root.bracketGutter
+            width: root.labelsWidth - root.bracketGutter
             // A lane draws inside its parent's row, so it gets no header of its own.
             visible: root.trackOccupiesARow(index)
             height: root.trackHeight(index)
@@ -382,8 +453,22 @@ Item {
                 color: Theme.panelBorder
             }
 
-            // Drag affordance — left-aligned reorder grip.
+            Rectangle {
+                width: parent.width
+                height: root.trackHeight(index)
+                color: Theme.clipTransform
+                opacity: trackLabelRow.spanPreviewed ? 0.18
+                         : (trackLabelRow.isTransformLayer ? 0.08 : 0)
+
+                Behavior on opacity {
+                    NumberAnimation { duration: Theme.durationFast; easing.type: Theme.easing }
+                }
+            }
+
+            // Drag affordance — left-aligned reorder grip. The compact header draws brackets
+            // where the grip sits, so rows inside one leave it out.
             IconGlyph {
+                visible: !(root.compact && trackLabelRow.insideBracket)
                 anchors.left: parent.left
                 anchors.leftMargin: root.compact ? 4 : 8
                 anchors.verticalCenter: parent.verticalCenter
@@ -552,10 +637,17 @@ Item {
                 }
 
                 IconGlyph {
+                    id: hideGlyph
+                    // On a transform layer the eye bypasses it: the tracks it covers stay visible,
+                    // just unmoved.
+                    readonly property string hideLabel: trackLabelRow.isTransformLayer
+                        ? (trackLabelRow.trackHidden ? qsTr("Turn transform on") : qsTr("Turn transform off"))
+                        : (trackLabelRow.trackHidden ? qsTr("Show track") : qsTr("Hide track"))
                     visible: root.tracks[index].type === "video"
                              || root.tracks[index].type === "text"
                              || root.tracks[index].type === "subtitle"
                              || root.tracks[index].type === "shape"
+                             || trackLabelRow.isTransformLayer
                     glyph: trackLabelRow.trackHidden ? Theme.icons.eyeOff : Theme.icons.eye
                     iconSize: 16
                     iconColor: trackLabelRow.trackHidden ? Theme.destructive : Theme.mutedForeground
@@ -563,11 +655,11 @@ Item {
 
                     ThemedToolTip {
                         visible: hideMouse.containsMouse
-                        text: trackLabelRow.trackHidden ? qsTr("Show track") : qsTr("Hide track")
+                        text: hideGlyph.hideLabel
                     }
 
                     Accessible.role: Accessible.CheckBox
-                    Accessible.name: trackLabelRow.trackHidden ? qsTr("Show track") : qsTr("Hide track")
+                    Accessible.name: hideLabel
                     Accessible.checked: trackLabelRow.trackHidden
                     Accessible.onToggleAction: hideMouse.clicked(null)
 
@@ -735,6 +827,29 @@ Item {
                         onTriggered: EditorState.setTrackHidden(index, !trackLabelRow.trackHidden)
                     }
                     ThemedMenuSeparator {
+                        visible: trackLabelRow.isTransformLayer || trackLabelRow.transformable
+                    }
+                    // A submenu cannot be hidden per row, so the span choices open as their
+                    // own menu from here.
+                    ThemedMenuItem {
+                        visible: trackLabelRow.isTransformLayer
+                        text: qsTr("Covers…")
+                        icon.name: Theme.icons.layers
+                        onTriggered: coversMenu.popup()
+                    }
+                    ThemedMenuItem {
+                        visible: trackLabelRow.isTransformLayer
+                        text: qsTr("Select covered clips")
+                        icon.name: Theme.icons.maximize
+                        onTriggered: root.selectCoveredClips(index)
+                    }
+                    ThemedMenuItem {
+                        visible: trackLabelRow.transformable
+                        text: qsTr("Add transform layer above")
+                        icon.name: Theme.icons.maximize
+                        onTriggered: EditorState.addTransformLayerAbove(index)
+                    }
+                    ThemedMenuSeparator {
                         visible: root.tracks[index].type === "video"
                     }
                     // The active entry swaps its icon for a tick, like the header's
@@ -818,6 +933,28 @@ Item {
                         }
                     }
                 }
+
+                ThemedContextMenu {
+                    id: coversMenu
+                    title: qsTr("Covers")
+                    enabled: trackLabelRow.isTransformLayer
+                    readonly property int layerIndex: index
+                    property var options: []
+                    onAboutToShow: options = EditorState.transformSpanOptions(layerIndex)
+
+                    Instantiator {
+                        model: coversMenu.options
+                        delegate: ThemedMenuItem {
+                            required property var modelData
+                            text: root.spanOptionLabel(modelData)
+                            icon.name: modelData.current ? Theme.icons.check : ""
+                            onTriggered: EditorState.setTransformSpan(coversMenu.layerIndex,
+                                                                      modelData.endId)
+                        }
+                        onObjectAdded: (i, object) => coversMenu.insertItem(i, object)
+                        onObjectRemoved: (i, object) => coversMenu.removeItem(object)
+                    }
+                }
             }
 
             // DAW-style lane zoom: wheel over this header grows/shrinks only
@@ -841,6 +978,34 @@ Item {
                     EditorState.nudgeTrackHeightScale(index, dy > 0 ? 1 : -1)
                 }
             }
+        }
+    }
+
+    // One bracket per transform layer, over the rows and in the gutter they leave.
+    Repeater {
+        model: root.tracks.length
+        delegate: TransformSpanBracket {
+            required property int index
+            width: root.width
+            height: root.height
+            z: 20
+            tracks: root.tracks
+            layerIndex: root.tracks[index].isTransformLayer ? index : -1
+            contentY: root.contentY
+            indentStep: root.bracketIndent
+            touchMode: root.touchMode
+            rowTop: root.trackRowTop
+            rowHeight: root.trackHeight
+            onPreviewEndChanged: {
+                if (previewEnd >= 0) {
+                    root.spanPreviewLayer = index
+                    root.spanPreviewEnd = previewEnd
+                } else if (root.spanPreviewLayer === index) {
+                    root.spanPreviewLayer = -1
+                    root.spanPreviewEnd = -1
+                }
+            }
+            onScrollRequested: (dy) => root.scrollRequested(dy)
         }
     }
 

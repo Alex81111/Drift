@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls.Basic
+import QtQuick.Shapes
 import Drift
 import ".."
 
@@ -31,6 +32,32 @@ Item {
     }
     readonly property var gizmoLive: gizmo.livePose
 
+    // A transform layer being moved: the clips under it are drawn from a model that is not
+    // rebuilt mid-drag, so their outlines would hang in the old place and are hidden meanwhile.
+    property int movingLayerTrack: -1
+    readonly property int hiddenChildrenOf: movingLayerTrack >= 0 ? movingLayerTrack
+        : (gizmoLive && gizmoBox && gizmoBox.kind === "transform" ? gizmoBox.track : -1)
+
+    // The selected clip's box, and the transform clip over it (innermost) when there is one.
+    readonly property var selectedBox: {
+        for (const b of overlayClips) {
+            if (b.track === EditorState.selectedTrack && b.clip === EditorState.selectedClip)
+                return b
+        }
+        return null
+    }
+    readonly property var parentFrameBox: {
+        const sel = selectedBox
+        if (!sel || sel.kind === "transform" || !sel.parents || sel.parents.length === 0)
+            return null
+        const p = sel.parents[0]
+        for (const b of overlayClips) {
+            if (b.kind === "transform" && b.track === p.track && b.clip === p.clip)
+                return b
+        }
+        return null
+    }
+
     // "track:clip" of the text clip currently edited in place,
     // or "" when no inline edit is active.
     property string editingKey: ""
@@ -57,7 +84,8 @@ Item {
                     || x.rotationX !== y.rotationX || x.rotationY !== y.rotationY
                     || x.z !== y.z || x.perspective !== y.perspective
                     || x.canvasWidth !== y.canvasWidth
-                    || x.canvasHeight !== y.canvasHeight)
+                    || x.canvasHeight !== y.canvasHeight
+                    || x.parentSig !== y.parentSig)
                 return false
         }
         return true
@@ -97,6 +125,7 @@ Item {
     function endInteraction() {
         EditorState.commitPreviewDrag()
         interacting = false
+        movingLayerTrack = -1
         snapGuideX = -1
         snapGuideY = -1
         Qt.callLater(refreshOverlay)
@@ -193,6 +222,40 @@ Item {
 
             readonly property bool selected: EditorState.selectedTrack === box.track
                                                     && EditorState.selectedClip === box.clip
+            // A transform layer's own box: the group's frame. Only there while it is selected;
+            // the rest of the time picking goes straight through it to the clips it moves.
+            readonly property bool isTransform: box.kind === "transform"
+            // Moved by a transform layer: drawn and read through that parent.
+            readonly property bool hasParent: box.parentActive === true
+            readonly property var parentInverse: hasParent
+                ? EditorState.previewParentOverlayMatrix(box, handle.sx).inverted() : null
+            // Overlay point (in the parented frame) -> the box's own overlay frame.
+            function toParentLocal(p) {
+                if (!handle.hasParent)
+                    return p
+                const v = handle.parentInverse.times(Qt.vector4d(p.x, p.y, 0, 1))
+                return Qt.point(v.x / v.w, v.y / v.w)
+            }
+            // Covered by the transform clip that is selected: outlined in its colour.
+            readonly property bool coveredBySelectedLayer: {
+                const parents = box.parents || []
+                for (const p of parents) {
+                    if (p.track === EditorState.selectedTrack && p.clip === EditorState.selectedClip)
+                        return true
+                }
+                return false
+            }
+            readonly property bool childOfMovingLayer: {
+                if (root.hiddenChildrenOf < 0)
+                    return false
+                for (const p of (box.parents || [])) {
+                    if (p.track === root.hiddenChildrenOf)
+                        return true
+                }
+                return false
+            }
+            visible: (!isTransform || selected) && !childOfMovingLayer
+            enabled: visible
             readonly property bool isText: box.kind === "text"
             // A 3D model: the box is the projected model, not the clip's layout rect, so a drag
             // moves the clip anchor by the box delta and there is nothing to resize or spin.
@@ -325,17 +388,19 @@ Item {
             transformOrigin: Item.Center
             readonly property real layoutRotation: gizmoPose ? gizmoPose.rotation
                                                    : liveRotation < 1e8 ? liveRotation : box.rotation
-            rotation: is3d ? 0 : layoutRotation
+            rotation: is3d || hasParent ? 0 : layoutRotation
             transform: Matrix4x4 {
                 id: poseTransform
-                matrix: handle.is3d
+                matrix: handle.is3d || handle.hasParent
                         ? EditorState.previewClipPoseMatrix({
                                                                 "canvasWidth": handle.box.canvasWidth,
                                                                 "canvasHeight": handle.box.canvasHeight,
                                                                 "rotationX": handle.poseRotX,
                                                                 "rotationY": handle.poseRotY,
                                                                 "z": handle.poseZ,
-                                                                "perspective": handle.posePerspective
+                                                                "perspective": handle.posePerspective,
+                                                                "parentActive": handle.box.parentActive,
+                                                                "parent": handle.box.parent
                                                             }, handle.layoutX, handle.layoutY,
                                                             handle.layoutW, handle.layoutH,
                                                             handle.layoutRotation, handle.sx, handle.sy)
@@ -376,7 +441,8 @@ Item {
             readonly property real snapTolY: root.snapTolPx / handle.sy
             // A rotated box has no axis-aligned edges to stick with, so it does
             // not snap — pulling its bounding box would move it sideways.
-            readonly property bool canSnap: !handle.is3d && Math.abs(handle.layoutRotation) < 0.01
+            readonly property bool canSnap: !handle.is3d && !handle.hasParent
+                                            && Math.abs(handle.layoutRotation) < 0.01
 
             // Guides are published in overlay px so they can be drawn once, at
             // root level, spanning the whole canvas rather than the clip box.
@@ -431,7 +497,8 @@ Item {
                 color: "transparent"
                 border.width: (handle.selected || handle.editing)
                               ? Theme.borderWidthFocus : Theme.borderWidth
-                border.color: handle.selected ? Theme.primary : Theme.guideStrong
+                border.color: handle.selected ? (handle.isTransform ? Theme.clipTransform : Theme.primary)
+                              : handle.coveredBySelectedLayer ? Theme.clipTransform : Theme.guideStrong
                 radius: Theme.radiusXs
 
                 Behavior on border.width {
@@ -489,9 +556,41 @@ Item {
 
             TapHandler {
                 enabled: !handle.editing
-                onTapped: {
+                onTapped: (eventPoint) => {
+                    // Tapping inside a selected layer's frame picks the clip under the pointer,
+                    // so the group's children stay one tap away.
+                    if (handle.isTransform) {
+                        const p = root.mapFromItem(null, eventPoint.scenePosition.x,
+                                                   eventPoint.scenePosition.y)
+                        const hit = EditorState.previewClipAtCanvasPoint(p.x / handle.sx, p.y / handle.sy)
+                        if (hit && hit.track !== undefined) {
+                            EditorState.selectClip(hit.track, hit.clip)
+                            return
+                        }
+                    }
                     EditorState.selectClip(handle.box.track, handle.box.clip)
                     handle.forceActiveFocus()
+                }
+            }
+
+            // "Name · n clips" over a selected layer's frame.
+            Rectangle {
+                visible: handle.isTransform && handle.selected
+                x: 0
+                y: -height - Theme.spacingSm
+                width: layerLabel.implicitWidth + Theme.spacingLg
+                height: layerLabel.implicitHeight + Theme.spacingSm
+                radius: Theme.radiusSm
+                color: Theme.clipTransform
+
+                Text {
+                    id: layerLabel
+                    anchors.centerIn: parent
+                    text: qsTr("%1 · %n clip(s)", "", handle.box.childCount || 0)
+                              .arg(handle.box.name || qsTr("Transform"))
+                    color: Theme.onMedia
+                    font.family: Theme.fontFamily
+                    font.pixelSize: Theme.fontSizeXs
                 }
             }
 
@@ -516,10 +615,12 @@ Item {
                 onActiveChanged: {
                     if (active) {
                         root.interacting = true
+                        if (handle.isTransform)
+                            root.movingLayerTrack = handle.box.track
                         // Taken at activation rather than at the press, so the drag
                         // threshold is not replayed as a jump.
-                        const p = root.mapFromItem(null, bodyDrag.centroid.scenePosition.x,
-                                                         bodyDrag.centroid.scenePosition.y)
+                        const p = handle.toParentLocal(root.mapFromItem(null, bodyDrag.centroid.scenePosition.x,
+                                                                        bodyDrag.centroid.scenePosition.y))
                         bodyDrag.pressPx = p.x
                         bodyDrag.pressPy = p.y
                         handle.dragStartX = handle.box.x
@@ -538,8 +639,8 @@ Item {
                 onCentroidChanged: {
                     if (!active)
                         return
-                    const p = root.mapFromItem(null, bodyDrag.centroid.scenePosition.x,
-                                                     bodyDrag.centroid.scenePosition.y)
+                    const p = handle.toParentLocal(root.mapFromItem(null, bodyDrag.centroid.scenePosition.x,
+                                                                    bodyDrag.centroid.scenePosition.y))
                     let xPx = handle.dragStartX + (p.x - bodyDrag.pressPx) / (handle.sx * handle.depthScale)
                     let yPx = handle.dragStartY + (p.y - bodyDrag.pressPy) / (handle.sy * handle.depthScale)
                     // Both edges and the centre stick, so a clip can be landed
@@ -783,13 +884,16 @@ Item {
                         onWheel: (wheel) => { wheel.accepted = false }
 
                         onPressed: (mouse) => {
-                            const p = mapToItem(root, mouse.x, mouse.y)
+                            const raw = mapToItem(root, mouse.x, mouse.y)
+                            const p = handle.is3d ? raw : handle.toParentLocal(raw)
                             grip.startPx = p.x
                             grip.startPy = p.y
                             if (handle.is3d) {
                                 grip.toLocal = handle.overlayToLocalMapper()
                                 grip.startLocal = grip.toLocal(p.x, p.y)
                             }
+                            if (handle.isTransform)
+                                root.movingLayerTrack = handle.box.track
                             handle.dragStartX = handle.layoutX
                             handle.dragStartY = handle.layoutY
                             handle.dragStartW = handle.layoutW
@@ -809,7 +913,8 @@ Item {
                         onPositionChanged: (mouse) => {
                             if (!pressed)
                                 return
-                            const p = mapToItem(root, mouse.x, mouse.y)
+                            const raw = mapToItem(root, mouse.x, mouse.y)
+                            const p = handle.is3d ? raw : handle.toParentLocal(raw)
                             grip.resizeTo(p.x, p.y, mouse.modifiers)
                         }
 
@@ -892,12 +997,13 @@ Item {
                     // Angle from the box centre to the pointer, in the same frame
                     // as the clip rotation (the grip sits above the box, hence +90).
                     function pointerAngle() {
-                        const p = root.mapFromItem(null, rotateDrag.centroid.scenePosition.x,
-                                                                 rotateDrag.centroid.scenePosition.y)
+                        // Measured in the box's own frame: a parent's turn is not the clip's.
+                        const p = handle.toParentLocal(root.mapFromItem(null, rotateDrag.centroid.scenePosition.x,
+                                                                        rotateDrag.centroid.scenePosition.y))
                         // A tilted box spins about its projected centre.
                         const c = handle.is3d
-                                ? handle.mapToItem(root, handle.layoutW * handle.sx / 2,
-                                                   handle.layoutH * handle.sy / 2)
+                                ? handle.toParentLocal(handle.mapToItem(root, handle.layoutW * handle.sx / 2,
+                                                                        handle.layoutH * handle.sy / 2))
                                 : Qt.point(handle.centerX, handle.centerY)
                         const ang = Math.atan2(p.y - c.y, p.x - c.x)
                         return ang * 180 / Math.PI + 90
@@ -906,6 +1012,8 @@ Item {
                     onActiveChanged: {
                         if (active) {
                             root.interacting = true
+                            if (handle.isTransform)
+                                root.movingLayerTrack = handle.box.track
                             handle.rotating = true
                             handle.liveRotation = handle.box.rotation
                             // Turning starts from where the grip was taken, so
@@ -935,6 +1043,74 @@ Item {
                             deg)
                     }
                 }
+            }
+        }
+    }
+
+    // With a clip inside a transform layer selected: the layer's frame, dashed, and a chip that
+    // selects it (Shift+G does the same). Alt+click is not used: Alt drags the window on Linux.
+    Item {
+        id: parentFrame
+        anchors.fill: parent
+        z: 880
+        visible: root.parentFrameBox !== null && !root.interacting
+        readonly property var quad: root.parentFrameBox ? (root.parentFrameBox.quad || []) : []
+        readonly property real qsx: root.width / Math.max(1, root.parentFrameBox ? root.parentFrameBox.canvasWidth : 1)
+        readonly property real qsy: root.height / Math.max(1, root.parentFrameBox ? root.parentFrameBox.canvasHeight : 1)
+        function corner(i) {
+            const q = parentFrame.quad[i]
+            return q ? Qt.point(q.x * qsx, q.y * qsy) : Qt.point(0, 0)
+        }
+
+        Shape {
+            anchors.fill: parent
+            visible: parentFrame.quad.length === 4
+            preferredRendererType: Shape.CurveRenderer
+            ShapePath {
+                strokeColor: Theme.clipTransform
+                strokeWidth: Theme.borderWidthFocus
+                strokeStyle: ShapePath.DashLine
+                dashPattern: [4, 3]
+                fillColor: "transparent"
+                startX: parentFrame.corner(0).x
+                startY: parentFrame.corner(0).y
+                PathLine { x: parentFrame.corner(1).x; y: parentFrame.corner(1).y }
+                PathLine { x: parentFrame.corner(2).x; y: parentFrame.corner(2).y }
+                PathLine { x: parentFrame.corner(3).x; y: parentFrame.corner(3).y }
+                PathLine { x: parentFrame.corner(0).x; y: parentFrame.corner(0).y }
+            }
+        }
+
+        Rectangle {
+            visible: parentFrame.quad.length === 4
+            x: parentFrame.corner(0).x
+            y: parentFrame.corner(0).y - height - Theme.spacingSm
+            width: parentChipLabel.implicitWidth + Theme.spacingLg
+            height: parentChipLabel.implicitHeight + Theme.spacingSm
+            radius: height / 2
+            color: parentChipMouse.containsMouse ? Qt.lighter(Theme.clipTransform, 1.15) : Theme.clipTransform
+
+            Text {
+                id: parentChipLabel
+                anchors.centerIn: parent
+                text: qsTr("Select %1").arg(root.parentFrameBox ? (root.parentFrameBox.name || qsTr("Transform")) : "")
+                color: Theme.onMedia
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontSizeXs
+            }
+
+            MouseArea {
+                id: parentChipMouse
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: EditorState.selectTransformParent()
+            }
+
+            ThemedToolTip {
+                visible: parentChipMouse.containsMouse
+                text: qsTr("Select the transform layer moving this clip (%1)")
+                          .arg(EditorState.shortcutFor("selectTransformLayer"))
             }
         }
     }

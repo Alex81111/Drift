@@ -130,9 +130,11 @@ Item {
         readonly property bool is3d: (root.editorState.rotationX || 0) !== 0
                                      || (root.editorState.rotationY || 0) !== 0
                                      || (root.editorState.z || 0) !== 0
-        rotation: is3d ? 0 : (root.editorState.rotation || 0)
+        // Moved by a transform layer: composed through that parent as well, flat or not.
+        readonly property bool hasParent: root.editorState.parentActive === true
+        rotation: is3d || hasParent ? 0 : (root.editorState.rotation || 0)
         transform: Matrix4x4 {
-            matrix: clipFrame.is3d
+            matrix: clipFrame.is3d || clipFrame.hasParent
                     ? EditorState.previewClipPoseMatrix(root.editorState, root.editorState.x || 0,
                                                         root.editorState.y || 0,
                                                         root.editorState.width || root.canvasW,

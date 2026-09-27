@@ -167,6 +167,7 @@ PanelFrame {
             "adjustmentVideo": Theme.clipAdjustmentVideo,
             "adjustmentAudio": Theme.clipAdjustmentAudio,
             "adjustmentMask": Theme.clipAdjustmentMask,
+            "adjustmentTransform": Theme.clipTransform,
             "primary": Theme.primary,
             "scrim": Theme.scrimColor,
             "proxyBand": Theme.clipProxyBand,
@@ -199,7 +200,8 @@ PanelFrame {
             "proxyTooltip": qsTr("Previewing from a low-resolution proxy. Export uses the original."),
             "editFriendlyLabel": qsTr("Edit-friendly"),
             "editFriendlyTooltip": qsTr("Converted to a constant frame rate for smooth editing"),
-            "vfrTooltip": qsTr("Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format.")
+            "vfrTooltip": qsTr("Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format."),
+            "spanToolTip": qsTr("Transform layer: moves, scales and turns every track its bracket covers")
         })
     }
 
@@ -526,6 +528,17 @@ PanelFrame {
     }
 
 
+    // Top of a row inside the track column, which stacks the visible rows with a gap.
+    function trackRowTop(index) {
+        var cursor = 0
+        for (var i = 0; i < index && i < tracks.length; i++) {
+            if (!trackOccupiesARow(i))
+                continue
+            cursor += trackHeight(i) + Theme.trackGap
+        }
+        return cursor
+    }
+
     // Nested lanes take no row of their own, so they must not contribute a gap either.
     function trackOccupiesARow(index) {
         return index >= 0 && index < tracks.length && !tracks[index].isAdjustmentLane
@@ -536,6 +549,7 @@ PanelFrame {
     function adjustmentColor(kind) {
         if (kind === "audioEffects") return Theme.clipAdjustmentAudio
         if (kind === "mask") return Theme.clipAdjustmentMask
+        if (kind === "transform") return Theme.clipTransform
         return Theme.clipAdjustmentVideo
     }
     function clipColor(type) {
@@ -1216,6 +1230,10 @@ PanelFrame {
                     resizable: true
                     tracks: root.tracks
                     contentY: flick.contentY
+                    onScrollRequested: (dy) => {
+                        flick.contentY = Math.max(0, Math.min(flick.contentHeight - flick.height,
+                                                              flick.contentY + dy))
+                    }
                 }
             }
 
@@ -1659,6 +1677,18 @@ PanelFrame {
                         onCanceled: root.endMarquee(false)
                     }
 
+                    TransformCoverageOverlay {
+                        y: trackColumn.y
+                        width: trackColumn.width
+                        height: root.totalTracksHeightCached
+                        z: 2
+                        tracks: root.tracks
+                        pxPerSecond: root.pxPerSecond
+                        rowTop: root.trackRowTop
+                        rowHeight: root.trackHeight
+                        draggingTrack: trackLabelsArea.draggingTrackFrom
+                    }
+
                     Column {
                         id: trackColumn
                         y: Theme.timelineRulerHeight + Theme.timelineBookmarkRowHeight
@@ -1692,6 +1722,14 @@ PanelFrame {
                                 }
 
                                 HoverHandler { id: trackHover }
+
+                                // A transform layer's row carries a faint wash of its colour.
+                                Rectangle {
+                                    anchors.fill: parent
+                                    visible: root.tracks[trackRow.trackIndex].isTransformLayer === true
+                                    color: Qt.rgba(Theme.clipTransform.r, Theme.clipTransform.g,
+                                                   Theme.clipTransform.b, 0.07)
+                                }
 
                                 DropArea {
                                     anchors.fill: parent

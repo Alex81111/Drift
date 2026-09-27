@@ -64,7 +64,10 @@ Item {
                            shortcut: "clearInOut" },
         "merge": { glyph: Theme.icons.linkTwo, label: qsTr("Merge adjacent clips"), shortcut: "merge" },
         "freeze": { glyph: Theme.icons.snowflake, label: qsTr("Freeze frame at current time") },
-        "adjustmentLayer": { glyph: Theme.icons.wand, label: qsTr("Add adjustment layer") }
+        "adjustmentLayer": { glyph: Theme.icons.wand, label: qsTr("Add adjustment layer") },
+        "transformLayer": { glyph: Theme.icons.group, label: qsTr("Add transform layer"),
+                            tip: qsTr("Add transform layer — moves the selected clips' tracks as one"),
+                            shortcut: "transformTogether" }
     })
 
     readonly property var defaultToolbarItems: [
@@ -74,7 +77,7 @@ Item {
     readonly property var defaultMenuItems: [
         "trimStart", "trimEnd", "separator", "copy", "paste", "duplicate", "separator",
         "bookmark", "markIn", "markOut", "loop", "clearWorkArea", "separator",
-        "merge", "freeze", "adjustmentLayer"
+        "merge", "freeze", "adjustmentLayer", "transformLayer"
     ]
 
     // The stored layout, cleaned: unknown or repeated ids are dropped and any action missing
@@ -130,6 +133,7 @@ Item {
         case "merge": EditorState.mergeSelectedClips(); break
         case "freeze": EditorState.freezeFrameAtPlayhead(); break
         case "adjustmentLayer": EditorState.addAdjustmentClip(-1, -1); break
+        case "transformLayer": EditorState.addTransformLayerForSelection(); break
         }
     }
 

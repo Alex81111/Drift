@@ -17340,11 +17340,7 @@ QVariantList AppController::transformLayersCovering(int trackIndex) const
 
 QVariantMap AppController::transformParentAt(int trackIndex) const
 {
-    const QList<drift::TransformParent> parents =
-        drift::transformParentsAt(m_project, m_playheadUs, 1.0);
-    if (trackIndex < 0 || trackIndex >= parents.size())
-        return {{QStringLiteral("active"), false}, {QStringLiteral("opacity"), 1.0}};
-    return transformParentToMap(parents.at(trackIndex));
+    return transformParentToMap(transformParentFor(trackIndex));
 }
 
 QPointF AppController::previewMapToClipSpace(const QVariantMap &box, double x, double y) const
@@ -18909,7 +18905,21 @@ QVariantMap AppController::maskEditorState() const
     out.insert(QStringLiteral("rotationY"), framePose.rotationY);
     out.insert(QStringLiteral("z"), framePose.positionZ);
     out.insert(QStringLiteral("perspective"), framePose.perspective);
+    // A host moved by a transform layer: the handles are placed through that parent too.
+    const drift::TransformParent parent =
+        hostTrack >= 0 ? transformParentFor(hostTrack) : drift::TransformParent{};
+    out.insert(QStringLiteral("parentActive"), parent.hasParent);
+    out.insert(QStringLiteral("parent"), transformToList(parent.matrix));
     return out;
+}
+
+drift::TransformParent AppController::transformParentFor(int trackIndex) const
+{
+    const QList<drift::TransformParent> parents =
+        drift::transformParentsAt(m_project, m_playheadUs, 1.0);
+    if (trackIndex < 0 || trackIndex >= parents.size())
+        return {};
+    return parents.at(trackIndex);
 }
 
 void AppController::addTransition(int trackIndex, int clipIndex, const QString &kind, double durationSeconds,

@@ -63,6 +63,8 @@ icons=(
   ear equal maximize
   # 3D gizmo tools (Transform inspector)
   move-3d rotate-3d scale-3d
+  # Transform layers: "Transform together"
+  group
 )
 
 for name in "${icons[@]}"; do
