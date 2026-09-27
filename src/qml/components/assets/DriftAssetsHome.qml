@@ -440,7 +440,13 @@ Item {
         visible: root.compact && opacity > 0
         opacity: root.detailShown ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: Theme.durationSlow; easing.type: Theme.easing } }
-        TapHandler { onTapped: root.detailShown = false }
+        // A MouseArea rather than a TapHandler, so the tap stops here instead of also landing
+        // on the card behind the scrim.
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: root.detailShown = false
+        }
     }
 
     DriftAssetDetail {

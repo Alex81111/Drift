@@ -31,6 +31,15 @@ Rectangle {
 
     color: Theme.panelBackground
 
+    // A Rectangle takes no input, and TapHandlers only grab passively, so without this a tap
+    // on the panel (a colour swatch, a button) also reached the card lying underneath it.
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+        onWheel: (wheel) => { wheel.accepted = true }
+    }
+
     function folderName(url) {
         const s = decodeURIComponent(String(url).replace(/^file:\/\//, ""))
         const parts = s.split(/[\/\\]/).filter(p => p.length > 0)
