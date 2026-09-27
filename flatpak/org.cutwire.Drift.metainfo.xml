@@ -89,6 +89,65 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.7.0" date="2026-09-28">
+      <url type="details">https://github.com/CutWire-Studios/Drift/releases/tag/v0.7.0</url>
+      <description>
+        <p>Huge performance improvements across the timeline, preview and playback, with the UI
+        lag gone. Import 3D objects, light scenes with Studio Relight and depth effects, and tilt
+        clips with 3D transforms. A redesigned audio mixer, recording straight onto the timeline,
+        and proxy editing for heavy footage round out the release.</p>
+        <ul>
+          <li>Transcript-first editing: word-level transcripts with speaker detection, cut by
+          deleting words, remove silences, and audio transitions</li>
+          <li>Composite clips: nest clips into a single clip you can move, trim and reuse</li>
+          <li>Transform layers: move, scale, rotate, tilt and fade several tracks as one
+          (Ctrl+G), with a bracket in the track headers showing what the layer covers</li>
+          <li>3D clip transforms with tilt, depth and perspective, and a move, rotate and scale
+          gizmo in global or local space</li>
+          <li>Import 3D models (.glb) as clips, and face props for the face effects</li>
+          <li>Depth effects: 3D relight, depth of field, fog and occlusion driven by estimated
+          video depth, and Behind Subject for placing graphics behind people</li>
+          <li>Voiceover recording from the microphone onto a track, with live waveforms, gain,
+          mic selection and pause</li>
+          <li>Redesigned audio mixer: resizable docked panel with per-track and master strips,
+          pan knobs, stereo meters and a pinned master</li>
+          <li>Proxy editing, and a Convert to CFR option for variable frame rate phone footage</li>
+          <li>Non-destructive source framing to crop and reframe a video inside its clip</li>
+          <li>Videos with an alpha channel keep their transparency</li>
+          <li>Custom preview guides: build guide sets, drag guides on the preview and snap to
+          them</li>
+          <li>Subtitles: generate for a selection of clips, merge subtitles, and a smoother
+          editing workflow</li>
+          <li>A start screen for opening or starting a project, a full-project overview strip
+          above the timeline, a transform scale slider, and dropping media straight from the
+          file manager onto the timeline</li>
+          <li>A themed colour picker with an in-window eyedropper, and the chroma key colour
+          picked from the Effects card</li>
+          <li>Market: Drift Assets as the home page, a stock browser across all sources, detail
+          panels that slide over, and a remembered download folder</li>
+          <li>Performance: a GPU-drawn timeline, lighter trims and drags, lower memory use,
+          smoother transitions during playback and hardware decoding for every clip once it is
+          proven to work</li>
+          <li>Android: faster timeline scrubbing, touch-first clip gestures, drag and drop for
+          every asset, in-process stabilization, and safer names for imported files</li>
+          <li>Audio fixes: the Limiter limits instead of adding gain, loudness and true peak are
+          measured to the standard so Normalise no longer clips, and ducking keeps the music's
+          own volume</li>
+          <li>Fixes: splitting keeps effects and animation on both halves, imported media is
+          centred on the canvas, pinned effects stay on their own clip during transitions, the
+          Duotone effect renders again, the preview no longer flashes on slow GPUs, and arrow
+          keys jog the playhead on Wayland</li>
+          <li>Nightly builds, AppImage update information, a warning for unsupported graphics
+          drivers, and an Agent access option that starts on launch with a persistent token</li>
+          <li>Translations: Arabic and Colombian Spanish added; Japanese, Spanish, Vietnamese,
+          French (Canada) and Sinhala updated</li>
+        </ul>
+        <p>Thanks to @jmn8718 for the start screen, the timeline overview strip, source framing,
+        the Agent start-on-launch option and decoder and addon install fixes; to @gelvezz23 for the chroma key tab and Colombian Spanish; to @dratiux for
+        Arabic; to @coolvitto for Japanese; to @tojidotakarin for Vietnamese; to @CathodeAnode for
+        French (Canada); and to Loposmo for Spanish.</p>
+      </description>
+    </release>
     <release version="0.6.0" date="2026-09-13">
       <url type="details">https://github.com/CutWire-Studios/Drift/releases/tag/v0.6.0</url>
       <description>
