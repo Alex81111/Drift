@@ -8,6 +8,13 @@ Tracks work done on `main` **since the last public release**. Use this to see wh
 
 ## ✅ Fixed
 
+- Pasting clips whose kind needed a new track left the wrong clips selected.
+- Dropping an effect on empty track space put its adjustment layer at the top of the timeline, so it graded every track instead of the ones under the drop. It now goes directly above that track.
+- Time Echo did nothing when added the ordinary way, as an adjustment on the clip's lane.
+- Face and depth effects were accepted on standalone adjustment layers, where there is no face or depth to read, and silently did nothing. They are now refused there with a pointer to the clip.
+- The blurred background fill ignored the bottom clip's effects, so it showed the ungraded footage around a graded picture.
+- An audio effect pinned to one clip also played on its neighbour during a crossfade.
+- Shifting an animated position (canvas crop) turned a muted animation back on.
 - Composite clips had no box on the preview, so they could only be moved and scaled from the inspector. Their corners keep the aspect like footage.
 - Changing the video size or cropping the canvas only rebased the timeline that was open: clips inside composites kept their old positions, and composites were stretched onto the new size. Every timeline is rebased now, and a composite's box scales with the canvas so what it shows holds still.
 - **Behaviour change:** MCP `set_transform` added a second keyframe at the playhead whenever a property had one key — which every new clip does — so a plain move became an animation. It now moves the single key; only a property that is already animated, or auto-key, gets a key at the playhead, as the tool always described.
