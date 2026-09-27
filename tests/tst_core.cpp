@@ -3807,6 +3807,11 @@ void CoreTest::rebaseClipLayoutShiftsKeyframedPosition()
     QCOMPARE(out.transformX.evaluateAt(0), -120.0);
     QCOMPARE(out.transformX.evaluateAt(drift::secondsToUs(2.0)), 680.0);
     QCOMPARE(out.transformY.evaluateAt(0), 140.0);
+
+    // A muted animation stays muted after the shift.
+    project.tracks()[0].clips[0].transformX.setEnabled(false);
+    drift::rebaseClipLayout(project, 1920, 1080, 1920, 1080, 10.0, 0.0);
+    QVERIFY(!project.tracks().at(0).clips.at(0).transformX.enabled());
 }
 
 void CoreTest::transformLayerRoundTrips()

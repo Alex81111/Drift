@@ -1272,6 +1272,7 @@ void shiftTrackValues(KeyframeTrack<double> &track, double delta, double implici
         key.value -= delta;
         shifted.setKeyframe(it.key(), key);
     }
+    shifted.setEnabled(track.enabled());
     track = shifted;
 }
 
