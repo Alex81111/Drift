@@ -34,7 +34,7 @@ Item {
         return levels
     }
     readonly property real bracketIndent: compact ? 4 : 8
-    readonly property real bracketGutter: compact ? 0 : bracketLevels * bracketIndent
+    property real bracketGutter: compact ? 0 : bracketLevels * bracketIndent
     Behavior on bracketGutter {
         NumberAnimation { duration: Theme.durationBase; easing.type: Theme.easing }
     }
