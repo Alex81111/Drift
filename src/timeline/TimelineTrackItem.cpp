@@ -1320,7 +1320,13 @@ int TimelineTrackItem::clipAt(const QPointF &point, Zone *zone) const
 {
     if (!m_clips)
         return -1;
+    const QList<TimelineClipsModel::Row> &rows = m_clips->rows();
     for (auto it = m_visible.crbegin(); it != m_visible.crend(); ++it) {
+        // m_visible is rebuilt at the next polish, but the model can change before that and an
+        // input event can arrive in between: a cached index may then be past the end, or name
+        // another clip. Such an entry is not hit until the rebuild catches up.
+        if (it->index < 0 || it->index >= rows.size() || rows.at(it->index).id != it->id)
+            continue;
         const Zone z = timelinelayout::hitZone(it->rect, point, edgeMargin(it->rect.width()),
                                                hotspotExtra());
         if (z == Zone::None)
