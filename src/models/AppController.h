@@ -1179,6 +1179,10 @@ public:
     // track and applies only to that track's clips. Which of the two you get is the whole
     // difference between the two placements, so they are separate calls rather than a flag.
     Q_INVOKABLE void addAdjustmentTrack(const QString &kind);
+    // False, with the reason, for an effect that reads one clip's face landmarks or depth map
+    // aimed at a standalone adjustment layer (trackIndex < 0 means a new one): the canvas it
+    // grades has neither, so the effect would silently do nothing.
+    bool effectFitsTrack(int trackIndex, const QString &effectId, QString *why = nullptr) const;
     // Index of a lane on `parentTrackIndex` able to hold `kind` over [atSeconds, +durationSeconds),
     // creating one when every existing lane is occupied there. Returns -1 if the parent cannot
     // take a lane. Note this shifts track indices when it inserts.

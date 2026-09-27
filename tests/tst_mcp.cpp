@@ -85,6 +85,7 @@ private slots:
     void effectParamWritesRejectUnknownKeys();
     void setTransformKeysOnlyAnimatedOrAutoKeyed();
     void transformLayerTools();
+    void faceAndDepthEffectsStayOffAdjustmentLayers();
     void unknownOpSuggests();
     void listEffectsCompactAndById();
     void listEmojiHasIds();
@@ -3961,6 +3962,34 @@ void McpTest::transformLayerTools()
     QCOMPARE(r.value(QStringLiteral("span")).toObject().value(QStringLiteral("covers")).toArray(),
              (QJsonArray{2, 3}));
     QCOMPARE(state.project()->tracks().size(), trackCount + 2);
+}
+
+// A standalone adjustment grades the canvas, which has no face landmarks or depth map, so these
+// effects used to be accepted there and then do nothing.
+void McpTest::faceAndDepthEffectsStayOffAdjustmentLayers()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    state.addTextClip(QStringLiteral("Hello"), 0.0);
+    state.addAdjustmentClip(0.0, 2.0);
+    const int adjustmentTrack = state.selectedTrack();
+    QVERIFY(state.project()->tracks().at(adjustmentTrack).isAdjustment());
+    drift::mcp::McpDispatcher dispatcher(&state);
+
+    QJsonObject r = dispatcher.applyOne(QStringLiteral("add_effect"),
+                                        {{QStringLiteral("track"), adjustmentTrack}, {QStringLiteral("index"), 0},
+                                         {QStringLiteral("effect"), QStringLiteral("depth.fog")}});
+    QCOMPARE(r.value(QStringLiteral("error")).toString(), QStringLiteral("bad_args"));
+    QVERIFY(r.value(QStringLiteral("detail")).toString().contains(QStringLiteral("clip")));
+    r = dispatcher.applyOne(QStringLiteral("add_effect"),
+                            {{QStringLiteral("track"), adjustmentTrack}, {QStringLiteral("index"), 0},
+                             {QStringLiteral("effect"), QStringLiteral("adjust.contrast")}});
+    QVERIFY(r.value(QStringLiteral("ok")).toBool());
+
+    // On a clip it is still welcome, and a gap drop refuses it instead of making a dud layer.
+    const int textTrack = adjustmentTrack == 0 ? 1 : 0;
+    QVERIFY(state.effectFitsTrack(textTrack, QStringLiteral("depth.fog")));
+    QVERIFY(!state.effectFitsTrack(-1, QStringLiteral("depth.fog")));
 }
 
 // These writes used to return ok whatever you sent them: a misspelt key was stored in the project

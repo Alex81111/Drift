@@ -1514,6 +1514,9 @@ QJsonObject McpDispatcher::opAddEffect(const QJsonObject &args)
     const QString effect = resolveCatalogId(raw, catalogIds(m_controller->effectCatalog()), &nearest);
     if (effect.isEmpty())
         return unknownCatalogId("effect", raw, nearest, "list_effects");
+    QString why;
+    if (!m_controller->effectFitsTrack(ref.track, effect, &why))
+        return err("bad_args", why);
     const QVariantList before = m_controller->clipAt(ref.track, ref.clip).value(QStringLiteral("effects")).toList();
     m_controller->addEffect(ref.track, ref.clip, effect);
     const QVariantList after = m_controller->clipAt(ref.track, ref.clip).value(QStringLiteral("effects")).toList();

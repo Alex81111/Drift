@@ -13569,6 +13569,11 @@ void AppController::addAdjustmentClipAt(int trackIndex, double atSeconds, double
 
 void AppController::addAdjustmentClipWithEffect(const QString &effectId, int trackIndex, double atSeconds, double durationSeconds)
 {
+    QString why;
+    if (!effectId.isEmpty() && !effectFitsTrack(-1, effectId, &why)) {
+        setLastMessage(why, QStringLiteral("warning"));
+        return;
+    }
     const drift::Project before = m_project;
 
     int target = trackIndex;
@@ -14134,6 +14139,9 @@ QVariantMap AppController::planAssetDrop(const QString &kind, const QString &pay
     // Over empty track. An effect there becomes an adjustment layer over whatever is below it,
     // and a mask a mask lane — both only make sense over pictures.
     const bool pictureTrack = track.type == drift::TrackType::Video;
+    QString why;
+    if (pictureTrack && kind == QLatin1String("effect") && !effectFitsTrack(-1, payload, &why))
+        return rejectDrop(why);
     if (pictureTrack && (kind == QLatin1String("effect") || kind == QLatin1String("effectStack")
                          || kind == QLatin1String("mask"))) {
         return {{QStringLiteral("accepted"), true}, {QStringLiteral("mode"), QStringLiteral("gap")},
@@ -19835,10 +19843,34 @@ bool isFaceEffectId(const QString &catalogId)
 
 } // namespace
 
+bool AppController::effectFitsTrack(int trackIndex, const QString &effectId, QString *why) const
+{
+    const EffectPresetEntry *def = effectDefForId(effectId);
+    if (!def || !(def->needsFace || def->needsDepth || def->isFaceSwap || def->isModel3d))
+        return true;
+    const bool standalone = trackIndex < 0
+                            || (trackIndex < m_project.tracks().size()
+                                && m_project.tracks().at(trackIndex).isAdjustment()
+                                && !m_project.tracks().at(trackIndex).isAdjustmentLane());
+    if (!standalone)
+        return true;
+    if (why) {
+        *why = def->needsDepth
+                   ? tr("Depth effects read one clip's depth, so they go on a clip, not on an adjustment layer.")
+                   : tr("Face effects follow one clip's faces, so they go on a clip, not on an adjustment layer.");
+    }
+    return false;
+}
+
 void AppController::addEffect(int trackIndex, int clipIndex, const QString &effectId)
 {
     if (trackIndex < 0 || trackIndex >= m_project.tracks().size())
         return;
+    QString why;
+    if (!effectFitsTrack(trackIndex, effectId, &why)) {
+        setLastMessage(why, QStringLiteral("warning"));
+        return;
+    }
 
     drift::Track &track = m_project.tracks()[trackIndex];
     if (clipIndex < 0 || clipIndex >= track.clips.size())
