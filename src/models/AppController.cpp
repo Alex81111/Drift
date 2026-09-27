@@ -14500,7 +14500,7 @@ void AppController::setProjectSetup(int width, int height, int fps)
 
     const drift::Project before = m_project;
     if (m_project.width() != width || m_project.height() != height)
-        drift::rebaseClipLayout(m_project, m_project.width(), m_project.height(), 0.0, 0.0);
+        drift::rebaseClipLayout(m_project, m_project.width(), m_project.height(), width, height, 0.0, 0.0);
     m_project.setResolution(width, height);
     const bool fpsChanged = m_project.fps() != fps;
     m_project.setFps(fps);
@@ -14524,7 +14524,7 @@ void AppController::applyCanvasCrop(double x, double y, double width, double hei
         return;
 
     const drift::Project before = m_project;
-    drift::rebaseClipLayout(m_project, m_project.width(), m_project.height(), x, y);
+    drift::rebaseClipLayout(m_project, m_project.width(), m_project.height(), newWidth, newHeight, x, y);
     m_project.setResolution(newWidth, newHeight);
     pushProjectEdit(before, tr("Crop canvas"));
     finishEdit(tr("Video size cropped to %1×%2").arg(newWidth).arg(newHeight));

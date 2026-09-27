@@ -1254,20 +1254,106 @@ bool sliceClipToTimelineRange(const Clip &src, TimeUs start, TimeUs end, Clip &o
     return true;
 }
 
-void rebaseClipLayout(Project &project, int oldWidth, int oldHeight, double originX, double originY)
+void scaleTrackValues(KeyframeTrack<double> &track, double factor)
 {
-    for (Track &track : project.tracks()) {
-        if (track.type == TrackType::Audio)
-            continue;
-        for (Clip &clip : track.clips) {
-            if (clip.type == ClipType::Audio)
-                continue;
-            bakeIfImplicit(clip.transformW, oldWidth);
-            bakeIfImplicit(clip.transformH, oldHeight);
-            shiftTrackValues(clip.transformX, originX, 0.0);
-            shiftTrackValues(clip.transformY, originY, 0.0);
-        }
+    if (track.isEmpty() || qFuzzyCompare(factor, 1.0))
+        return;
+    KeyframeTrack<double> scaled;
+    const QMap<TimeUs, Keyframe<double>> &values = track.keyframes();
+    for (auto it = values.constBegin(); it != values.constEnd(); ++it) {
+        Keyframe<double> key = it.value();
+        key.value *= factor;
+        key.inDy *= factor;
+        key.outDy *= factor;
+        scaled.setKeyframe(it.key(), key);
     }
+    scaled.setEnabled(track.enabled());
+    track = scaled;
+}
+
+namespace {
+
+// A composite's box shows a whole canvas, so resizing the canvas resizes what it shows. Holding
+// its content still means scaling the box with the canvas and moving its centre by the
+// nested canvas's own centre shift `d`, carried through the box's scale, flip and rotation.
+void rebaseCanvasBox(Clip &clip, int oldWidth, int oldHeight, int newWidth, int newHeight,
+                     double originX, double originY)
+{
+    const double sx = double(newWidth) / oldWidth;
+    const double sy = double(newHeight) / oldHeight;
+    const double dx = originX + newWidth / 2.0 - oldWidth / 2.0;
+    const double dy = originY + newHeight / 2.0 - oldHeight / 2.0;
+    const auto delta = [&](TimeUs t) {
+        const double w = clip.transformW.isEmpty() ? oldWidth : clip.transformW.evaluateAt(t);
+        const double h = clip.transformH.isEmpty() ? oldHeight : clip.transformH.evaluateAt(t);
+        const double a = qDegreesToRadians(clip.rotation.isEmpty() ? 0.0 : clip.rotation.evaluateAt(t));
+        const double lx = (clip.flipH ? -1.0 : 1.0) * w / oldWidth * dx;
+        const double ly = (clip.flipV ? -1.0 : 1.0) * h / oldHeight * dy;
+        const double cx = std::cos(a) * lx - std::sin(a) * ly - originX;
+        const double cy = std::sin(a) * lx + std::cos(a) * ly - originY;
+        return QPointF(w / 2.0 * (1.0 - sx) + cx, h / 2.0 * (1.0 - sy) + cy);
+    };
+
+    QList<TimeUs> times;
+    for (const KeyframeTrack<double> *track : {&clip.transformW, &clip.transformH, &clip.rotation}) {
+        if (track->keyframes().size() > 1)
+            times += track->keyframes().keys();
+    }
+    const auto rebase = [&](KeyframeTrack<double> &track, bool isX) {
+        const auto pick = [isX](QPointF p) { return isX ? p.x() : p.y(); };
+        KeyframeTrack<double> out;
+        out.setEnabled(track.enabled());
+        const QMap<TimeUs, Keyframe<double>> &values = track.keyframes();
+        for (auto it = values.constBegin(); it != values.constEnd(); ++it) {
+            Keyframe<double> key = it.value();
+            key.value += pick(delta(it.key()));
+            out.setKeyframe(it.key(), key);
+        }
+        for (TimeUs t : times) {
+            if (!values.contains(t))
+                out.setKeyframe(t, (values.isEmpty() ? 0.0 : track.evaluateAt(t)) + pick(delta(t)));
+        }
+        if (values.isEmpty() && times.isEmpty()) {
+            const double v = pick(delta(0));
+            if (!qFuzzyIsNull(v))
+                out.setKeyframe(0, v);
+        }
+        track = out;
+    };
+    rebase(clip.transformX, true);
+    rebase(clip.transformY, false);
+    scaleTrackValues(clip.transformW, sx);
+    scaleTrackValues(clip.transformH, sy);
+}
+
+} // namespace
+
+bool clipBoxIsCanvasReferenced(const Clip &clip)
+{
+    return clip.type == ClipType::Composite;
+}
+
+void rebaseClipLayout(Project &project, int oldWidth, int oldHeight, int newWidth, int newHeight,
+                      double originX, double originY)
+{
+    project.forEachTrackList([&](QList<Track> &tracks) {
+        for (Track &track : tracks) {
+            if (track.type == TrackType::Audio)
+                continue;
+            for (Clip &clip : track.clips) {
+                if (clip.type == ClipType::Audio)
+                    continue;
+                if (clipBoxIsCanvasReferenced(clip)) {
+                    rebaseCanvasBox(clip, oldWidth, oldHeight, newWidth, newHeight, originX, originY);
+                    continue;
+                }
+                bakeIfImplicit(clip.transformW, oldWidth);
+                bakeIfImplicit(clip.transformH, oldHeight);
+                shiftTrackValues(clip.transformX, originX, 0.0);
+                shiftTrackValues(clip.transformY, originY, 0.0);
+            }
+        }
+    });
 }
 
 } // namespace drift

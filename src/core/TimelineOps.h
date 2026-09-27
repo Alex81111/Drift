@@ -223,8 +223,16 @@ QString assignSplitLinkIds(Clip &head, Clip &tail);
 // This freezes that implicit size into explicit values first, then shifts stored
 // positions by (-originX, -originY) so the region the user framed stays put.
 // Clips are left visually stationary; whatever falls outside the new canvas is
-// simply clipped away by the compositor.
-void rebaseClipLayout(Project &project, int oldWidth, int oldHeight, double originX, double originY);
+// simply clipped away by the compositor. Every timeline is rebased, and boxes that show a whole
+// canvas (clipBoxIsCanvasReferenced) scale with it instead, so nested content holds still too.
+void rebaseClipLayout(Project &project, int oldWidth, int oldHeight, int newWidth, int newHeight,
+                      double originX, double originY);
+
+// True for boxes whose natural size is the canvas itself: composites.
+bool clipBoxIsCanvasReferenced(const Clip &clip);
+
+// Multiplies every key's value and tangent height; an empty track stays empty.
+void scaleTrackValues(KeyframeTrack<double> &track, double factor);
 
 // A punch on a staged multicam assignment: from `timeUs` until the next cut (or the
 // session end), this camera is the one that stays. `cuts` is empty while the session is

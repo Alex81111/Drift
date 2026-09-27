@@ -169,6 +169,7 @@ private slots:
     void clipAnimationSerializationAndSample();
     void rebaseClipLayoutFreezesImplicitSize();
     void rebaseClipLayoutShiftsKeyframedPosition();
+    void rebaseClipLayoutHoldsNestedContentStill();
     void retargetClipToSourceKeepsPlacementAndSyncsSource();
     void retargetClipToSourceClearsPerSourceState();
     void retargetClipToSourceKeepsAGeometricMask();
@@ -3754,7 +3755,7 @@ void CoreTest::rebaseClipLayoutFreezesImplicitSize()
     project.tracks().append(track);
 
     // Crop to a 1520x1080 window starting 400px in from the left.
-    drift::rebaseClipLayout(project, 1920, 1080, 400.0, 0.0);
+    drift::rebaseClipLayout(project, 1920, 1080, 1520, 1080, 400.0, 0.0);
     project.setResolution(1520, 1080);
 
     const drift::Track &out = project.tracks().at(0);
@@ -3796,13 +3797,81 @@ void CoreTest::rebaseClipLayoutShiftsKeyframedPosition()
     project.tracks().clear(); // drop the default timeline; this test owns the document
     project.tracks().append(track);
 
-    drift::rebaseClipLayout(project, 1920, 1080, 120.0, 60.0);
+    drift::rebaseClipLayout(project, 1920, 1080, 1920, 1080, 120.0, 60.0);
 
     const drift::Clip &out = project.tracks().at(0).clips.at(0);
     QCOMPARE(out.transformX.keyframes().size(), 2);
     QCOMPARE(out.transformX.evaluateAt(0), -120.0);
     QCOMPARE(out.transformX.evaluateAt(drift::secondsToUs(2.0)), 680.0);
     QCOMPARE(out.transformY.evaluateAt(0), 140.0);
+}
+
+// A canvas resize reaches every sequence, and a composite's box scales with the canvas it shows,
+// so a point of nested content lands on the same spot of the (shifted) main frame as before.
+void CoreTest::rebaseClipLayoutHoldsNestedContentStill()
+{
+    drift::Project project;
+    project.setResolution(1920, 1080);
+
+    drift::Track inner;
+    inner.type = drift::TrackType::Video;
+    drift::Clip nested;
+    nested.type = drift::ClipType::Image;
+    nested.transformX.setKeyframe(0, 300.0);
+    nested.transformW.setKeyframe(0, 400.0);
+    inner.clips.append(nested);
+    const QString sequenceId = project.addSequence({inner});
+
+    drift::Track outer;
+    outer.type = drift::TrackType::Video;
+    drift::Clip identity;
+    identity.type = drift::ClipType::Composite;
+    identity.sequenceId = sequenceId;
+    outer.clips.append(identity);
+    drift::Clip placed = identity;
+    placed.transformX.setKeyframe(0, 150.0);
+    placed.transformY.setKeyframe(0, 90.0);
+    placed.transformW.setKeyframe(0, 960.0);
+    placed.transformH.setKeyframe(0, 720.0);
+    placed.rotation.setKeyframe(0, 30.0);
+    placed.flipH = true;
+    outer.clips.append(placed);
+    project.tracks().clear();
+    project.tracks().append(outer);
+
+    const auto toMain = [](const drift::Clip &clip, double W, double H, QPointF q) {
+        const double w = clip.transformW.isEmpty() ? W : clip.transformW.evaluateAt(0);
+        const double h = clip.transformH.isEmpty() ? H : clip.transformH.evaluateAt(0);
+        const double x = clip.transformX.isEmpty() ? 0.0 : clip.transformX.evaluateAt(0);
+        const double y = clip.transformY.isEmpty() ? 0.0 : clip.transformY.evaluateAt(0);
+        const double a = qDegreesToRadians(clip.rotation.isEmpty() ? 0.0 : clip.rotation.evaluateAt(0));
+        const double lx = (clip.flipH ? -1.0 : 1.0) * w / W * (q.x() - W / 2);
+        const double ly = (clip.flipV ? -1.0 : 1.0) * h / H * (q.y() - H / 2);
+        return QPointF(x + w / 2 + std::cos(a) * lx - std::sin(a) * ly,
+                       y + h / 2 + std::sin(a) * lx + std::cos(a) * ly);
+    };
+    const QPointF q(700.0, 250.0);
+    const QPointF origin(200.0, 100.0);
+    const QPointF beforeIdentity = toMain(project.tracks().at(0).clips.at(0), 1920, 1080, q);
+    const QPointF beforePlaced = toMain(project.tracks().at(0).clips.at(1), 1920, 1080, q);
+
+    drift::rebaseClipLayout(project, 1920, 1080, 1000, 800, origin.x(), origin.y());
+    project.setResolution(1000, 800);
+
+    const drift::Clip &movedNested = project.sequenceTracks(sequenceId).at(0).clips.at(0);
+    QCOMPARE(movedNested.transformX.evaluateAt(0), 100.0);
+    QCOMPARE(movedNested.transformW.evaluateAt(0), 400.0);
+
+    const drift::Clip &identityAfter = project.tracks().at(0).clips.at(0);
+    QVERIFY(identityAfter.transformW.isEmpty());
+    QVERIFY(identityAfter.transformH.isEmpty());
+    const QPointF afterIdentity = toMain(identityAfter, 1000, 800, q - origin);
+    QVERIFY(qAbs(afterIdentity.x() - (beforeIdentity.x() - origin.x())) < 1e-6);
+    QVERIFY(qAbs(afterIdentity.y() - (beforeIdentity.y() - origin.y())) < 1e-6);
+
+    const QPointF afterPlaced = toMain(project.tracks().at(0).clips.at(1), 1000, 800, q - origin);
+    QVERIFY(qAbs(afterPlaced.x() - (beforePlaced.x() - origin.x())) < 1e-6);
+    QVERIFY(qAbs(afterPlaced.y() - (beforePlaced.y() - origin.y())) < 1e-6);
 }
 
 namespace {
