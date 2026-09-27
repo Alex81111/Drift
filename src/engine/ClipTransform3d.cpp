@@ -8,8 +8,7 @@ namespace drift {
 
 namespace {
 
-// Nearest the eye a point may get, as a fraction of the perspective distance.
-constexpr float kNearFraction = 0.02f;
+constexpr float kNearFraction = float(kClipNearFraction);
 
 // Rect centre → canvas, in pixel space relative to the canvas centre, then the perspective divide
 // about that centre. Rotations are intrinsic, X then Y then the in-plane spin (the same order as
@@ -56,6 +55,16 @@ QMatrix4x4 clipLocalToCanvas(const QRectF &rect, double rotation, const ClipPose
     QMatrix4x4 m = placeCentre(rect, rotation, pose, canvas);
     m.translate(float(-rect.width() * 0.5), float(-rect.height() * 0.5));
     m.setRow(2, QVector4D(0.f, 0.f, 1.f, 0.f));
+    return m;
+}
+
+QMatrix4x4 flatQuadToCanvas(const QRectF &rect, double rotation, bool flipH, bool flipV)
+{
+    QMatrix4x4 m;
+    m.translate(float(rect.center().x()), float(rect.center().y()));
+    m.rotate(float(rotation), 0.f, 0.f, 1.f);
+    m.scale(float(rect.width() * 0.5), float(rect.height() * 0.5));
+    m.scale(flipH ? -1.f : 1.f, flipV ? -1.f : 1.f);
     return m;
 }
 

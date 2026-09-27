@@ -13,6 +13,7 @@
 #include "MediaProbe.h"
 #include "ReverseProxyCache.h"
 #include "TextLayout.h"
+#include "TransformLayer.h"
 #include "core/TextAnimationPreset.h"
 #include "TransitionCatalog.h"
 #include "ModelClipRenderer.h"
@@ -1288,11 +1289,26 @@ GpuScene buildGpuScene(const drift::Project &project, drift::TimeUs timelineUs, 
     DepthOccluder nearestOccluder;
     QHash<QString, DepthOccluder> occluders;
 
+    // Transform layers parent the clips they cover; standalone adjustments stay canvas-wide.
+    const QList<drift::TransformParent> parents =
+        drift::transformParentsAt(project, timelineUs, renderScale);
+    const auto applyParent = [&parents](GpuLayer &layer, int trackIndex) {
+        if (parents.isEmpty())
+            return;
+        const drift::TransformParent &parent = parents.at(trackIndex);
+        layer.opacity *= parent.opacity;
+        layer.parent = parent.matrix;
+        layer.hasParent = parent.hasParent;
+    };
+
     // Track 0 is topmost and composites in front, so emit back-to-front.
     const QList<drift::Track> &tracks = project.tracks();
     for (int ti = tracks.size() - 1; ti >= 0; --ti) {
         const drift::Track &track = tracks.at(ti);
         if (track.hidden || track.type == drift::TrackType::Audio)
+            continue;
+        // A transform layer draws nothing itself; transformParentsAt carries it to its tracks.
+        if (track.isTransformLayer())
             continue;
         // A nested lane has no z-position of its own — it is drawn inside its parent's clips,
         // gathered below as laneEffects. Emitting it here would apply it to the whole canvas.
@@ -1319,6 +1335,8 @@ GpuScene buildGpuScene(const drift::Project &project, drift::TimeUs timelineUs, 
                                         width, height, fps, options.maxTimeEchoHistoryFrames,
                                         laneAdjustmentEffects(project, ti, timelineUs, toClip->id),
                                         drift::laneMasksAt(project, ti, timelineUs, toClip->id));
+                applyParent(item.from, ti);
+                applyParent(item.to, ti);
                 item.progress =
                     drift::transitionProgress(*activeTransition, timelineUs, transitionStart, transitionEnd);
                 // Time is measured from the start of the transition window so a
@@ -1389,6 +1407,7 @@ GpuScene buildGpuScene(const drift::Project &project, drift::TimeUs timelineUs, 
                                        drift::laneMasksAt(project, ti, timelineUs, clip.id));
             if (!item.layer.valid)
                 continue;
+            applyParent(item.layer, ti);
             applyDepthOcclusion(project, scene, item.layer, nearestOccluder, occluders);
             scene.items.append(item);
             if (clip.type == drift::ClipType::Video || clip.type == drift::ClipType::Image) {

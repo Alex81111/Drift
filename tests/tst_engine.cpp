@@ -45,6 +45,7 @@
 #include "engine/Exporter.h"
 #include "engine/PreviewProxyRenderer.h"
 #include "engine/ClipGizmo.h"
+#include "engine/TransformLayer.h"
 #include "engine/GpuCompositor.h"
 #include "engine/MediaWaveform.h"
 #include "playback/PlaybackDiagnostics.h"
@@ -322,6 +323,14 @@ private slots:
     void aVideoEffectsAdjustmentKeepsItsOwnMask();
     void standaloneAdjustmentKeepsSeeThroughCanvasAlpha();
     void pinnedLaneAdjustmentsStayOnTheirOwnClip();
+    void transformLayerMatrixMapsTheBox();
+    void parentedQuadKeepsDepthAndNearPlanes();
+    void identityTransformLayerRendersUnchanged();
+    void translatingTransformLayerMovesItsTracks();
+    void tiltedTransformLayerMatchesATiltedClip();
+    void transformLayerBehindTheEyeShowsBackground();
+    void nestedTransformLayersCompose();
+    void transformParentReachesEveryCoveredLayer();
     void exporterProducesPlayableFileWithBackground();
     void exporterProducesAudioOnlyMp3();
     void exporterTagsSdrBt709ColorMetadata();
@@ -9137,6 +9146,311 @@ void EngineTest::pinnedLaneAdjustmentsStayOnTheirOwnClip()
     QCOMPARE(item->from.effects.size(), 1);
     QVERIFY(item->to.masks.isEmpty());
     QVERIFY(item->to.effects.isEmpty());
+}
+
+namespace {
+
+drift::Clip solidShape(const QString &id, const QRectF &rect, const QColor &colour)
+{
+    drift::Clip clip;
+    clip.id = id;
+    clip.type = drift::ClipType::Shape;
+    clip.timelineDuration = drift::secondsToUs(4.0);
+    clip.srcOut = clip.timelineDuration;
+    clip.shapeStyle.kind = drift::ShapeKind::Rectangle;
+    clip.shapeStyle.setSolidFill(colour);
+    clip.transformX.setKeyframe(0, rect.x());
+    clip.transformY.setKeyframe(0, rect.y());
+    clip.transformW.setKeyframe(0, rect.width());
+    clip.transformH.setKeyframe(0, rect.height());
+    return clip;
+}
+
+// A 64x64 project: an optional transform layer over one shape track holding `child`.
+drift::Project transformLayerProject(const drift::Clip &child, const drift::Clip *transform)
+{
+    drift::Project project;
+    project.setResolution(64, 64);
+    project.tracks().clear();
+    drift::Track shapes{.type = drift::TrackType::Shape};
+    shapes.id = QStringLiteral("shapes");
+    shapes.clips.append(child);
+    project.tracks().append(shapes);
+    if (transform) {
+        drift::insertTransformTrack(project.tracks(), 0, QStringLiteral("shapes"));
+        project.tracks()[0].clips.append(*transform);
+    }
+    return project;
+}
+
+QImage renderAt(const drift::Project &project, double seconds)
+{
+    FrameCompositor compositor;
+    compositor.setProject(&project);
+    return compositor.compositeAt(drift::secondsToUs(seconds));
+}
+
+bool imagesClose(const QImage &a, const QImage &b, int tolerance, QString *where = nullptr)
+{
+    if (a.size() != b.size())
+        return false;
+    for (int y = 0; y < a.height(); ++y) {
+        for (int x = 0; x < a.width(); ++x) {
+            const QColor p = a.pixelColor(x, y);
+            const QColor q = b.pixelColor(x, y);
+            if (qAbs(p.red() - q.red()) > tolerance || qAbs(p.green() - q.green()) > tolerance
+                || qAbs(p.blue() - q.blue()) > tolerance || qAbs(p.alpha() - q.alpha()) > tolerance) {
+                if (where)
+                    *where = QStringLiteral("(%1,%2) %3 vs %4").arg(x).arg(y).arg(p.name(), q.name());
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+} // namespace
+
+void EngineTest::transformLayerMatrixMapsTheBox()
+{
+    drift::Clip clip = drift::makeTransformClip(0, drift::secondsToUs(2.0));
+    const QSize canvas(200, 100);
+    QVERIFY(drift::transformLayerMatrix(clip, 0, canvas, 1.0).isIdentity());
+
+    // A quarter box in the bottom-right corner: the canvas shrinks onto it.
+    clip.transformX.setKeyframe(0, 100.0);
+    clip.transformY.setKeyframe(0, 50.0);
+    clip.transformW.setKeyframe(0, 100.0);
+    clip.transformH.setKeyframe(0, 50.0);
+    QTransform quarter = drift::transformLayerMatrix(clip, 0, canvas, 1.0);
+    QCOMPARE(quarter.map(QPointF(0, 0)), QPointF(100, 50));
+    QCOMPARE(quarter.map(QPointF(200, 100)), QPointF(200, 100));
+    // Render scale changes nothing but the units.
+    quarter = drift::transformLayerMatrix(clip, 0, canvas, 0.5);
+    QCOMPARE(quarter.map(QPointF(0, 0)), QPointF(50, 25));
+
+    // A tilted box is the projected quad of a clip carrying the same pose.
+    clip.layer3d = true;
+    clip.rotationY.setKeyframe(0, 35.0);
+    clip.rotation.setKeyframe(0, 10.0);
+    const QTransform tilted = drift::transformLayerMatrix(clip, 0, canvas, 1.0);
+    drift::ClipPose3d pose;
+    pose.rotationY = 35.0;
+    const QPolygonF expected =
+        drift::projectedClipQuad(QRectF(100, 50, 100, 50), 10.0, pose, QSizeF(canvas));
+    const QPointF corners[4] = {{0, 0}, {200, 0}, {200, 100}, {0, 100}};
+    for (int i = 0; i < 4; ++i) {
+        const QPointF got = tilted.map(corners[i]);
+        QVERIFY2(QLineF(got, expected.at(i)).length() < 1e-3,
+                 qPrintable(QStringLiteral("corner %1").arg(i)));
+    }
+}
+
+void EngineTest::parentedQuadKeepsDepthAndNearPlanes()
+{
+    drift::ClipPose3d pose;
+    pose.rotationX = 20.0;
+    const QMatrix4x4 child =
+        drift::clipQuadToCanvas(QRectF(10, 10, 40, 40), 0.0, false, false, pose, QSizeF(64, 64));
+    const QTransform shift = QTransform::fromTranslate(5, 7);
+    const QMatrix4x4 moved = drift::parentedQuadToCanvas(shift, child);
+    for (const QVector4D corner : {QVector4D(-1, -1, 0, 1), QVector4D(1, 1, 0, 1)}) {
+        const QVector4D a = child.map(corner);
+        const QVector4D b = moved.map(corner);
+        QCOMPARE(b.z(), a.z());
+        QCOMPARE(b.w(), a.w());
+        QVERIFY(qAbs(b.x() / b.w() - (a.x() / a.w() + 5)) < 1e-3);
+    }
+
+    // A projective parent: every point GL keeps (-w <= z <= w) is in front of both eyes.
+    drift::Clip card = drift::makeTransformClip(0, drift::secondsToUs(1.0));
+    card.layer3d = true;
+    card.rotationY.setKeyframe(0, 70.0);
+    const QTransform tilt = drift::transformLayerMatrix(card, 0, QSize(64, 64), 1.0);
+    QVERIFY(!tilt.isAffine());
+    const QMatrix4x4 flat = drift::flatQuadToCanvas(QRectF(0, 0, 64, 64), 0.0, false, false);
+    const QMatrix4x4 f = drift::parentedQuadToCanvas(tilt, flat);
+    for (double u = -1.0; u <= 1.0; u += 0.25) {
+        const QVector4D p = f.map(QVector4D(float(u), 0.f, 0.f, 1.f));
+        if (p.z() >= -p.w() && p.z() <= p.w())
+            QVERIFY(p.w() > 0.f);
+    }
+}
+
+void EngineTest::identityTransformLayerRendersUnchanged()
+{
+    if (!GpuCompositor::isAvailable())
+        QSKIP("No GPU compositor available");
+    const drift::Clip child = solidShape(QStringLiteral("c"), QRectF(8, 8, 20, 12), Qt::red);
+    const drift::Clip identity = drift::makeTransformClip(0, drift::secondsToUs(4.0));
+    const drift::Project plain = transformLayerProject(child, nullptr);
+    const drift::Project layered = transformLayerProject(child, &identity);
+
+    FrameCompositor compositor;
+    compositor.setProject(&layered);
+    GpuScene scene;
+    QVERIFY(compositor.buildSceneAt(drift::secondsToUs(1.0), FrameCompositor::RenderOptions{}, &scene));
+    QCOMPARE(scene.items.size(), 1);
+    QVERIFY(!scene.items.constFirst().layer.hasParent);
+    QCOMPARE(renderAt(layered, 1.0), renderAt(plain, 1.0));
+}
+
+void EngineTest::translatingTransformLayerMovesItsTracks()
+{
+    if (!GpuCompositor::isAvailable())
+        QSKIP("No GPU compositor available");
+    drift::Clip layer = drift::makeTransformClip(0, drift::secondsToUs(4.0));
+    layer.transformX.setKeyframe(0, 10.0);
+    layer.transformY.setKeyframe(0, 6.0);
+    const QImage moved = renderAt(
+        transformLayerProject(solidShape(QStringLiteral("c"), QRectF(8, 8, 20, 12), Qt::red), &layer), 1.0);
+    const QImage expected = renderAt(
+        transformLayerProject(solidShape(QStringLiteral("c"), QRectF(18, 14, 20, 12), Qt::red), nullptr), 1.0);
+    QString where;
+    QVERIFY2(imagesClose(moved, expected, 2, &where), qPrintable(where));
+}
+
+void EngineTest::tiltedTransformLayerMatchesATiltedClip()
+{
+    if (!GpuCompositor::isAvailable())
+        QSKIP("No GPU compositor available");
+    drift::Clip layer = drift::makeTransformClip(0, drift::secondsToUs(4.0));
+    layer.layer3d = true;
+    layer.rotationY.setKeyframe(0, 40.0);
+    const QImage viaLayer = renderAt(
+        transformLayerProject(solidShape(QStringLiteral("c"), QRectF(0, 0, 64, 64), Qt::red), &layer), 1.0);
+
+    drift::Clip tilted = solidShape(QStringLiteral("c"), QRectF(0, 0, 64, 64), Qt::red);
+    tilted.layer3d = true;
+    tilted.rotationY.setKeyframe(0, 40.0);
+    const QImage direct = renderAt(transformLayerProject(tilted, nullptr), 1.0);
+    // The two paths rasterise the same quad; only edge coverage may round differently.
+    int differing = 0;
+    for (int y = 0; y < 64; ++y) {
+        for (int x = 0; x < 64; ++x)
+            differing += qAbs(qRed(viaLayer.pixel(x, y)) - qRed(direct.pixel(x, y))) > 8 ? 1 : 0;
+    }
+    QVERIFY2(differing < 40, qPrintable(QString::number(differing)));
+    // Tilting narrows the card (the canvas corners show through) without emptying it.
+    QVERIFY(qRed(viaLayer.pixel(32, 32)) > 200);
+    QVERIFY(qRed(viaLayer.pixel(1, 32)) < 50);
+}
+
+void EngineTest::transformLayerBehindTheEyeShowsBackground()
+{
+    if (!GpuCompositor::isAvailable())
+        QSKIP("No GPU compositor available");
+    drift::Clip layer = drift::makeTransformClip(0, drift::secondsToUs(4.0));
+    layer.layer3d = true;
+    layer.positionZ.setKeyframe(0, 5000.0);
+    const QImage out = renderAt(
+        transformLayerProject(solidShape(QStringLiteral("c"), QRectF(0, 0, 64, 64), Qt::red), &layer), 1.0);
+    QVERIFY(!out.isNull());
+    for (int y = 0; y < 64; y += 7) {
+        for (int x = 0; x < 64; x += 7)
+            QCOMPARE(qRed(out.pixel(x, y)), 0);
+    }
+}
+
+void EngineTest::nestedTransformLayersCompose()
+{
+    drift::Project project = transformLayerProject(
+        solidShape(QStringLiteral("c"), QRectF(8, 8, 20, 12), Qt::red), nullptr);
+    QList<drift::Track> &tracks = project.tracks();
+    drift::insertTransformTrack(tracks, 0, QStringLiteral("shapes"));
+    drift::insertTransformTrack(tracks, 0, QStringLiteral("shapes"));
+    drift::Clip outer = drift::makeTransformClip(0, drift::secondsToUs(4.0));
+    outer.transformX.setKeyframe(0, 10.0);
+    outer.opacity.setKeyframe(0, 0.5);
+    drift::Clip inner = outer;
+    inner.transformX.setKeyframe(0, 5.0);
+    tracks[0].clips.append(outer);
+    tracks[1].clips.append(inner);
+
+    const QList<drift::TransformParent> parents =
+        drift::transformParentsAt(project, drift::secondsToUs(1.0), 1.0);
+    QCOMPARE(parents.size(), 3);
+    QVERIFY(parents.at(2).hasParent);
+    QCOMPARE(parents.at(2).matrix.map(QPointF(0, 0)), QPointF(15, 0));
+    QCOMPARE(parents.at(2).opacity, 0.25);
+    // The inner layer is itself covered by the outer one.
+    QCOMPARE(parents.at(1).matrix.map(QPointF(0, 0)), QPointF(10, 0));
+
+    // A hidden layer is bypassed, not a hider of its children.
+    tracks[0].hidden = true;
+    const QList<drift::TransformParent> bypassed =
+        drift::transformParentsAt(project, drift::secondsToUs(1.0), 1.0);
+    QCOMPARE(bypassed.at(2).matrix.map(QPointF(0, 0)), QPointF(5, 0));
+    QCOMPARE(bypassed.at(2).opacity, 0.5);
+}
+
+void EngineTest::transformParentReachesEveryCoveredLayer()
+{
+    drift::Project project;
+    project.setResolution(64, 64);
+    project.tracks().clear();
+    drift::Track video{.type = drift::TrackType::Shape};
+    video.id = QStringLiteral("v");
+    drift::Clip a = solidShape(QStringLiteral("a"), QRectF(0, 0, 32, 32), Qt::red);
+    a.timelineDuration = drift::secondsToUs(2.0);
+    drift::Clip b = solidShape(QStringLiteral("b"), QRectF(0, 0, 32, 32), Qt::blue);
+    b.timelineStart = drift::secondsToUs(2.0);
+    b.timelineDuration = drift::secondsToUs(2.0);
+    video.clips = {a, b};
+    drift::Transition transition;
+    transition.id = QStringLiteral("tr");
+    transition.fromClipId = QStringLiteral("a");
+    transition.toClipId = QStringLiteral("b");
+    transition.durationUs = drift::secondsToUs(1.0);
+    video.transitions.append(transition);
+
+    drift::Track standalone{.type = drift::TrackType::Adjustment};
+    drift::Clip effects;
+    effects.id = QStringLiteral("fx");
+    effects.type = drift::ClipType::Adjustment;
+    effects.timelineDuration = drift::secondsToUs(4.0);
+    drift::Effect brightness;
+    brightness.catalogId = QStringLiteral("adjust.brightness");
+    effects.effects.append(brightness);
+    standalone.clips.append(effects);
+
+    drift::Track inner{.type = drift::TrackType::Shape};
+    inner.clips.append(solidShape(QStringLiteral("n"), QRectF(0, 0, 16, 16), Qt::green));
+    drift::Track composites{.type = drift::TrackType::Video};
+    drift::Clip composite;
+    composite.id = QStringLiteral("comp");
+    composite.type = drift::ClipType::Composite;
+    composite.sequenceId = project.addSequence({inner});
+    composite.timelineDuration = drift::secondsToUs(4.0);
+    composite.srcOut = composite.timelineDuration;
+    composites.clips.append(composite);
+
+    project.tracks() = {standalone, composites, video};
+    drift::insertTransformTrack(project.tracks(), 0, QStringLiteral("v"));
+    drift::Clip layer = drift::makeTransformClip(0, drift::secondsToUs(4.0));
+    layer.transformX.setKeyframe(0, 10.0);
+    project.tracks()[0].clips.append(layer);
+
+    FrameCompositor compositor;
+    compositor.setProject(&project);
+    GpuScene scene;
+    QVERIFY(compositor.buildSceneAt(drift::secondsToUs(2.0), FrameCompositor::RenderOptions{}, &scene));
+    bool sawTransition = false;
+    bool sawAdjustment = false;
+    bool sawComposite = false;
+    for (const GpuItem &item : scene.items) {
+        if (item.layer.nested) {
+            QVERIFY(item.layer.hasParent);
+            sawComposite = true;
+        } else if (item.isTransition) {
+            QVERIFY(item.from.hasParent && item.to.hasParent);
+            sawTransition = true;
+        } else if (item.isAdjustment) {
+            QVERIFY(!item.layer.hasParent);
+            sawAdjustment = true;
+        }
+    }
+    QVERIFY(sawTransition && sawAdjustment && sawComposite);
 }
 
 void EngineTest::exporterProducesPlayableFileWithBackground()

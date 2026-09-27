@@ -16,6 +16,7 @@
 #include <QMap>
 #include <QRectF>
 #include <QSize>
+#include <QTransform>
 #include <QVariant>
 
 #include <cstdint>
@@ -79,6 +80,9 @@ struct GpuLayer
     drift::ClipPose3d pose3d; // tilt and depth on top of rect/rotation, in canvas pixels
     bool flipH = false;
     bool flipV = false;
+    // Transform layers over this clip's track, in canvas pixels; see drift::transformParentsAt.
+    QTransform parent;
+    bool hasParent = false;
     double opacity = 1.0;
     drift::TimeUs clipTimeUs = 0; // effect time base (relative to clip start)
     // This frame's baked face anchors, one per tracked slot, sampled by FrameCompositor. Carried

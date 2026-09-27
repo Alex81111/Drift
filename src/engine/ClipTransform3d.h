@@ -25,6 +25,9 @@ struct ClipPose3d
 
 inline constexpr double kDefaultClipPerspective = 2000.0;
 
+// Nearest the eye a point may get, as a fraction of the perspective distance.
+inline constexpr double kClipNearFraction = 0.02;
+
 // Maps the unit quad [-1, 1]² onto the canvas in homogeneous canvas pixels (top-left origin):
 // divide x, y by w to get the pixel. `rotation` is the existing in-plane spin (clockwise degrees)
 // about the rect centre. Clip-space z is set so that GL clips anything nearer than a sliver in
@@ -37,6 +40,9 @@ QMatrix4x4 clipQuadToCanvas(const QRectF &rect, double rotation, bool flipH, boo
 // what a QtQuick Matrix4x4 transform needs to overlay the clip.
 QMatrix4x4 clipLocalToCanvas(const QRectF &rect, double rotation, const ClipPose3d &pose,
                              const QSizeF &canvas);
+
+// The flat placement of the unit quad: rect, in-plane rotation and flips, z = 0 and w = 1.
+QMatrix4x4 flatQuadToCanvas(const QRectF &rect, double rotation, bool flipH, bool flipV);
 
 // The four projected corners (top-left, top-right, bottom-right, bottom-left), in canvas pixels.
 // Empty when any corner is at or behind the eye.

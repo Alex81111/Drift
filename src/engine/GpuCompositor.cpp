@@ -12,7 +12,9 @@
 #include "GpuDevice.h"
 #include "GpuEffectDefinition.h"
 #include "MaskApplier.h"
+#include "TransformLayer.h"
 
+#include <QLineF>
 #include <QMatrix4x4>
 #include <QMutex>
 #include <QMutexLocker>
@@ -272,6 +274,17 @@ bool isFixedFunctionBlend(drift::BlendMode mode)
 // the top of the readback image (see promoteImageToTarget), so y is not flipped.
 QMatrix4x4 modelMatrixFor(const GpuLayer &layer, const QSize &canvas)
 {
+    if (layer.hasParent) {
+        QMatrix4x4 m;
+        m.translate(-1.f, -1.f);
+        m.scale(2.f / canvas.width(), 2.f / canvas.height());
+        const QMatrix4x4 quad =
+            layer.pose3d.isActive()
+                ? drift::clipQuadToCanvas(layer.rect, layer.rotation, layer.flipH, layer.flipV,
+                                          layer.pose3d, QSizeF(canvas))
+                : drift::flatQuadToCanvas(layer.rect, layer.rotation, layer.flipH, layer.flipV);
+        return m * drift::parentedQuadToCanvas(layer.parent, quad);
+    }
     if (layer.pose3d.isActive()) {
         QMatrix4x4 m;
         m.translate(-1.f, -1.f);
@@ -922,7 +935,20 @@ void drawLayerOnCanvas(GlRuntime &rt, QOpenGLExtraFunctions *gl, GlTarget &canva
     // Only worth it when the quad is actually smaller than the texture; at ~1:1 the
     // single bilinear tap is already exact and the copy would be pure cost.
     QSizeF drawnSize = layer.rect.size();
-    if (layer.pose3d.isActive()) {
+    if (layer.hasParent) {
+        const QMatrix4x4 quad =
+            layer.pose3d.isActive()
+                ? drift::clipQuadToCanvas(layer.rect, layer.rotation, false, false, layer.pose3d,
+                                          QSizeF(canvasSize))
+                : drift::flatQuadToCanvas(layer.rect, layer.rotation, false, false);
+        const QPolygonF projected =
+            drift::projectedQuad(drift::parentedQuadToCanvas(layer.parent, quad));
+        if (!projected.isEmpty()) {
+            // The quad's own edge lengths, not its bounding box, which a rotation inflates.
+            drawnSize = QSizeF(QLineF(projected.at(0), projected.at(1)).length(),
+                               QLineF(projected.at(1), projected.at(2)).length());
+        }
+    } else if (layer.pose3d.isActive()) {
         const QPolygonF quad =
             drift::projectedClipQuad(layer.rect, layer.rotation, layer.pose3d, QSizeF(canvasSize));
         if (!quad.isEmpty())
