@@ -24,6 +24,15 @@ Item {
         return EditorState.selectedTrack >= 0 && EditorState.selectedClip >= 0
     }
     readonly property bool hasTransition: EditorState.selectedTransitionTrack >= 0
+    readonly property bool multiSelection: {
+        void EditorState.selectionRevision
+        return EditorState.selection.length > 1
+    }
+    readonly property bool transformClipSelected: {
+        void EditorState.selectionRevision
+        const data = root.hasSelection ? EditorState.selectedClipData : ({})
+        return data.kind === "adjustment" && data.adjustmentKind === "transform"
+    }
 
     // The strip runs the full width of an edge-to-edge window, so in landscape the system
     // nav bar sits straight on top of whichever end the cutout is at.
@@ -42,6 +51,26 @@ Item {
         }
         // Long-press only lifts a clip now, so everything its menu offered is reachable from
         // here: the everyday edits as buttons, the rest one tap away under More.
+        // A transform clip has no fade, speed or source: its own transform is the edit.
+        if (root.hasSelection && root.transformClipSelected) {
+            return [
+                { id: "split", label: qsTr("Split"), icon: Theme.icons.scissors },
+                { id: "transform", label: qsTr("Transform"), icon: Theme.icons.maximize },
+                { id: "duplicate", label: qsTr("Duplicate"), icon: Theme.icons.copyPlus },
+                { id: "delete", label: qsTr("Delete"), icon: Theme.icons.trash,
+                  destructive: true, gutter: true },
+                { id: "more", label: qsTr("More"), icon: Theme.icons.ellipsis }
+            ]
+        }
+        if (root.hasSelection && root.multiSelection && EditorState.transformTogetherAvailable) {
+            return [
+                { id: "transformTogether", label: qsTr("Transform together"), icon: Theme.icons.group },
+                { id: "duplicate", label: qsTr("Duplicate"), icon: Theme.icons.copyPlus },
+                { id: "delete", label: qsTr("Delete"), icon: Theme.icons.trash,
+                  destructive: true, gutter: true },
+                { id: "more", label: qsTr("More"), icon: Theme.icons.ellipsis }
+            ]
+        }
         if (root.hasSelection) {
             return [
                 { id: "split", label: qsTr("Split"), icon: Theme.icons.scissors },
@@ -88,6 +117,14 @@ Item {
             break
         case "duplicate":
             EditorState.duplicateSelectedClip()
+            break
+        // The Transform tab of the properties sheet is where a transform clip is edited.
+        case "transform":
+            if (Window.window.editorPage)
+                Window.window.editorPage.openPropertiesSheet()
+            break
+        case "transformTogether":
+            EditorState.makeTransformLayerFromSelection()
             break
         case "delete":
             EditorState.deleteSelectedClip()

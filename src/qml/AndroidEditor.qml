@@ -464,7 +464,13 @@ Item {
 
     AndroidAddMenu {
         id: addMenu
-        onPicked: (tabId) => root.openAssetsTab(tabId)
+        // A transform layer is added straight away; everything else opens its assets tab.
+        onPicked: (tabId) => {
+            if (tabId === "transformLayer")
+                EditorState.addTransformLayerForSelection()
+            else
+                root.openAssetsTab(tabId)
+        }
     }
 
     AndroidProjectSheet {

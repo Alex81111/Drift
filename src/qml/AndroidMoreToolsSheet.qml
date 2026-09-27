@@ -32,6 +32,9 @@ AndroidBottomSheet {
         const track = panel.tracks[EditorState.selectedTrack]
         return track ? track.type : ""
     }
+    readonly property bool isTransformClip: clipInfo.kind === "adjustment"
+                                            && clipInfo.adjustmentKind === "transform"
+    readonly property bool hasTransformParent: (clipInfo.transformParents || []).length > 0
     readonly property bool clipHasEffects: (clipInfo.effects || []).length > 0
                                            || (clipInfo.audioEffects || []).length > 0
     readonly property string mediaAssetId: (AssetLibrary.badgeRevision,
@@ -81,6 +84,18 @@ AndroidBottomSheet {
                   icon: Theme.icons.film },
                 { id: "makeComposite", label: qsTr("Make composite"),
                   detail: qsTr("Group the selected clips into one"),
+                  icon: Theme.icons.layers },
+                { id: "transformTogether", label: qsTr("Transform together"),
+                  detail: qsTr("Move, scale or tilt the selected clips' tracks as one"),
+                  icon: Theme.icons.group },
+                { id: "selectTransformLayer", label: qsTr("Select transform layer"),
+                  detail: qsTr("The layer moving this clip"),
+                  icon: Theme.icons.maximize },
+                { id: "selectCoveredClips", label: qsTr("Select covered clips"),
+                  detail: qsTr("Every clip this layer moves"),
+                  icon: Theme.icons.maximize },
+                { id: "transformCovers", label: qsTr("Covers"),
+                  detail: qsTr("Choose which tracks this layer moves"),
                   icon: Theme.icons.layers },
                 { id: "unlink", label: qsTr("Unlink"),
                   detail: qsTr("Edit video and its audio separately"),
@@ -224,6 +239,13 @@ AndroidBottomSheet {
             return root.hasSelection && root.clipInfo.kind === "composite"
         case "makeComposite":
             return EditorState.makeCompositeAvailable
+        case "transformTogether":
+            return EditorState.transformTogetherAvailable && !root.isTransformClip
+        case "selectTransformLayer":
+            return root.hasTransformParent && !root.isTransformClip
+        case "selectCoveredClips":
+        case "transformCovers":
+            return root.isTransformClip
         case "unlink":
             return root.hasSelection && !!root.clipInfo.linked && EditorState.unlinkAvailable
         case "separateAllAudio":
@@ -247,10 +269,11 @@ AndroidBottomSheet {
         case "saveEffectsPreset":
             return root.clipHasEffects
         case "pasteEffects":
-            return root.hasSelection
+            return root.hasSelection && !root.isTransformClip
         case "trimStart":
         case "trimEnd":
         case "speed":
+            return root.hasSelection && !root.isTransformClip
         case "closeGap":
             return root.hasSelection
         case "merge":
@@ -331,6 +354,18 @@ AndroidBottomSheet {
             break
         case "makeComposite":
             EditorState.makeCompositeFromSelection()
+            break
+        case "transformTogether":
+            EditorState.makeTransformLayerFromSelection()
+            break
+        case "selectTransformLayer":
+            EditorState.selectTransformParent()
+            break
+        case "selectCoveredClips":
+            EditorState.selectTransformChildren(track, clipIndex)
+            break
+        case "transformCovers":
+            root.panel.openClipProperties()
             break
         case "unlink":
             EditorState.unlinkSelectedClips()

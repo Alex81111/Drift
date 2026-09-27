@@ -90,6 +90,12 @@ AndroidBottomSheet {
             label: qsTr("Masks"),
             detail: qsTr("Cut a shape or a subject out of the selected clip"),
             icon: Theme.icons.mask
+        },
+        {
+            id: "transformLayer",
+            label: qsTr("Transform layer"),
+            detail: qsTr("Move, scale or tilt several tracks as one"),
+            icon: Theme.icons.group
         }
     ]
 

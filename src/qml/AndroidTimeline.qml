@@ -442,6 +442,7 @@ Item {
             "adjustmentVideo": Theme.clipAdjustmentVideo,
             "adjustmentAudio": Theme.clipAdjustmentAudio,
             "adjustmentMask": Theme.clipAdjustmentMask,
+            "adjustmentTransform": Theme.clipTransform,
             "primary": Theme.primary,
             "scrim": Theme.scrimColor,
             "proxyBand": Theme.clipProxyBand,
@@ -474,7 +475,8 @@ Item {
             "proxyTooltip": qsTr("Previewing from a low-resolution proxy. Export uses the original."),
             "editFriendlyLabel": qsTr("Edit-friendly"),
             "editFriendlyTooltip": qsTr("Converted to a constant frame rate for smooth editing"),
-            "vfrTooltip": qsTr("Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format.")
+            "vfrTooltip": qsTr("Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format."),
+            "spanToolTip": qsTr("Transform layer: moves, scales and turns every track its bracket covers")
         })
     }
 
@@ -917,6 +919,7 @@ Item {
     function adjustmentColor(kind) {
         if (kind === "audioEffects") return Theme.clipAdjustmentAudio
         if (kind === "mask") return Theme.clipAdjustmentMask
+        if (kind === "transform") return Theme.clipTransform
         return Theme.clipAdjustmentVideo
     }
     function clipColor(type) {
@@ -927,6 +930,17 @@ Item {
         if (type === "effect" || type === "adjustment") return Theme.clipEffect
         if (type === "composite") return Theme.clipComposite
         return Theme.clipVideoPlaceholder
+    }
+
+    // Top of a row inside the track column, which stacks the visible rows with a gap.
+    function trackRowTop(index) {
+        var cursor = 0
+        for (var i = 0; i < index && i < tracks.length; i++) {
+            if (!trackOccupiesARow(i))
+                continue
+            cursor += trackHeight(i) + Theme.trackGap
+        }
+        return cursor
     }
 
     function totalTracksHeight() {
@@ -1163,6 +1177,10 @@ Item {
                     labelsWidth: root.labelsWidth
                     compact: true
                     touchMode: true
+                    onScrollRequested: (dy) => {
+                        flick.contentY = Math.max(0, Math.min(flick.contentHeight - flick.height,
+                                                              flick.contentY + dy))
+                    }
                 }
             }
 
@@ -1550,6 +1568,17 @@ Item {
                         }
                     }
 
+                    TransformCoverageOverlay {
+                        y: trackColumn.y
+                        width: trackColumn.width
+                        height: root.totalTracksHeight()
+                        z: 2
+                        tracks: root.tracks
+                        pxPerSecond: root.pxPerSecond
+                        rowTop: root.trackRowTop
+                        rowHeight: root.trackHeight
+                    }
+
                     Column {
                         id: trackColumn
                         y: root.seekHeaderHeight
@@ -1571,6 +1600,14 @@ Item {
                                 height: root.trackHeight(trackIndex)
                                 color: Qt.rgba(Theme.panelAccent.r, Theme.panelAccent.g,
                                                Theme.panelAccent.b, 0.22)
+
+                                // A transform layer's row carries a faint wash of its colour.
+                                Rectangle {
+                                    anchors.fill: parent
+                                    visible: root.tracks[trackRow.trackIndex].isTransformLayer === true
+                                    color: Qt.rgba(Theme.clipTransform.r, Theme.clipTransform.g,
+                                                   Theme.clipTransform.b, 0.07)
+                                }
 
                                 // A tap on empty track clears the selection. Clips take their
                                 // own presses first, and a drag still belongs to the Flickable.
