@@ -952,6 +952,8 @@ Project Project::fromJson(const QJsonObject &object, QString *errorOut)
             track.adjustmentScope = adjustmentScopeFromString(
                 trackObject.value(QStringLiteral("adjustmentScope")).toString());
             track.parentTrackId = trackObject.value(QStringLiteral("parentTrackId")).toString();
+            if (track.isTransformLayer())
+                track.spanEndTrackId = trackObject.value(QStringLiteral("spanEndTrackId")).toString();
             track.name = trackObject.value(QStringLiteral("name")).toString();
             track.muted = trackObject.value(QStringLiteral("muted")).toBool(false);
             track.hidden = trackObject.value(QStringLiteral("hidden")).toBool(false);
@@ -1036,6 +1038,8 @@ Project Project::fromJson(const QJsonObject &object, QString *errorOut)
     // over the fill instead of beside it. shapeStyleFromJson migrates in place.
     // Version 9 added ClipType::Model3d. Nothing to migrate; same reasoning as version 6.
     // Version 10 added composite clips and the nested sequences they play. Nothing to migrate.
+    // Version 11 added transform layers (Range adjustment tracks holding Transform clips). Nothing
+    // to migrate; an older build would load them as effect adjustments with no effects.
 
     project.m_bookmarks.clear();
     const QJsonArray bookmarksArray = object.value(QStringLiteral("bookmarks")).toArray();
@@ -1117,7 +1121,7 @@ QJsonObject Project::toJson(bool includeTranscripts) const
             for (const Transition &transition : track.transitions)
                 transitionsArray.append(transitionToJson(transition));
 
-            tracksArray.append(QJsonObject{
+            QJsonObject trackObject{
                 {QStringLiteral("id"), track.id},
                 {QStringLiteral("type"), trackTypeToString(track.type)},
                 {QStringLiteral("adjustmentScope"), adjustmentScopeToString(track.adjustmentScope)},
@@ -1134,7 +1138,10 @@ QJsonObject Project::toJson(bool includeTranscripts) const
                 {QStringLiteral("heightScale"), track.heightScale},
                 {QStringLiteral("clips"), clipsArray},
                 {QStringLiteral("transitions"), transitionsArray},
-            });
+            };
+            if (track.isTransformLayer())
+                trackObject.insert(QStringLiteral("spanEndTrackId"), track.spanEndTrackId);
+            tracksArray.append(trackObject);
         }
         return tracksArray;
     };

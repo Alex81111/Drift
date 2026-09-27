@@ -43,6 +43,8 @@ QString adjustmentScopeToString(AdjustmentScope scope)
         return QStringLiteral("allBelow");
     case AdjustmentScope::ParentTrack:
         return QStringLiteral("parentTrack");
+    case AdjustmentScope::Range:
+        return QStringLiteral("range");
     }
     return QStringLiteral("allBelow");
 }
@@ -51,6 +53,8 @@ AdjustmentScope adjustmentScopeFromString(const QString &scope)
 {
     if (scope == QStringLiteral("parentTrack"))
         return AdjustmentScope::ParentTrack;
+    if (scope == QStringLiteral("range"))
+        return AdjustmentScope::Range;
     return AdjustmentScope::AllBelow;
 }
 
@@ -72,6 +76,15 @@ bool Track::allowsClipType(ClipType clipType) const
         return clipType == ClipType::Adjustment;
     }
     return false;
+}
+
+bool Track::acceptsClip(const Clip &clip) const
+{
+    if (!allowsClipType(clip.type))
+        return false;
+    if (clip.type != ClipType::Adjustment)
+        return true;
+    return (clip.adjustmentKind == AdjustmentKind::Transform) == isTransformLayer();
 }
 
 } // namespace drift

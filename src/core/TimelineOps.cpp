@@ -1333,7 +1333,8 @@ void rebaseCanvasBox(Clip &clip, int oldWidth, int oldHeight, int newWidth, int 
 
 bool clipBoxIsCanvasReferenced(const Clip &clip)
 {
-    return clip.type == ClipType::Composite;
+    return clip.type == ClipType::Composite
+           || (clip.type == ClipType::Adjustment && clip.adjustmentKind == AdjustmentKind::Transform);
 }
 
 void rebaseClipLayout(Project &project, int oldWidth, int oldHeight, int newWidth, int newHeight,

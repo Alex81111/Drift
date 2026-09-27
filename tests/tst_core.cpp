@@ -170,6 +170,7 @@ private slots:
     void rebaseClipLayoutFreezesImplicitSize();
     void rebaseClipLayoutShiftsKeyframedPosition();
     void rebaseClipLayoutHoldsNestedContentStill();
+    void transformLayerRoundTrips();
     void retargetClipToSourceKeepsPlacementAndSyncsSource();
     void retargetClipToSourceClearsPerSourceState();
     void retargetClipToSourceKeepsAGeometricMask();
@@ -1542,7 +1543,7 @@ void CoreTest::shapeStyleSerialization()
     QVERIFY(mid.layers[1].width > 4.0 && mid.layers[1].width < 10.0);
     QCOMPARE(loadedClip.transformX.evaluateAt(0), 100.0);
     QCOMPARE(loadedClip.transformY.evaluateAt(0), 200.0);
-    QCOMPARE(json.value(QStringLiteral("version")).toInt(), 10);
+    QCOMPARE(json.value(QStringLiteral("version")).toInt(), 11);
 }
 
 // A project saved before format 8 carries the flat fill/stroke keys — possibly only the original
@@ -3804,6 +3805,48 @@ void CoreTest::rebaseClipLayoutShiftsKeyframedPosition()
     QCOMPARE(out.transformX.evaluateAt(0), -120.0);
     QCOMPARE(out.transformX.evaluateAt(drift::secondsToUs(2.0)), 680.0);
     QCOMPARE(out.transformY.evaluateAt(0), 140.0);
+}
+
+void CoreTest::transformLayerRoundTrips()
+{
+    drift::Project project;
+    project.tracks().clear();
+    drift::Track layer{.type = drift::TrackType::Adjustment};
+    layer.id = QStringLiteral("layer");
+    layer.adjustmentScope = drift::AdjustmentScope::Range;
+    layer.spanEndTrackId = QStringLiteral("v2");
+    drift::Clip transform;
+    transform.id = QStringLiteral("tf");
+    transform.type = drift::ClipType::Adjustment;
+    transform.adjustmentKind = drift::AdjustmentKind::Transform;
+    transform.timelineDuration = drift::secondsToUs(5.0);
+    transform.transformW.setKeyframe(0, 960.0);
+    transform.rotation.setKeyframe(0, 15.0);
+    layer.clips.append(transform);
+    QVERIFY(layer.acceptsClip(transform));
+    project.tracks().append(layer);
+    drift::Track v1{.type = drift::TrackType::Video};
+    v1.id = QStringLiteral("v1");
+    drift::Track v2{.type = drift::TrackType::Video};
+    v2.id = QStringLiteral("v2");
+    project.tracks().append(v1);
+    project.tracks().append(v2);
+    drift::Track effects{.type = drift::TrackType::Adjustment};
+    QVERIFY(!effects.acceptsClip(transform));
+
+    const QJsonObject json = project.toJson();
+    QCOMPARE(json.value(QStringLiteral("version")).toInt(), 11);
+    QString error;
+    const drift::Project loaded = drift::Project::fromJson(json, &error);
+    QVERIFY(error.isEmpty());
+    const drift::Track &loadedLayer = loaded.tracks().at(0);
+    QVERIFY(loadedLayer.isTransformLayer());
+    QCOMPARE(loadedLayer.spanEndTrackId, QStringLiteral("v2"));
+    const drift::Clip &loadedClip = loadedLayer.clips.at(0);
+    QCOMPARE(loadedClip.adjustmentKind, drift::AdjustmentKind::Transform);
+    QCOMPARE(loadedClip.transformW.evaluateAt(0), 960.0);
+    QCOMPARE(loadedClip.rotation.evaluateAt(0), 15.0);
+    QVERIFY(!json.value(QStringLiteral("tracks")).toArray().at(1).toObject().contains(QStringLiteral("spanEndTrackId")));
 }
 
 // A canvas resize reaches every sequence, and a composite's box scales with the canvas it shows,

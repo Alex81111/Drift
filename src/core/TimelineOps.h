@@ -230,7 +230,7 @@ QString assignSplitLinkIds(Clip &head, Clip &tail);
 void rebaseClipLayout(Project &project, int oldWidth, int oldHeight, int newWidth, int newHeight,
                       double originX, double originY);
 
-// True for boxes whose natural size is the canvas itself: composites.
+// True for boxes whose natural size is the canvas itself: composites and transform layers.
 bool clipBoxIsCanvasReferenced(const Clip &clip);
 
 // Multiplies every key's value and tangent height; an empty track stays empty.

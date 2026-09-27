@@ -30,8 +30,9 @@ ClipType clipTypeFromString(const QString &type);
 
 // Which of an adjustment clip's payload members is the meaningful one. An adjustment carries
 // the same `effects` / `audioEffects` / `mask` members every clip has; the kind says which one
-// it is for, and drives the inspector tab and timeline tint.
-enum class AdjustmentKind { VideoEffects, AudioEffects, Mask };
+// it is for, and drives the inspector tab and timeline tint. Transform is the odd one out: its
+// payload is the clip's own transform, applied as a parent to every track its Range track covers.
+enum class AdjustmentKind { VideoEffects, AudioEffects, Mask, Transform };
 
 QString adjustmentKindToString(AdjustmentKind kind);
 AdjustmentKind adjustmentKindFromString(const QString &kind);

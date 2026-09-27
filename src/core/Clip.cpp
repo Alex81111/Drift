@@ -61,6 +61,8 @@ QString adjustmentKindToString(AdjustmentKind kind)
         return QStringLiteral("audioEffects");
     case AdjustmentKind::Mask:
         return QStringLiteral("mask");
+    case AdjustmentKind::Transform:
+        return QStringLiteral("transform");
     }
     return QStringLiteral("videoEffects");
 }
@@ -71,6 +73,8 @@ AdjustmentKind adjustmentKindFromString(const QString &kind)
         return AdjustmentKind::AudioEffects;
     if (kind == QStringLiteral("mask"))
         return AdjustmentKind::Mask;
+    if (kind == QStringLiteral("transform"))
+        return AdjustmentKind::Transform;
     return AdjustmentKind::VideoEffects;
 }
 
