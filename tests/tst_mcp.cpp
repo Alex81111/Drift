@@ -83,6 +83,7 @@ private slots:
     void setTransformWrites3dPose();
     void validateEnumAndRange();
     void effectParamWritesRejectUnknownKeys();
+    void setTransformKeysOnlyAnimatedOrAutoKeyed();
     void unknownOpSuggests();
     void listEffectsCompactAndById();
     void listEmojiHasIds();
@@ -3838,6 +3839,40 @@ void McpTest::validateEnumAndRange()
     QCOMPARE(outside.value(QStringLiteral("error")).toString(), QStringLiteral("bad_args"));
     QVERIFY2(outside.value(QStringLiteral("detail")).toString().startsWith(QStringLiteral("at=500 is outside clip [0, ")),
              qPrintable(outside.value(QStringLiteral("detail")).toString()));
+}
+
+// set_transform moves a lone key rather than minting a second one, so a static clip stays static;
+// only an animated property, or auto-key, gets a key at the playhead.
+void McpTest::setTransformKeysOnlyAnimatedOrAutoKeyed()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    state.addTextClip(QStringLiteral("Hello"), 0.0);
+    drift::mcp::McpDispatcher dispatcher(&state);
+    const auto clip = [&state]() -> const drift::Clip & { return state.project()->tracks().at(0).clips.at(0); };
+    const auto setX = [&](double x) {
+        const QJsonObject r = dispatcher.applyOne(
+            QStringLiteral("set_transform"),
+            {{QStringLiteral("track"), 0}, {QStringLiteral("index"), 0}, {QStringLiteral("x"), x}});
+        QVERIFY2(r.value(QStringLiteral("ok")).toBool(), qPrintable(QJsonDocument(r).toJson(QJsonDocument::Compact)));
+    };
+
+    state.setAutoKeyEnabled(false);
+    state.setPlayheadSeconds(2.0);
+    setX(100.0);
+    QCOMPARE(clip().transformX.keyframes().size(), 1);
+    QCOMPARE(clip().transformX.evaluateAt(0), 100.0);
+
+    state.setAutoKeyEnabled(true);
+    state.setPlayheadSeconds(3.0);
+    setX(200.0);
+    QCOMPARE(clip().transformX.keyframes().size(), 2);
+
+    state.setAutoKeyEnabled(false);
+    state.setPlayheadSeconds(1.0);
+    setX(50.0);
+    QCOMPARE(clip().transformX.keyframes().size(), 3);
+    QCOMPARE(clip().transformX.evaluateAt(drift::secondsToUs(1.0) - clip().timelineStart), 50.0);
 }
 
 // These writes used to return ok whatever you sent them: a misspelt key was stored in the project

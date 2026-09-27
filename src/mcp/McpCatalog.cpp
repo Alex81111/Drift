@@ -608,9 +608,9 @@ const QList<Op> &ops()
 
         { "set_transform", "canvas", "Position, size, rotate, fade a clip",
           "Set canvas transform in project-canvas pixels (0,0 = canvas top-left). Omitted fields are "
-          "left unchanged. IMPORTANT: the write lands at the CURRENT PLAYHEAD — if the property is "
-          "already keyframed, or autoKey is on, this creates/updates a keyframe there instead of "
-          "setting a constant value, so seek first. Use set_property_keyframes_enabled(false) or "
+          "left unchanged. IMPORTANT: if the property is already animated (2+ keys), or autoKey is "
+          "on, the write creates/updates a keyframe at the CURRENT PLAYHEAD instead of setting a "
+          "constant value, so seek first; a property with 0 or 1 key just takes the value. Use set_property_keyframes_enabled(false) or "
           "remove the keys for an unconditional value. Fails bad_args on audio clips and when no "
           "transform field is supplied.",
           objectSchema(mergeProps({{QStringLiteral("x"), numberProp(QStringLiteral("Left edge, canvas pixels"))},

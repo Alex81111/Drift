@@ -26012,10 +26012,15 @@ bool AppController::mcpSetClipCanvas(int trackIndex, int clipIndex, const QVaria
     const drift::TimeUs relative =
         qBound<drift::TimeUs>(0, m_playheadUs - clip.timelineStart, clip.timelineDuration);
     bool any = false;
+    // Keys at the playhead only where the property already animates or auto-key is on; a
+    // constant (or single-key) property takes the value everywhere, as the tool describes.
     auto write = [&](const QString &patchKey, const QString &prop) {
         if (!patch.contains(patchKey))
             return;
-        any = writeClipPropValue(clip, prop, relative, patch.value(patchKey).toDouble(), true, true)
+        const drift::KeyframeTrack<double> *track = transformTrackForProp(clip, prop);
+        const bool animated = track && track->enabled() && track->keyframes().size() > 1;
+        any = writeClipPropValue(clip, prop, relative, patch.value(patchKey).toDouble(),
+                                 m_autoKeyEnabled, animated)
               || any;
     };
     write(QStringLiteral("x"), QStringLiteral("x"));
