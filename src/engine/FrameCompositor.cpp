@@ -730,16 +730,24 @@ QImage decodeClipMediaFrame(const drift::Clip &clip, drift::TimeUs timelineUs, i
 // (source-limited) and is scaled to the clip's layout rect at draw time.
 // `laneMasks` is the mask stack the clip's track contributes at this instant; only the parametric
 // entries apply here, since this path has no decoded media coverage to fold in.
+// `laneEffects` is what the clip's lanes add (laneAdjustmentEffects), after its own chain.
 QImage imageForClip(const drift::Clip &clip, const QList<drift::Mask> &laneMasks,
                     drift::TimeUs timelineUs, int maxWidth, int maxHeight,
-                    int projectFps, int maxTimeEchoHistoryFrames)
+                    int projectFps, int maxTimeEchoHistoryFrames,
+                    const QList<drift::Effect> &laneEffects = {})
 {
     if (clip.path.isEmpty())
         return {};
 
     const drift::TimeUs clipTimeUs = timelineUs - clip.timelineStart;
     const drift::Effect *timeEcho = findTimeEchoEffect(clip.effects);
-    const QList<drift::Effect> otherEffects = resolvedClipEffects(clip, clipTimeUs);
+    QList<drift::Effect> otherEffects = resolvedClipEffects(clip, clipTimeUs);
+    for (const drift::Effect &effect : laneEffects) {
+        if (effect.catalogId != QStringLiteral("time_echo"))
+            otherEffects.append(effect);
+        else if (!timeEcho)
+            timeEcho = &effect;
+    }
 
     QImage image;
     if (timeEcho) {
@@ -846,8 +854,10 @@ QImage bottommostVisualFrame(const drift::Project &project, drift::TimeUs timeli
                 continue;
             if (clip.type != drift::ClipType::Video && clip.type != drift::ClipType::Image)
                 continue;
+            // The fill blurs the clip as it looks, lane grade included.
             QImage frame = imageForClip(clip, plainMasks(drift::laneMasksAt(project, ti, timelineUs, clip.id)),
-                                        timelineUs, width, height, project.fps(), -1);
+                                        timelineUs, width, height, project.fps(), -1,
+                                        laneAdjustmentEffects(project, ti, timelineUs, clip.id));
             if (!frame.isNull())
                 return frame;
         }

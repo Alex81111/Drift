@@ -292,6 +292,7 @@ private slots:
     void timeEchoDeterministicAtFixedTimelineTime();
     void timeEchoBlendsPriorVideoFrames();
     void timeEchoOnALaneBlendsPriorVideoFrames();
+    void blurredBackgroundCarriesLaneEffects();
     void shockwavePulseZeroStrengthPassthrough();
     void shockwavePulseChangesPixelsNearWavefront();
     void compositorCrossfadeBetweenShapeClips();
@@ -7793,6 +7794,59 @@ void EngineTest::timeEchoOnALaneBlendsPriorVideoFrames()
     for (const drift::Effect &effect : scene.items.constFirst().layer.effects)
         QVERIFY(effect.catalogId != QStringLiteral("time_echo"));
     QVERIFY(compositor.compositeAt(timeUs) != withoutEcho);
+}
+
+// The blurred fill is built from the bottom clip as it looks; its lane grade used to be lost, so
+// the fill showed the ungraded footage around a graded picture.
+void EngineTest::blurredBackgroundCarriesLaneEffects()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    QImage grey(32, 32, QImage::Format_RGB32);
+    grey.fill(QColor(80, 80, 80));
+    const QString path = dir.filePath(QStringLiteral("grey.png"));
+    QVERIFY(grey.save(path));
+
+    drift::Project project;
+    project.setResolution(32, 32);
+    drift::Background background = project.background();
+    background.kind = drift::BackgroundKind::Blur;
+    project.setBackground(background);
+    project.tracks().clear();
+    project.tracks().append(drift::Track{.type = drift::TrackType::Video});
+    drift::Clip clip;
+    clip.id = QStringLiteral("still");
+    clip.type = drift::ClipType::Image;
+    clip.path = path;
+    clip.timelineDuration = drift::secondsToUs(2.0);
+    clip.srcOut = clip.timelineDuration;
+    project.tracks()[0].clips.append(clip);
+    project.ensureTrackIds();
+
+    FrameCompositor compositor;
+    compositor.setProject(&project);
+    GpuScene plain;
+    QVERIFY(compositor.buildSceneAt(drift::secondsToUs(1.0), FrameCompositor::RenderOptions{}, &plain));
+    QVERIFY(!plain.blurSource.isNull());
+
+    const int lane = drift::ensureAdjustmentLane(project, 0, drift::AdjustmentKind::VideoEffects, 0,
+                                                 clip.timelineDuration);
+    drift::Clip adjustment;
+    adjustment.id = QStringLiteral("grade");
+    adjustment.type = drift::ClipType::Adjustment;
+    adjustment.linkedClipId = clip.id;
+    adjustment.timelineDuration = clip.timelineDuration;
+    drift::Effect brightness;
+    brightness.catalogId = QStringLiteral("adjust.brightness");
+    brightness.parameters.insert(QStringLiteral("brightness"), 0.5);
+    adjustment.effects.append(brightness);
+    project.tracks()[lane].clips.append(adjustment);
+    compositor.setProject(&project);
+    GpuScene graded;
+    QVERIFY(compositor.buildSceneAt(drift::secondsToUs(1.0), FrameCompositor::RenderOptions{}, &graded));
+    QVERIFY2(qGray(graded.blurSource.pixel(16, 16)) > qGray(plain.blurSource.pixel(16, 16)) + 20,
+             qPrintable(QStringLiteral("%1 vs %2").arg(qGray(graded.blurSource.pixel(16, 16)))
+                            .arg(qGray(plain.blurSource.pixel(16, 16)))));
 }
 
 void EngineTest::timeEchoBlendsPriorVideoFrames()
