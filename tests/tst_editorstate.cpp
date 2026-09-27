@@ -86,6 +86,7 @@ private slots:
     void transformLayerParentsPreviewBoxes();
     void transformSpanOptionsAndValidation();
     void transformLayerEntryPoints();
+    void pasteSelectsWhatItPastedWhenATrackIsAdded();
     void compositeTabEditUndoesFromMain();
     void compositeSeparateAudioAndRemoval();
     void retimeKeepsDisabledKeyframeTrackDisabled();
@@ -854,6 +855,44 @@ void EditorStateTest::transformLayerEntryPoints()
     QVERIFY(state.project()->tracks().at(0).clips.size() == 1);
     state.moveClipToTrack(3, 0, 0, 1.0);
     QCOMPARE(state.project()->tracks().at(3).clips.size(), 1);
+}
+
+// Pasting a clip whose kind has no track mints one at the top, pushing the tracks an earlier clip
+// of the same paste went to down a row; the selection used to point at the old positions.
+void EditorStateTest::pasteSelectsWhatItPastedWhenATrackIsAdded()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    setUpTransformTracks(state);
+    drift::Track text{.type = drift::TrackType::Text};
+    drift::Clip caption;
+    caption.id = QStringLiteral("caption");
+    caption.type = drift::ClipType::Text;
+    caption.timelineDuration = drift::secondsToUs(2.0);
+    caption.srcOut = caption.timelineDuration;
+    text.clips.append(caption);
+    state.project()->tracks().append(text);
+    state.project()->ensureTrackIds();
+
+    state.setSelection({QVariantMap{{QStringLiteral("track"), 0}, {QStringLiteral("clip"), 0}},
+                        QVariantMap{{QStringLiteral("track"), 3}, {QStringLiteral("clip"), 0}}});
+    state.copySelection();
+    state.removeTrack(3);
+    state.setPlayheadSeconds(3.0);
+    state.pasteAtPlayhead();
+
+    const QVariantList selection = state.selection();
+    QCOMPARE(selection.size(), 2);
+    QSet<drift::ClipType> kinds;
+    for (const QVariant &entry : selection) {
+        const QVariantMap pair = entry.toMap();
+        const drift::Clip &clip = state.project()->tracks()
+                                      .at(pair.value(QStringLiteral("track")).toInt())
+                                      .clips.at(pair.value(QStringLiteral("clip")).toInt());
+        QVERIFY(clip.id != QStringLiteral("a") && clip.id != QStringLiteral("caption"));
+        kinds.insert(clip.type);
+    }
+    QCOMPARE(kinds, (QSet<drift::ClipType>{drift::ClipType::Shape, drift::ClipType::Text}));
 }
 
 void EditorStateTest::compositeTabEditUndoesFromMain()

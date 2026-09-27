@@ -22853,7 +22853,9 @@ void AppController::pasteAtPlayhead()
     for (const ClipboardItem &item : m_clipboard)
         anchor = qMin(anchor, item.clip.timelineStart);
     const drift::TimeUs shift = m_playheadUs - anchor;
-    QList<QPair<int, int>> inserted;
+    // By id: a later clip can insert a track above an earlier one, and normalizing the edit can
+    // reorder tracks, so positions taken here go stale.
+    QStringList inserted;
 
     for (const ClipboardItem &item : m_clipboard) {
         // Composites live on the main timeline only, and never outlive their sequence.
@@ -22884,17 +22886,24 @@ void AppController::pasteAtPlayhead()
             targetTrack = drift::ensureTrackForClipType(m_project, clip.type, true);
         if (targetTrack < 0 || !m_project.tracks()[targetTrack].acceptsClip(clip))
             continue;
-        drift::Track &track = m_project.tracks()[targetTrack];
-        track.clips.append(clip);
-        inserted.append(qMakePair(targetTrack, track.clips.size() - 1));
+        m_project.tracks()[targetTrack].clips.append(clip);
+        inserted.append(clip.id);
     }
 
     if (inserted.isEmpty())
         return;
     pushProjectEdit(before, tr("Paste"));
-    m_selection = inserted;
-    m_selectedTrack = inserted.constLast().first;
-    m_selectedClip = inserted.constLast().second;
+    m_selection.clear();
+    for (const QString &id : inserted) {
+        int trackIndex = -1;
+        int clipIndex = -1;
+        if (findClipById(m_project, id, &trackIndex, &clipIndex))
+            m_selection.append(qMakePair(trackIndex, clipIndex));
+    }
+    if (!m_selection.isEmpty()) {
+        m_selectedTrack = m_selection.constLast().first;
+        m_selectedClip = m_selection.constLast().second;
+    }
     finishEdit(tr("Pasted %n clips", "", int(inserted.size())));
 }
 
