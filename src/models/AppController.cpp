@@ -20328,6 +20328,26 @@ bool AppController::removeFaceProp(const QString &propId)
     return true;
 }
 
+bool AppController::addFaceProp(int trackIndex, int clipIndex, const QString &propId)
+{
+    const int steps = m_undoStack.count();
+    m_undoStack.beginMacro(tr("Add face prop"));
+    addEffect(trackIndex, clipIndex, QStringLiteral("face_props"));
+    bool ok = false;
+    // addEffect leaves the adjustment carrying the stack selected, with the new effect last.
+    if (m_selectedTrack >= 0 && m_selectedTrack < m_project.tracks().size()) {
+        const auto &clips = m_project.tracks().at(m_selectedTrack).clips;
+        if (m_selectedClip >= 0 && m_selectedClip < clips.size() && !clips.at(m_selectedClip).effects.isEmpty())
+            ok = applyFaceProp(m_selectedTrack, m_selectedClip,
+                               int(clips.at(m_selectedClip).effects.size()) - 1, propId);
+    }
+    m_undoStack.endMacro();
+    // An empty macro still lands on the stack; a failed add must not leave a no-op undo entry.
+    if (!ok && m_undoStack.count() > steps)
+        m_undoStack.undo();
+    return ok;
+}
+
 bool AppController::applyFaceProp(int trackIndex, int clipIndex, int effectIndex,
                                   const QString &propId)
 {

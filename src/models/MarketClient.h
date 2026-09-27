@@ -38,6 +38,13 @@ class MarketClient : public QObject
     Q_PROPERTY(QVariantList filters READ filters NOTIFY providersChanged)
     Q_PROPERTY(bool canSearch READ canSearch NOTIFY providersChanged)
     Q_PROPERTY(bool canResolve READ canResolve NOTIFY providersChanged)
+    // "All sources": activeProviderId "*" searches every source of the active type that has
+    // no download limit, in parallel. Metered sources are only searched on their own, so
+    // browsing never spends someone's quota on results they did not ask for.
+    Q_PROPERTY(bool canSearchAll READ canSearchAll NOTIFY providersChanged)
+    // Where stock downloads are saved. Empty until the user first picks a folder; persisted.
+    Q_PROPERTY(QUrl lastDownloadDir READ lastDownloadDir WRITE setLastDownloadDir
+                   NOTIFY lastDownloadDirChanged)
     Q_PROPERTY(QVariantMap quota READ quota NOTIFY quotaChanged)
     Q_PROPERTY(QVariantList items READ items NOTIFY itemsChanged)
     Q_PROPERTY(bool searching READ searching NOTIFY searchingChanged)
@@ -80,13 +87,16 @@ public:
     QVariantList filters() const;
     bool canSearch() const;
     bool canResolve() const;
+    bool canSearchAll() const { return allProviderIds().size() >= 2; }
+    QUrl lastDownloadDir() const { return m_lastDownloadDir; }
+    void setLastDownloadDir(const QUrl &dir);
     QVariantMap quota() const { return m_quota; }
     QVariantList items() const { return m_items; }
     bool searching() const { return m_searching; }
     QString searchError() const { return m_searchError; }
     bool searchErrorRetryable() const { return m_searchErrorRetryable; }
     QString searchErrorCode() const { return m_searchErrorCode; }
-    bool hasMore() const { return !m_nextCursor.isEmpty(); }
+    bool hasMore() const;
     int downloadsRevision() const { return m_downloadsRevision; }
     QVariantList downloads() const;
     int activeDownloadCount() const;
@@ -126,12 +136,16 @@ public:
     Q_INVOKABLE bool handleIncomingUrl(const QUrl &url);
     Q_INVOKABLE void disconnectAccount();
 
+    // A signed GET on the Drift API, for other stores that share this identity (Drift Assets).
+    QNetworkReply *signedGet(const QString &path) { return get(apiUrl(path)); }
+
 signals:
     void consentedChanged();
     void catalogLoadingChanged();
     void catalogErrorChanged();
     void catalogChanged();
     void activeTypeIdChanged();
+    void lastDownloadDirChanged();
     void activeProviderIdChanged();
     void providersChanged();
     void quotaChanged();
@@ -178,6 +192,9 @@ private:
     QVariantMap activeType() const;
     QVariantMap activeProvider() const;
     bool hasCapability(const QString &name) const;
+    bool searchingAll() const { return m_activeProviderId == QLatin1String("*"); }
+    QStringList allProviderIds() const;
+    void startFanoutSearch(bool append);
     void applyCatalog(const QJsonArray &types);
     void applySearchPage(const QJsonObject &page, bool append);
     void applyResolvedItem(const QJsonObject &item);
@@ -232,6 +249,12 @@ private:
     QVariantMap m_filterValues;
     QString m_nextCursor;
     QPointer<QNetworkReply> m_searchReply;
+    // "All sources" state: one reply and one cursor per source, and a generation so a
+    // superseded fan-out's late replies are dropped rather than merged.
+    QList<QPointer<QNetworkReply>> m_fanoutReplies;
+    QHash<QString, QString> m_fanoutCursors;
+    int m_fanoutGeneration = 0;
+    QUrl m_lastDownloadDir;
     QString m_resolveJobId;
     QTimer *m_resolvePollTimer = nullptr;
 

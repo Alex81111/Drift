@@ -14,6 +14,7 @@
 #include <QTemporaryFile>
 #include <QUrl>
 #include <QByteArray>
+#include <QCryptographicHash>
 #include <QBuffer>
 
 #include <QScopeGuard>
@@ -38,6 +39,7 @@
 #include "timeline/TimelineTrackItem.h"
 #include "timeline/TimelineViewState.h"
 #include "models/AssetLibrary.h"
+#include "models/DriftAssetStore.h"
 #include "MulticamImageProvider.h"
 #include "MulticamImageStore.h"
 
@@ -75,6 +77,7 @@ class EditorStateTest : public QObject
     Q_OBJECT
 
 private slots:
+    void driftAssetStoreInstallsVerified();
     void snapTimeEnabled();
     void compositeFromSelectionUndoRedo();
     void compositeTabEditUndoesFromMain();
@@ -380,6 +383,79 @@ void EditorStateTest::snapTimeEnabled()
     state.setSnapEnabled(true);
     QCOMPARE(state.snapTime(0.0), 0.0);
     QVERIFY(state.snapTime(1.234) >= 0.0);
+}
+
+// Files come from file:// URLs here; the store only cares that each one matches its sha256.
+void EditorStateTest::driftAssetStoreInstallsVerified()
+{
+    QStandardPaths::setTestModeEnabled(true);
+    const auto restore = qScopeGuard([] { QStandardPaths::setTestModeEnabled(false); });
+    QDir(DriftAssetStore::installRoot()).removeRecursively();
+
+    QTemporaryDir src;
+    QVERIFY(src.isValid());
+    const QByteArray lottie = R"({"v":"5.7.0","fr":30,"ip":0,"op":30,"w":100,"h":100,"layers":[]})";
+    auto fileEntry = [&](const QString &role, const QString &name, const QByteArray &data,
+                         const QByteArray &claimed) {
+        QFile f(src.filePath(name));
+        f.open(QIODevice::WriteOnly);
+        f.write(data);
+        return QJsonObject{
+            {QStringLiteral("role"), role},
+            {QStringLiteral("name"), name},
+            {QStringLiteral("size"), qint64(claimed.size())},
+            {QStringLiteral("sha256"),
+             QString::fromLatin1(QCryptographicHash::hash(claimed, QCryptographicHash::Sha256).toHex())},
+            {QStringLiteral("url"), QUrl::fromLocalFile(src.filePath(name)).toString()},
+        };
+    };
+    auto asset = [&](const QString &id, const QString &name, const QByteArray &served) {
+        return QJsonObject{
+            {QStringLiteral("id"), id},
+            {QStringLiteral("name"), name},
+            {QStringLiteral("kind"), QStringLiteral("lottie")},
+            {QStringLiteral("category"), QStringLiteral("reactions")},
+            {QStringLiteral("tags"), QJsonArray{QStringLiteral("party")}},
+            {QStringLiteral("files"),
+             QJsonArray{fileEntry(QStringLiteral("meta"), id + QStringLiteral("-asset.json"), "{}", "{}"),
+                        fileEntry(QStringLiteral("main"), id + QStringLiteral(".json"), served, lottie)}},
+        };
+    };
+
+    AssetLibrary library;
+    AppController state(&library);
+    DriftAssetStore store(nullptr, &library, &state);
+    store.applyPack(QJsonObject{
+        {QStringLiteral("categories"),
+         QJsonArray{QJsonObject{{QStringLiteral("id"), QStringLiteral("reactions")}}}},
+        {QStringLiteral("assets"),
+         QJsonArray{asset(QStringLiteral("confetti-burst"), QStringLiteral("Confetti Burst"), lottie),
+                    asset(QStringLiteral("tampered"), QStringLiteral("Tampered"), "{}")}},
+    });
+
+    QCOMPARE(store.search(QStringLiteral("confetti")).size(), 1);
+    QCOMPARE(store.search(QStringLiteral("party burst")).size(), 1);
+    QCOMPARE(store.search(QStringLiteral("party")).size(), 2);
+    QCOMPARE(store.state(QStringLiteral("confetti-burst")), QStringLiteral("none"));
+
+    QSignalSpy ready(&store, &DriftAssetStore::ready);
+    QSignalSpy failed(&store, &DriftAssetStore::failed);
+    store.install(QStringLiteral("confetti-burst"));
+    QTRY_COMPARE(ready.size(), 1);
+    QCOMPARE(store.state(QStringLiteral("confetti-burst")), QStringLiteral("installed"));
+    const QString binId = ready.first().at(1).toString();
+    QVERIFY(!binId.isEmpty());
+    QCOMPARE(library.assetIdForPath(store.localPath(QStringLiteral("confetti-burst"))), binId);
+
+    // A second install reuses the files and the bin entry.
+    store.install(QStringLiteral("confetti-burst"));
+    QTRY_COMPARE(ready.size(), 2);
+    QCOMPARE(ready.last().at(1).toString(), binId);
+
+    store.install(QStringLiteral("tampered"));
+    QTRY_COMPARE(failed.size(), 1);
+    QCOMPARE(store.state(QStringLiteral("tampered")), QStringLiteral("failed"));
+    QVERIFY(store.localPath(QStringLiteral("tampered")).isEmpty());
 }
 
 void EditorStateTest::addTextClip()

@@ -1662,6 +1662,8 @@ public:
     // as one undo step. Lighting and the face index are the user's and stay as they are.
     Q_INVOKABLE bool applyFaceProp(int trackIndex, int clipIndex, int effectIndex,
                                    const QString &propId);
+    // Adds a Face Props effect to the clip and applies the prop to it, as one undo step.
+    Q_INVOKABLE bool addFaceProp(int trackIndex, int clipIndex, const QString &propId);
     Q_INVOKABLE QVariantList audioEffectCatalog() const;
     Q_INVOKABLE QVariantList audioEffectCategories() const;
     Q_INVOKABLE void addAudioEffect(int trackIndex, int clipIndex, const QString &effectId);

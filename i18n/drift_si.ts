@@ -3711,6 +3711,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Add face prop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Apply face prop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5498,6 +5502,213 @@
     <message>
         <source>Cancel</source>
         <translation>අවලංගු කරන්න</translation>
+    </message>
+</context>
+<context>
+    <name>DriftAssetCard</name>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Add</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation type="unfinished">තත් %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n colour(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Loops, %1 s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retry</source>
+        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
+    </message>
+    <message>
+        <source>Downloaded, works offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DriftAssetDetail</name>
+    <message>
+        <source>Loops seamlessly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plays in, then holds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plays in, holds, plays out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished">ආපසු</translation>
+    </message>
+    <message>
+        <source>Colours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished">යළි සකසන්න</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation type="unfinished">තත් %1</translation>
+    </message>
+    <message>
+        <source>room for your text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3D model, loops every %1 s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tracks a face in the clip it is applied to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Licence &lt;a href=&quot;%1&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Licence %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to selected clip</source>
+        <translation type="unfinished">තෝරාගත් ක්ලිපයට යොදන්න</translation>
+    </message>
+    <message>
+        <source>Add at playhead</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a clip with a face on the timeline first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to Face props</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to media bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a clip with a face on the timeline to apply this prop.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose colour</source>
+        <translation type="unfinished">වර්ණය තෝරන්න</translation>
+    </message>
+</context>
+<context>
+    <name>DriftAssetStore</name>
+    <message>
+        <source>The marketplace is not available in this build.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not load Drift Assets. Check your connection and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That asset could not be installed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not write to the app data folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not download that asset. Check your connection and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That download was damaged. Try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not add that face prop.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not add that asset to the media bin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DriftAssetsHome</name>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished">යොදන්න</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Add</translation>
+    </message>
+    <message>
+        <source>Added to Face props</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a video or image clip to apply a face prop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Added to the media bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn’t load Drift Assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Try again</source>
+        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
+    </message>
+    <message>
+        <source>No assets here yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drift Assets are still being published. Check back soon.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">නැවුම් කරන්න</translation>
+    </message>
+    <message>
+        <source>See all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Drift Assets match “%1”.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search %1 for “%2”</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7554,7 +7765,22 @@
     </message>
 </context>
 <context>
+    <name>MarketSearchField</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">අවලංගු කරන්න</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">හිස් කරන්න</translation>
+    </message>
+</context>
+<context>
     <name>MarketTab</name>
+    <message>
+        <source>Stock</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Marketplace unavailable</source>
         <translation>Marketplace ලබාගත නොහැක</translation>
@@ -7564,12 +7790,24 @@
         <translation>මෙම build එකට Marketplace ඇතුළත් නොවේ.</translation>
     </message>
     <message>
-        <source>Loading marketplace…</source>
-        <translation>Marketplace පූරණය වෙමින්…</translation>
+        <source>Search assets</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Fetching available sources.</source>
-        <translation>පවතින මූලාශ්‍ර ලබාගනිමින්.</translation>
+        <source>Search, or paste a link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stock footage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading sources…</source>
+        <translation type="unfinished">මූලාශ්‍ර පූරණය වෙමින්…</translation>
     </message>
     <message>
         <source>Couldn’t reach the marketplace</source>
@@ -7580,133 +7818,8 @@
         <translation>නැවත උත්සාහ කරන්න</translation>
     </message>
     <message>
-        <source>Nothing listed</source>
-        <translation>කිසිවක් ලැයිස්තුගත කර නැත</translation>
-    </message>
-    <message>
-        <source>No sources are available right now.</source>
-        <translation>මේ මොහොතේ කිසිදු මූලාශ්‍රයක් ලබාගත නොහැක.</translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation>නැවුම් කරන්න</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation>මූලාශ්‍රය</translation>
-    </message>
-    <message numerus="yes">
-        <source>Filters — %n applied</source>
-        <translation>
-            <numerusform>පෙරහන් — %nක් යොදා ඇත</numerusform>
-            <numerusform>පෙරහන් — %nක් යොදා ඇත</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Filters</source>
-        <translation>පෙරහන්</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n remaining today</source>
-        <translation>
-            <numerusform>අද දිනට %nක් ඉතිරිව ඇත</numerusform>
-            <numerusform>අද දිනට %nක් ඉතිරිව ඇත</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Search or paste a link</source>
-        <translation>සොයන්න හෝ සබැඳියක් අලවන්න</translation>
-    </message>
-    <message>
         <source>Search</source>
         <translation>සොයන්න</translation>
-    </message>
-    <message>
-        <source>Paste a link</source>
-        <translation>සබැඳියක් අලවන්න</translation>
-    </message>
-    <message>
-        <source>Look up</source>
-        <translation>සොයා බලන්න</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>අවලංගු කරන්න</translation>
-    </message>
-    <message>
-        <source>Looking up that link…</source>
-        <translation>එම සබැඳිය සොයා බලමින්…</translation>
-    </message>
-    <message>
-        <source>Couldn’t open that link</source>
-        <translation>එම සබැඳිය විවෘත කිරීමට නොහැකි විය</translation>
-    </message>
-    <message>
-        <source>Search failed</source>
-        <translation>සෙවීම අසාර්ථක විය</translation>
-    </message>
-    <message>
-        <source>No results for “%1”</source>
-        <translation>“%1” සඳහා ප්‍රතිඵල නැත</translation>
-    </message>
-    <message>
-        <source>Search this source</source>
-        <translation>මෙම මූලාශ්‍රය සොයන්න</translation>
-    </message>
-    <message>
-        <source>Try different words, or clear a filter.</source>
-        <translation>වෙනත් වචන උත්සාහ කරන්න, නැතහොත් පෙරහනක් ඉවත් කරන්න.</translation>
-    </message>
-    <message>
-        <source>Type what you are after and press Search, or paste a page link and press Look up.</source>
-        <translation>ඔබ සොයන දේ ටයිප් කර සොයන්න ඔබන්න, නැතහොත් පිටු සබැඳියක් අලවා සොයා බලන්න ඔබන්න.</translation>
-    </message>
-    <message>
-        <source>Type what you are after, then press Search.</source>
-        <translation>ඔබ සොයන දේ ටයිප් කර, පසුව සොයන්න ඔබන්න.</translation>
-    </message>
-    <message>
-        <source>Paste a page link from this source, then press Look up.</source>
-        <translation>මෙම මූලාශ්‍රයෙන් පිටු සබැඳියක් අලවා, පසුව සොයා බලන්න ඔබන්න.</translation>
-    </message>
-    <message>
-        <source>Cancel download</source>
-        <translation>බාගැනීම අවලංගු කරන්න</translation>
-    </message>
-    <message>
-        <source>Retry</source>
-        <translation>නැවත උත්සාහ කරන්න</translation>
-    </message>
-    <message>
-        <source>Preview</source>
-        <translation>පෙරදසුන</translation>
-    </message>
-    <message>
-        <source>Working…</source>
-        <translation>ක්‍රියාත්මක වෙමින්…</translation>
-    </message>
-    <message>
-        <source>Download · %1</source>
-        <translation>බාගන්න · %1</translation>
-    </message>
-    <message>
-        <source>Download</source>
-        <translation>බාගන්න</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>වසන්න</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n coin(s)</source>
-        <translation>
-            <numerusform>කාසි %nක්</numerusform>
-            <numerusform>කාසි %nක්</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Save download to</source>
-        <translation>බාගැනීම සුරකින ස්ථානය</translation>
     </message>
 </context>
 <context>
@@ -11238,6 +11351,145 @@ If playback stutters, try another.</source>
     <message>
         <source>%1 — click to add, or drag to the timeline or preview</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StockBrowser</name>
+    <message>
+        <source>Save downloads to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished">සියල්ල</translation>
+    </message>
+    <message>
+        <source>%1 (%2 left)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Filters — %n applied</source>
+        <translation type="unfinished">
+            <numerusform>පෙරහන් — %nක් යොදා ඇත</numerusform>
+            <numerusform>පෙරහන් — %nක් යොදා ඇත</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Filters</source>
+        <translation type="unfinished">පෙරහන්</translation>
+    </message>
+    <message>
+        <source>Get from %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Get from this link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Looking up that link…</source>
+        <translation type="unfinished">එම සබැඳිය සොයා බලමින්…</translation>
+    </message>
+    <message>
+        <source>Couldn’t open that link</source>
+        <translation type="unfinished">එම සබැඳිය විවෘත කිරීමට නොහැකි විය</translation>
+    </message>
+    <message>
+        <source>Search failed</source>
+        <translation type="unfinished">සෙවීම අසාර්ථක විය</translation>
+    </message>
+    <message>
+        <source>Try again</source>
+        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
+    </message>
+    <message>
+        <source>No results for “%1”</source>
+        <translation type="unfinished">“%1” සඳහා ප්‍රතිඵල නැත</translation>
+    </message>
+    <message>
+        <source>Search this source</source>
+        <translation type="unfinished">මෙම මූලාශ්‍රය සොයන්න</translation>
+    </message>
+    <message>
+        <source>Paste a link</source>
+        <translation type="unfinished">සබැඳියක් අලවන්න</translation>
+    </message>
+    <message>
+        <source>Try different words, another source, or clear a filter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type above and press Enter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste a page link above and press Enter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation type="unfinished">විරාමය</translation>
+    </message>
+    <message>
+        <source>Play preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StockItemDetail</name>
+    <message>
+        <source>Back to results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n coin(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n කාසි</numerusform>
+            <numerusform>%n කාසි</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Downloading…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
+        <translation type="unfinished">බාගන්න</translation>
+    </message>
+    <message>
+        <source>You have used today’s downloads from this source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saves to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You’ll choose a folder the first time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StockThumb</name>
+    <message>
+        <source>Cancel download</source>
+        <translation type="unfinished">බාගැනීම අවලංගු කරන්න</translation>
+    </message>
+    <message>
+        <source>Retry</source>
+        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
     </message>
 </context>
 <context>

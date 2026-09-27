@@ -24,6 +24,8 @@
 #include <QTimer>
 #include <QUrlQuery>
 
+#include <algorithm>
+#include <cmath>
 #include <utility>
 
 using namespace drift::market;
@@ -154,6 +156,7 @@ MarketClient::MarketClient(QObject *parent)
     connect(m_resolvePollTimer, &QTimer::timeout, this, &MarketClient::pollResolve);
 
     m_consented = QSettings().value(settingsKey("consented"), false).toBool();
+    m_lastDownloadDir = QSettings().value(settingsKey("lastDownloadDir")).toUrl();
 
     loadStoredAuth();
     if (configured()) {
@@ -215,6 +218,8 @@ bool MarketClient::hasCapability(const QString &name) const
 
 bool MarketClient::canSearch() const
 {
+    if (searchingAll())
+        return canSearchAll();
     const QVariantList caps = activeProvider().value(QStringLiteral("capabilities")).toList();
     // Older catalogs omit capabilities; treat that as a normal searchable source.
     if (caps.isEmpty())
@@ -224,7 +229,48 @@ bool MarketClient::canSearch() const
 
 bool MarketClient::canResolve() const
 {
-    return hasCapability(QStringLiteral("resolve"));
+    if (!searchingAll())
+        return hasCapability(QStringLiteral("resolve"));
+    for (const QVariant &row : providers()) {
+        if (row.toMap().value(QStringLiteral("capabilities")).toList().contains(QStringLiteral("resolve")))
+            return true;
+    }
+    return false;
+}
+
+QStringList MarketClient::allProviderIds() const
+{
+    QStringList ids;
+    for (const QVariant &row : providers()) {
+        const QVariantMap p = row.toMap();
+        const QVariantList caps = p.value(QStringLiteral("capabilities")).toList();
+        const bool searchable = caps.isEmpty() || caps.contains(QStringLiteral("search"))
+            || caps.contains(QStringLiteral("featured"));
+        // The catalog omits quota for an unlimited source.
+        if (searchable && !p.contains(QStringLiteral("quota")))
+            ids.append(p.value(QStringLiteral("id")).toString());
+    }
+    return ids;
+}
+
+bool MarketClient::hasMore() const
+{
+    if (!searchingAll())
+        return !m_nextCursor.isEmpty();
+    for (const QString &cursor : m_fanoutCursors) {
+        if (!cursor.isEmpty())
+            return true;
+    }
+    return false;
+}
+
+void MarketClient::setLastDownloadDir(const QUrl &dir)
+{
+    if (dir == m_lastDownloadDir)
+        return;
+    m_lastDownloadDir = dir;
+    QSettings().setValue(settingsKey("lastDownloadDir"), dir);
+    emit lastDownloadDirChanged();
 }
 
 void MarketClient::abortInFlightSearch()
@@ -237,6 +283,16 @@ void MarketClient::abortInFlightSearch()
     if (m_resolvePollTimer)
         m_resolvePollTimer->stop();
     m_resolveJobId.clear();
+
+    ++m_fanoutGeneration;
+    const QList<QPointer<QNetworkReply>> fanout = m_fanoutReplies;
+    m_fanoutReplies.clear();
+    for (const QPointer<QNetworkReply> &r : fanout) {
+        if (!r)
+            continue;
+        r->setProperty("driftAborted", true);
+        r->abort();
+    }
 
     const QPointer<QNetworkReply> reply = m_searchReply;
     m_searchReply.clear();
@@ -256,7 +312,7 @@ void MarketClient::cancelSearch()
 {
     // Between resolve poll ticks there is a job but no reply, and Cancel has to work then
     // too — that gap is most of the wait on a slow extraction.
-    if (!m_searchReply && m_resolveJobId.isEmpty())
+    if (!m_searchReply && m_resolveJobId.isEmpty() && m_fanoutReplies.isEmpty())
         return;
     abortInFlightSearch();
     // The finished handler normally clears this, but it does not run when the reply was
@@ -272,7 +328,9 @@ void MarketClient::setActiveTypeId(const QString &id)
     m_activeTypeId = id;
     const QVariantList list = providers();
     QString providerId;
-    if (!list.isEmpty())
+    if (canSearchAll())
+        providerId = QStringLiteral("*");
+    else if (!list.isEmpty())
         providerId = list.first().toMap().value(QStringLiteral("id")).toString();
     emit activeTypeIdChanged();
     emit providersChanged();
@@ -295,6 +353,7 @@ void MarketClient::setActiveProviderId(const QString &id)
     m_items.clear();
     m_itemIndex.clear();
     m_nextCursor.clear();
+    m_fanoutCursors.clear();
     setSearchError({});
     emit activeProviderIdChanged();
     emit providersChanged();
@@ -477,7 +536,7 @@ void MarketClient::pollResolve()
 
 void MarketClient::loadMore()
 {
-    if (m_searching || m_nextCursor.isEmpty())
+    if (m_searching || !hasMore())
         return;
     startSearch(true);
 }
@@ -971,6 +1030,10 @@ void MarketClient::startSearch(bool append)
         setSearchError(tr("Nothing is available from the marketplace right now."));
         return;
     }
+    if (searchingAll()) {
+        startFanoutSearch(append);
+        return;
+    }
     abortInFlightSearch();
 
     QUrl url = apiUrl(QStringLiteral("/search"));
@@ -1014,6 +1077,101 @@ void MarketClient::startSearch(bool append)
         }
         applySearchPage(QJsonDocument::fromJson(payload).object(), append);
     });
+}
+
+void MarketClient::startFanoutSearch(bool append)
+{
+    abortInFlightSearch();
+    QStringList ids;
+    for (const QString &id : allProviderIds()) {
+        if (!append || !m_fanoutCursors.value(id).isEmpty())
+            ids.append(id);
+    }
+    if (ids.isEmpty())
+        return;
+
+    struct Fanout
+    {
+        int remaining = 0;
+        QHash<QString, QJsonArray> pages;
+        QString firstError;
+        bool firstRetryable = true;
+        QString firstCode;
+    };
+    auto state = std::make_shared<Fanout>();
+    state->remaining = int(ids.size());
+    const int generation = m_fanoutGeneration;
+    // Enough per source that the merged page is about one ordinary page long.
+    const int perSource = std::max(12, int(std::ceil(double(kSearchLimit) / ids.size())));
+
+    setSearching(true);
+    setSearchError({});
+    for (const QString &providerId : ids) {
+        QUrl url = apiUrl(QStringLiteral("/search"));
+        QUrlQuery query;
+        query.addQueryItem(QStringLiteral("type"), m_activeTypeId);
+        query.addQueryItem(QStringLiteral("provider"), providerId);
+        if (!m_query.trimmed().isEmpty())
+            query.addQueryItem(QStringLiteral("q"), m_query.trimmed());
+        query.addQueryItem(QStringLiteral("limit"), QString::number(perSource));
+        if (append)
+            query.addQueryItem(QStringLiteral("cursor"), m_fanoutCursors.value(providerId));
+        url.setQuery(query);
+
+        QNetworkReply *reply = get(url);
+        m_fanoutReplies.append(reply);
+        connect(reply, &QNetworkReply::finished, this,
+                [this, reply, providerId, ids, state, generation, append] {
+            reply->deleteLater();
+            m_fanoutReplies.removeAll(reply);
+            if (generation != m_fanoutGeneration || reply->property("driftAborted").toBool())
+                return;
+            const QByteArray payload = reply->readAll();
+            if (reply->error() != QNetworkReply::NoError) {
+                m_fanoutCursors.insert(providerId, QString());
+                if (state->firstError.isEmpty()) {
+                    const int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+                    QString reason;
+                    state->firstError = parseProblem(payload, status, &state->firstCode, &reason,
+                                                     &state->firstRetryable, int(reply->error()));
+                }
+            } else {
+                const QJsonObject page = QJsonDocument::fromJson(payload).object();
+                m_fanoutCursors.insert(providerId, page.value(QStringLiteral("next_cursor")).toString());
+                state->pages.insert(providerId, page.value(QStringLiteral("items")).toArray());
+            }
+            if (--state->remaining > 0)
+                return;
+
+            // Round-robin, so the first screen shows every source rather than one source's
+            // whole page followed by the next.
+            if (!append) {
+                m_items.clear();
+                m_itemIndex.clear();
+            }
+            for (int row = 0;; ++row) {
+                bool any = false;
+                for (const QString &id : ids) {
+                    const QJsonArray page = state->pages.value(id);
+                    if (row >= page.size())
+                        continue;
+                    any = true;
+                    const QVariantMap item = objectToMap(page.at(row).toObject());
+                    const QString itemId = item.value(QStringLiteral("id")).toString();
+                    if (itemId.isEmpty() || m_itemIndex.contains(itemId))
+                        continue;
+                    m_itemIndex.insert(itemId, m_items.size());
+                    m_items.append(item);
+                }
+                if (!any)
+                    break;
+            }
+            setSearching(false);
+            if (state->pages.isEmpty())
+                setSearchError(state->firstError, state->firstRetryable, state->firstCode);
+            emit itemsChanged();
+        });
+    }
 }
 
 void MarketClient::pollJobs()

@@ -1215,12 +1215,12 @@ PanelFrame {
                                 searchText = saved.search
                             if (saved.submittedQuery)
                                 submittedQuery = saved.submittedQuery
-                            if (saved.lastSaveDir)
-                                lastSaveDir = saved.lastSaveDir
+                            if (saved.section)
+                                section = saved.section
                         }
                         onSearchTextChanged: root.rememberTab("market", "search", searchText)
                         onSubmittedQueryChanged: root.rememberTab("market", "submittedQuery", submittedQuery)
-                        onLastSaveDirChanged: root.rememberTab("market", "lastSaveDir", lastSaveDir)
+                        onSectionChanged: root.rememberTab("market", "section", section)
                     }
                 }
             }

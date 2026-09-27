@@ -45,6 +45,7 @@ qt_add_executable(tst_editorstate
     ../src/mcp/McpValidate.cpp
     ../src/mcp/McpMarket.cpp
     ../src/models/MarketClient.cpp
+    ../src/models/DriftAssetStore.cpp
     ../src/models/MarketIdentity.cpp
     ../src/mcp/McpServer.cpp
     ../src/mcp/McpStdio.cpp
@@ -195,6 +196,7 @@ qt_add_executable(tst_mcp
     ../src/mcp/McpValidate.cpp
     ../src/mcp/McpMarket.cpp
     ../src/models/MarketClient.cpp
+    ../src/models/DriftAssetStore.cpp
     ../src/models/MarketIdentity.cpp
     ../src/mcp/McpServer.cpp
     ../src/mcp/McpStdio.cpp
