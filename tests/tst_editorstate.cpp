@@ -99,6 +99,7 @@ private slots:
     void channelCountIsKnownBeforeAnythingDecodes();
     void separateAudioCarriesAudioEffectsAndSpeedCurve();
     void addTextClip();
+    void audioAdjustmentTrackArrivesWithAClip();
     void dropShapeOnNewTrackIsOneUndo();
     void dropShapeOnTrackUsesThatTrack();
     void stickerLandsOnRequestedTrack();
@@ -457,6 +458,26 @@ void EditorStateTest::driftAssetStoreInstallsVerified()
     QTRY_COMPARE(failed.size(), 1);
     QCOMPARE(store.state(QStringLiteral("tampered")), QStringLiteral("failed"));
     QVERIFY(store.localPath(QStringLiteral("tampered")).isEmpty());
+}
+
+void EditorStateTest::audioAdjustmentTrackArrivesWithAClip()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    state.addTextClip(QStringLiteral("Hello"), 0.0);
+    state.setPlayheadSeconds(2.0);
+    state.addAdjustmentTrack(QStringLiteral("audioEffects"));
+
+    const drift::Track &track = state.project()->tracks().at(state.selectedTrack());
+    QVERIFY(track.isAdjustment());
+    const drift::Clip &clip = track.clips.at(state.selectedClip());
+    QCOMPARE(clip.type, drift::ClipType::Adjustment);
+    QCOMPARE(clip.adjustmentKind, drift::AdjustmentKind::AudioEffects);
+    QCOMPARE(clip.timelineStart, drift::secondsToUs(2.0));
+
+    state.undo();
+    for (const drift::Track &t : state.project()->tracks())
+        QVERIFY(!t.isAdjustment());
 }
 
 void EditorStateTest::addTextClip()

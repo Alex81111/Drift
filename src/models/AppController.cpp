@@ -13564,9 +13564,27 @@ void AppController::addAdjustmentTrack(const QString &kind)
     if (m_selectedTransitionTrack >= 0)
         ++m_selectedTransitionTrack;
 
-    Q_UNUSED(adjustmentKindFromArg(kind))
+    // An audio adjustment track has nothing to show until it holds a clip, and nothing else
+    // offers to make one, so it arrives with one at the playhead.
+    QString newClipId;
+    if (adjustmentKindFromArg(kind) == drift::AdjustmentKind::AudioEffects) {
+        drift::Clip clip;
+        clip.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        clip.type = drift::ClipType::Adjustment;
+        clip.adjustmentKind = drift::AdjustmentKind::AudioEffects;
+        clip.name = tr("Audio adjustment");
+        clip.timelineStart = m_playheadUs;
+        clip.timelineDuration = drift::kImageClipDurationUs;
+        clip.srcOut = clip.timelineDuration;
+        m_project.tracks()[0].clips.append(clip);
+        newClipId = clip.id;
+    }
     pushProjectEdit(before, tr("Add adjustment track"));
     finishEdit(tr("Adjustment track added"));
+    int trackIndex = -1;
+    int clipIndex = -1;
+    if (!newClipId.isEmpty() && findClipById(m_project, newClipId, &trackIndex, &clipIndex))
+        selectClip(trackIndex, clipIndex);
 }
 
 int AppController::ensureAdjustmentLane(int parentTrackIndex, const QString &kind, double atSeconds,
