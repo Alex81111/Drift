@@ -100,8 +100,10 @@ struct LaneMask
 
 // Every Mask-kind lane adjustment on `trackIndex` covering `timelineUs`, in stack order — lane
 // order first (lanes are listed parent-first, which is the order they were created in), then clip
-// order within a lane.
-QList<LaneMask> laneMasksAt(const Project &project, int trackIndex, TimeUs timelineUs);
+// order within a lane. One pinned to a clip (linkedClipId) masks only `hostClipId`; an unpinned
+// one masks whatever the track shows at that time.
+QList<LaneMask> laneMasksAt(const Project &project, int trackIndex, TimeUs timelineUs,
+                            const QString &hostClipId);
 
 // The Mask-kind adjustments pinned to clips[clipIndex], as (trackIndex, clipIndex) pairs.
 QList<ClipRef> linkedMaskAdjustments(const Project &project, int trackIndex, int clipIndex);

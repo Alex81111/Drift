@@ -235,12 +235,10 @@ void forEachMediaMask(const drift::Project &project, drift::TimeUs timelineUs, V
             continue;
         }
 
-        const QList<drift::LaneMask> laneMasks = drift::laneMasksAt(project, t, timelineUs);
-        if (laneMasks.isEmpty())
-            continue;
         for (const drift::Clip &clip : track.clips) {
             if (!clip.containsTime(timelineUs))
                 continue;
+            const QList<drift::LaneMask> laneMasks = drift::laneMasksAt(project, t, timelineUs, clip.id);
             for (const drift::LaneMask &laneMask : laneMasks) {
                 if (!laneMask.mask.isMedia())
                     continue;
@@ -562,15 +560,15 @@ QList<drift::Effect> resolvedClipEffects(const drift::Clip &clip, drift::TimeUs 
 // clip's transform, opacity and blend carrying them. A standalone adjustment track is the other
 // thing entirely: it emits its own item and snapshots the canvas.
 //
-// Only the time matters, not which clip: a clip is emitted only when it contains `timelineUs`, so
-// a lane adjustment containing that instant necessarily overlaps it. That makes this once per
-// track per frame rather than once per clip.
+// An unpinned adjustment applies by time alone: a clip is emitted only when it contains
+// `timelineUs`, so a lane adjustment containing that instant overlaps it. A pinned one applies to
+// `hostClipId` only — a transition draws its neighbour across the same instant.
 //
 // Keyframes resolve against the adjustment's own start, so an unlinked lane adjustment spanning
 // several clips animates over its own span rather than restarting on each one. For a linked
 // adjustment the two coincide, which is why migrated effects keyframe exactly as before.
 QList<drift::Effect> laneAdjustmentEffects(const drift::Project &project, int trackIndex,
-                                           drift::TimeUs timelineUs)
+                                           drift::TimeUs timelineUs, const QString &hostClipId)
 {
     QList<drift::Effect> result;
     for (const int laneIndex : drift::adjustmentLaneIndexes(project, trackIndex)) {
@@ -581,6 +579,8 @@ QList<drift::Effect> laneAdjustmentEffects(const drift::Project &project, int tr
             if (adjustment.adjustmentKind != drift::AdjustmentKind::VideoEffects)
                 continue;
             if (!adjustment.containsTime(timelineUs))
+                continue;
+            if (!adjustment.linkedClipId.isEmpty() && adjustment.linkedClipId != hostClipId)
                 continue;
             result.append(
                 resolvedClipEffects(adjustment, timelineUs - adjustment.timelineStart));
@@ -841,7 +841,7 @@ QImage bottommostVisualFrame(const drift::Project &project, drift::TimeUs timeli
                 continue;
             if (clip.type != drift::ClipType::Video && clip.type != drift::ClipType::Image)
                 continue;
-            QImage frame = imageForClip(clip, plainMasks(drift::laneMasksAt(project, ti, timelineUs)),
+            QImage frame = imageForClip(clip, plainMasks(drift::laneMasksAt(project, ti, timelineUs, clip.id)),
                                         timelineUs, width, height, project.fps(), -1);
             if (!frame.isNull())
                 return frame;
@@ -1299,8 +1299,6 @@ GpuScene buildGpuScene(const drift::Project &project, drift::TimeUs timelineUs, 
         if (track.isAdjustmentLane())
             continue;
 
-        const QList<drift::Effect> laneEffects = laneAdjustmentEffects(project, ti, timelineUs);
-        const QList<drift::LaneMask> laneMasks = drift::laneMasksAt(project, ti, timelineUs);
 
         QSet<QString> transitionClipIds;
         drift::TimeUs transitionStart = 0;
@@ -1315,10 +1313,12 @@ GpuScene buildGpuScene(const drift::Project &project, drift::TimeUs timelineUs, 
                 item.isTransition = true;
                 item.from = buildGpuLayer(project, *fromClip, timelineUs, projectWidth, projectHeight, renderScale,
                                           width, height, fps, options.maxTimeEchoHistoryFrames,
-                                          laneEffects, laneMasks);
+                                          laneAdjustmentEffects(project, ti, timelineUs, fromClip->id),
+                                          drift::laneMasksAt(project, ti, timelineUs, fromClip->id));
                 item.to = buildGpuLayer(project, *toClip, timelineUs, projectWidth, projectHeight, renderScale,
                                         width, height, fps, options.maxTimeEchoHistoryFrames,
-                                        laneEffects, laneMasks);
+                                        laneAdjustmentEffects(project, ti, timelineUs, toClip->id),
+                                        drift::laneMasksAt(project, ti, timelineUs, toClip->id));
                 item.progress =
                     drift::transitionProgress(*activeTransition, timelineUs, transitionStart, transitionEnd);
                 // Time is measured from the start of the transition window so a
@@ -1384,8 +1384,9 @@ GpuScene buildGpuScene(const drift::Project &project, drift::TimeUs timelineUs, 
             GpuItem item;
             item.blend = clip.blendMode;
             item.layer = buildGpuLayer(project, clip, timelineUs, projectWidth, projectHeight, renderScale, width,
-                                       height, fps, options.maxTimeEchoHistoryFrames, laneEffects,
-                                       laneMasks);
+                                       height, fps, options.maxTimeEchoHistoryFrames,
+                                       laneAdjustmentEffects(project, ti, timelineUs, clip.id),
+                                       drift::laneMasksAt(project, ti, timelineUs, clip.id));
             if (!item.layer.valid)
                 continue;
             applyDepthOcclusion(project, scene, item.layer, nearestOccluder, occluders);

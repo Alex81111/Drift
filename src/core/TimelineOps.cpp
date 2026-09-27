@@ -318,7 +318,8 @@ ClipRef appendToMaskLane(Project &project, int parentIndex, const Clip &adjustme
 
 } // namespace
 
-QList<LaneMask> laneMasksAt(const Project &project, int trackIndex, TimeUs timelineUs)
+QList<LaneMask> laneMasksAt(const Project &project, int trackIndex, TimeUs timelineUs,
+                            const QString &hostClipId)
 {
     QList<LaneMask> result;
     for (const int laneIndex : adjustmentLaneIndexes(project, trackIndex)) {
@@ -329,6 +330,8 @@ QList<LaneMask> laneMasksAt(const Project &project, int trackIndex, TimeUs timel
             if (adjustment.adjustmentKind != AdjustmentKind::Mask)
                 continue;
             if (!adjustment.containsTime(timelineUs))
+                continue;
+            if (!adjustment.linkedClipId.isEmpty() && adjustment.linkedClipId != hostClipId)
                 continue;
             if (!adjustment.mask.contributes())
                 continue;

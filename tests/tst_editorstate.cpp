@@ -1973,7 +1973,7 @@ void EditorStateTest::packagedProjectCarriesDerivedArtifacts()
     QCOMPARE(state.projectMetadata().value(QStringLiteral("author")).toString(),
              QStringLiteral("Ada"));
 
-    const QList<drift::LaneMask> masks = drift::laneMasksAt(*state.project(), 0, 0);
+    const QList<drift::LaneMask> masks = drift::laneMasksAt(*state.project(), 0, 0, state.project()->tracks().at(0).clips.at(0).id);
     QCOMPARE(masks.size(), 1);
     const QString loadedPath = masks.constFirst().mask.mediaPath;
     QVERIFY(loadedPath != mattePath);
@@ -7491,7 +7491,7 @@ void EditorStateTest::maskScalarsKeyframeThroughTheGenericApi()
         drift::Project::fromJson(state.project()->toJson(), &error);
     QVERIFY(error.isEmpty());
     const QList<drift::LaneMask> masks =
-        drift::laneMasksAt(reloaded, 0, drift::secondsToUs(1.0));
+        drift::laneMasksAt(reloaded, 0, drift::secondsToUs(1.0), reloaded.tracks().at(0).clips.at(0).id);
     QCOMPARE(masks.size(), 1);
     // laneMasksAt resolves as it gathers, so this is the baked value the compositor sees.
     QVERIFY(qAbs(masks.constFirst().mask.x - 0.5) < 1e-6);
@@ -7684,7 +7684,7 @@ void EditorStateTest::droppingAMaskOnAClipStacksAndSelectsIt()
     state.addMaskToClip(0, 0, QStringLiteral("star"));
     pinned = drift::linkedMaskAdjustments(*state.project(), 0, 0);
     QCOMPARE(pinned.size(), 2);
-    QCOMPARE(drift::laneMasksAt(*state.project(), 0, drift::secondsToUs(1.0)).size(), 2);
+    QCOMPARE(drift::laneMasksAt(*state.project(), 0, drift::secondsToUs(1.0), state.project()->tracks().at(0).clips.at(0).id).size(), 2);
 
     // Freeform arrives with the quad its rect implies, not as an empty path that would blank
     // the clip.
@@ -7724,8 +7724,8 @@ void EditorStateTest::droppingAMaskOnEmptyTrackSpaceMakesALaneClip()
     QCOMPARE(adjustment.timelineDuration, drift::secondsToUs(3.0));
 
     // It masks the track over its span and nowhere else, and belongs to no clip.
-    QCOMPARE(drift::laneMasksAt(*state.project(), 0, drift::secondsToUs(9.0)).size(), 1);
-    QVERIFY(drift::laneMasksAt(*state.project(), 0, drift::secondsToUs(1.0)).isEmpty());
+    QCOMPARE(drift::laneMasksAt(*state.project(), 0, drift::secondsToUs(9.0), state.project()->tracks().at(0).clips.at(0).id).size(), 1);
+    QVERIFY(drift::laneMasksAt(*state.project(), 0, drift::secondsToUs(1.0), state.project()->tracks().at(0).clips.at(0).id).isEmpty());
     QVERIFY(drift::linkedMaskAdjustments(*state.project(), 0, 0).isEmpty());
 }
 

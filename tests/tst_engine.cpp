@@ -321,6 +321,7 @@ private slots:
     void soleMediaMaskCarriesTheDecontaminatedForeground();
     void aVideoEffectsAdjustmentKeepsItsOwnMask();
     void standaloneAdjustmentKeepsSeeThroughCanvasAlpha();
+    void pinnedLaneAdjustmentsStayOnTheirOwnClip();
     void exporterProducesPlayableFileWithBackground();
     void exporterProducesAudioOnlyMp3();
     void exporterTagsSdrBt709ColorMetadata();
@@ -8915,7 +8916,7 @@ void EngineTest::maskLaneOpsCombineAcrossLanes()
     second.mask = hole;
     project.tracks()[lane].clips.append(second);
 
-    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(1.0)).size(), 2);
+    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(1.0), project.tracks().at(0).clips.at(0).id).size(), 2);
 
     FrameCompositor compositor;
     compositor.setProject(&project);
@@ -9079,6 +9080,63 @@ void EngineTest::standaloneAdjustmentKeepsSeeThroughCanvasAlpha()
     const QImage opaqueAdjusted = GpuCompositor::render(scene);
     scene.items.removeLast();
     QCOMPARE(opaqueAdjusted.pixelColor(16, 16), GpuCompositor::render(scene).pixelColor(16, 16));
+}
+
+// A transition draws the incoming clip across instants that belong to the outgoing one, where the
+// outgoing clip's pinned mask and effects used to be picked up by time alone and land on both.
+void EngineTest::pinnedLaneAdjustmentsStayOnTheirOwnClip()
+{
+    drift::Project project;
+    project.setResolution(64, 64);
+    project.tracks().clear();
+    project.tracks().append(drift::Track{.type = drift::TrackType::Video});
+    for (const QString &id : {QStringLiteral("a"), QStringLiteral("b")}) {
+        drift::Clip clip;
+        clip.id = id;
+        clip.type = drift::ClipType::Shape;
+        clip.timelineStart = id == QStringLiteral("a") ? 0 : drift::secondsToUs(2.0);
+        clip.timelineDuration = drift::secondsToUs(2.0);
+        clip.shapeStyle.kind = drift::ShapeKind::Rectangle;
+        project.tracks()[0].clips.append(clip);
+    }
+    drift::Transition transition;
+    transition.id = QStringLiteral("tr");
+    transition.fromClipId = QStringLiteral("a");
+    transition.toClipId = QStringLiteral("b");
+    transition.durationUs = drift::secondsToUs(1.0);
+    project.tracks()[0].transitions.append(transition);
+
+    drift::Mask ellipse;
+    ellipse.shape = drift::MaskShape::Ellipse;
+    drift::setLinkedMask(project, 0, 0, ellipse);
+    const int lane = drift::ensureAdjustmentLane(project, 0, drift::AdjustmentKind::VideoEffects, 0,
+                                                 drift::secondsToUs(2.0));
+    QVERIFY(lane >= 0);
+    drift::Clip effects;
+    effects.id = QStringLiteral("fx");
+    effects.type = drift::ClipType::Adjustment;
+    effects.adjustmentKind = drift::AdjustmentKind::VideoEffects;
+    effects.linkedClipId = QStringLiteral("a");
+    effects.timelineDuration = drift::secondsToUs(2.0);
+    drift::Effect brightness;
+    brightness.catalogId = QStringLiteral("adjust.brightness");
+    effects.effects.append(brightness);
+    project.tracks()[lane].clips.append(effects);
+
+    FrameCompositor compositor;
+    compositor.setProject(&project);
+    GpuScene scene;
+    QVERIFY(compositor.buildSceneAt(drift::secondsToUs(1.8), FrameCompositor::RenderOptions{}, &scene));
+    const GpuItem *item = nullptr;
+    for (const GpuItem &candidate : scene.items) {
+        if (candidate.isTransition)
+            item = &candidate;
+    }
+    QVERIFY(item);
+    QCOMPARE(item->from.masks.size(), 1);
+    QCOMPARE(item->from.effects.size(), 1);
+    QVERIFY(item->to.masks.isEmpty());
+    QVERIFY(item->to.effects.isEmpty());
 }
 
 void EngineTest::exporterProducesPlayableFileWithBackground()

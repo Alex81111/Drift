@@ -3031,7 +3031,7 @@ void CoreTest::matteMaskSerialization()
     const drift::Project loaded = drift::Project::fromJson(json, &error);
 
     QVERIFY(error.isEmpty());
-    const QList<drift::LaneMask> masks = drift::laneMasksAt(loaded, 0, 0);
+    const QList<drift::LaneMask> masks = drift::laneMasksAt(loaded, 0, 0, loaded.tracks().at(0).clips.at(0).id);
     QCOMPARE(masks.size(), 1);
     const drift::Mask &mask = masks.constFirst().mask;
     QCOMPARE(mask.shape, drift::MaskShape::Media);
@@ -3076,7 +3076,7 @@ void CoreTest::legacyClipMaskMigratesToAnAdjustmentLane()
     // Nothing left on the clip; one lane carrying it instead.
     QCOMPARE(loaded.tracks().at(0).clips.at(0).mask.shape, drift::MaskShape::None);
     const QList<drift::LaneMask> masks =
-        drift::laneMasksAt(loaded, 0, drift::secondsToUs(1.0));
+        drift::laneMasksAt(loaded, 0, drift::secondsToUs(1.0), loaded.tracks().at(0).clips.at(0).id);
     QCOMPARE(masks.size(), 1);
     const drift::Mask &mask = masks.constFirst().mask;
     QCOMPARE(mask.shape, drift::MaskShape::Media);
@@ -3970,11 +3970,13 @@ void CoreTest::retargetClipToSourceKeepsAGeometricMask()
     ellipse.x = 0.25;
     ellipse.feather = 12.0;
     drift::setLinkedMask(project, 0, 0, ellipse);
-    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(1.5)).size(), 1);
+    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(1.5), project.tracks().at(0).clips.at(0).id).size(), 1);
+    // A pinned mask belongs to its clip alone, whatever else the track draws at that instant.
+    QVERIFY(drift::laneMasksAt(project, 0, drift::secondsToUs(1.5), QStringLiteral("other")).isEmpty());
 
     drift::clearLinkedMasks(project, 0, 0, /*mediaOnly=*/true);
 
-    const QList<drift::LaneMask> kept = drift::laneMasksAt(project, 0, drift::secondsToUs(1.5));
+    const QList<drift::LaneMask> kept = drift::laneMasksAt(project, 0, drift::secondsToUs(1.5), project.tracks().at(0).clips.at(0).id);
     QCOMPARE(kept.size(), 1);
     QCOMPARE(kept.constFirst().mask.shape, drift::MaskShape::Ellipse);
     QCOMPARE(kept.constFirst().mask.x, 0.25);
@@ -3985,7 +3987,7 @@ void CoreTest::retargetClipToSourceKeepsAGeometricMask()
                          drift::fullFrameMediaMask(QStringLiteral("/cache/cam1.matte.mp4"),
                                                    drift::secondsToUs(2.0)));
     drift::clearLinkedMasks(project, 0, 0, /*mediaOnly=*/true);
-    QVERIFY(drift::laneMasksAt(project, 0, drift::secondsToUs(1.5)).isEmpty());
+    QVERIFY(drift::laneMasksAt(project, 0, drift::secondsToUs(1.5), project.tracks().at(0).clips.at(0).id).isEmpty());
 }
 
 // setLinkedMask replaces, which is what a full-replacement write (MCP, paste) means. Dropping a
@@ -4015,7 +4017,7 @@ void CoreTest::addLinkedMaskStacksRatherThanReplacing()
     QCOMPARE(pinned.size(), 2);
 
     // Both reach the compositor, in lane order, with their ops intact.
-    const QList<drift::LaneMask> stack = drift::laneMasksAt(project, 0, drift::secondsToUs(1.5));
+    const QList<drift::LaneMask> stack = drift::laneMasksAt(project, 0, drift::secondsToUs(1.5), project.tracks().at(0).clips.at(0).id);
     QCOMPARE(stack.size(), 2);
     QCOMPARE(stack.at(0).mask.shape, drift::MaskShape::Ellipse);
     QCOMPARE(stack.at(1).mask.shape, drift::MaskShape::Star);
@@ -4056,12 +4058,12 @@ void CoreTest::laneMaskIsUnpinnedAndSurvivesTheLiftPass()
 
     // It is not pinned, so it does not belong to a clip — only to the span.
     QVERIFY(drift::linkedMaskAdjustments(project, 0, 0).isEmpty());
-    QVERIFY(drift::laneMasksAt(project, 0, drift::secondsToUs(0.5)).isEmpty());
-    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(2.0)).size(), 1);
+    QVERIFY(drift::laneMasksAt(project, 0, drift::secondsToUs(0.5), project.tracks().at(0).clips.at(0).id).isEmpty());
+    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(2.0), project.tracks().at(0).clips.at(0).id).size(), 1);
 
     drift::liftAdjustmentClipsToOwnTracks(project);
     QVERIFY(project.tracks().at(ref.trackIndex).isAdjustmentLane());
-    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(2.0)).size(), 1);
+    QCOMPARE(drift::laneMasksAt(project, 0, drift::secondsToUs(2.0), project.tracks().at(0).clips.at(0).id).size(), 1);
 }
 
 void CoreTest::retargetClipToSourceShrinksWhenMediaRunsOut()
