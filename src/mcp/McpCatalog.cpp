@@ -625,8 +625,9 @@ const QList<Op> &ops()
                                    {QStringLiteral("perspective"), numberProp(QStringLiteral("Eye distance from the canvas centre in pixels (default 2000); smaller = stronger perspective"))},
                                    {QStringLiteral("opacity"), numberProp(QStringLiteral("Opacity"), 0, 1)}},
                                   clipRefProps())) },
-        { "reset_transform", "canvas", "Reset a clip to fill the canvas",
-          "Reset position, size, rotation, 3D tilt/depth/perspective (and the 3D layer switch), opacity, and flips to defaults.",
+        { "reset_transform", "canvas", "Reset a clip's position, size and rotation",
+          "Reset position, size, rotation, 3D tilt/depth/perspective (and the 3D layer switch), opacity, and flips to defaults. "
+          "Video, image and vector clips return to their own shape fitted and centred on the canvas; other clips fill the canvas.",
           objectSchema(clipRefProps()) },
 
         { "seek", "playback", "Jump the playhead",

@@ -81,6 +81,7 @@ private slots:
     void snapTimeEnabled();
     void compositeFromSelectionUndoRedo();
     void compositeClipGetsAPreviewBox();
+    void importedMediaIsCentredAndResetsToItsFit();
     void compositeTabEditUndoesFromMain();
     void compositeSeparateAudioAndRemoval();
     void retimeKeepsDisabledKeyframeTrackDisabled();
@@ -634,6 +635,44 @@ void EditorStateTest::compositeClipGetsAPreviewBox()
             found = true;
     }
     QVERIFY(found);
+}
+
+void EditorStateTest::importedMediaIsCentredAndResetsToItsFit()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    state.project()->setResolution(1920, 1080);
+    drift::MediaAsset asset;
+    asset.name = QStringLiteral("square.mp4");
+    asset.kind = drift::MediaKind::Video;
+    asset.path = QStringLiteral("/nonexistent/square.mp4");
+    asset.durationUs = drift::secondsToUs(5.0);
+    asset.width = 1000;
+    asset.height = 1000;
+    state.project()->addAsset(asset);
+    library.syncToProject();
+    state.addClipFromAssetAt(0, 0, 0.0);
+
+    const auto check = [&state]() {
+        const drift::Clip &clip = state.project()->tracks().at(0).clips.at(0);
+        QCOMPARE(clip.transformX.evaluateAt(0), 420.0);
+        QCOMPARE(clip.transformY.evaluateAt(0), 0.0);
+        QCOMPARE(clip.transformW.evaluateAt(0), 1080.0);
+        QCOMPARE(clip.transformH.evaluateAt(0), 1080.0);
+    };
+    check();
+
+    state.project()->tracks()[0].clips[0].transformX.setKeyframe(0, 5.0);
+    state.project()->tracks()[0].clips[0].transformW.setKeyframe(0, 300.0);
+    state.resetClipTransform(0, 0);
+    check();
+
+    state.addTextClip(QStringLiteral("Hi"), 0.0);
+    const int textTrack = state.selectedTrack();
+    state.resetClipTransform(textTrack, 0);
+    const drift::Clip &text = state.project()->tracks().at(textTrack).clips.at(0);
+    QCOMPARE(text.transformX.evaluateAt(0), 0.0);
+    QCOMPARE(text.transformW.evaluateAt(0), 1920.0);
 }
 
 void EditorStateTest::compositeTabEditUndoesFromMain()

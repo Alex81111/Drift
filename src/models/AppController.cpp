@@ -3462,7 +3462,9 @@ void fitClipLayoutToCanvas(drift::Clip &clip, int mediaW, int mediaH, int canvas
         return;
     }
     const double scale = qMin(static_cast<double>(canvasW) / mediaW, static_cast<double>(canvasH) / mediaH);
-    setClipLayoutPixels(clip, 0, 0, mediaW * scale, mediaH * scale);
+    const double w = mediaW * scale;
+    const double h = mediaH * scale;
+    setClipLayoutPixels(clip, (canvasW - w) / 2.0, (canvasH - h) / 2.0, w, h);
 }
 
 // Fills what the inspector and the overlay need from the .glb (animation list, rest bounds) so
@@ -19185,7 +19187,29 @@ void AppController::resetClipTransform(int trackIndex, int clipIndex)
     clearClipPose3d(clip);
     clip.flipH = false;
     clip.flipV = false;
-    setClipLayoutPixels(clip, 0, 0, m_project.width(), m_project.height());
+    // Media resets to how it first landed: its own shape, fitted and centred. Everything else
+    // (text, shapes, composites, transform layers) resets to the full canvas.
+    int mediaW = 0;
+    int mediaH = 0;
+    if (clip.type == drift::ClipType::Vector) {
+        mediaW = clip.vector.width;
+        mediaH = clip.vector.height;
+    } else if (clip.type == drift::ClipType::Video || clip.type == drift::ClipType::Image) {
+        if (const drift::MediaAsset *asset = m_project.asset(clip.assetId)) {
+            mediaW = asset->width;
+            mediaH = asset->height;
+            if ((asset->rotationDegrees + clip.rotationCorrection) % 180 == 90)
+                std::swap(mediaW, mediaH);
+            if (clip.type == drift::ClipType::Video && mediaW > 0 && mediaH > 0) {
+                mediaW = qMax(1, qRound(mediaW * clip.sourceFrame.width()));
+                mediaH = qMax(1, qRound(mediaH * clip.sourceFrame.height()));
+            }
+        }
+    }
+    if (mediaW > 0 && mediaH > 0)
+        fitClipLayoutToCanvas(clip, mediaW, mediaH, m_project.width(), m_project.height());
+    else
+        setClipLayoutPixels(clip, 0, 0, m_project.width(), m_project.height());
     pushProjectEdit(before, tr("Reset transform"));
     finishEdit(tr("Transform reset"));
 }
