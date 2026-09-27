@@ -615,6 +615,7 @@ Item {
                     // to be reshaped (text, subtitles, shapes) work the other way.
                     readonly property bool lockByDefault: handle.box.kind === "video"
                                                           || handle.box.kind === "image"
+                                                          || handle.box.kind === "composite"
 
                     width: hs
                     height: hs

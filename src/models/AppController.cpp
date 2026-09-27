@@ -2719,7 +2719,7 @@ bool clipAcceptsPreviewTransform(const drift::Clip &clip)
     return clip.type == drift::ClipType::Shape || clip.type == drift::ClipType::Image
            || clip.type == drift::ClipType::Vector || clip.type == drift::ClipType::Model3d
            || clip.type == drift::ClipType::Text || clip.type == drift::ClipType::Subtitle
-           || clip.type == drift::ClipType::Video;
+           || clip.type == drift::ClipType::Video || clip.type == drift::ClipType::Composite;
 }
 
 double clipTransformValue(const drift::KeyframeTrack<double> &track, drift::TimeUs relative, double defaultValue)

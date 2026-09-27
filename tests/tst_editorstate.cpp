@@ -80,6 +80,7 @@ private slots:
     void driftAssetStoreInstallsVerified();
     void snapTimeEnabled();
     void compositeFromSelectionUndoRedo();
+    void compositeClipGetsAPreviewBox();
     void compositeTabEditUndoesFromMain();
     void compositeSeparateAudioAndRemoval();
     void retimeKeepsDisabledKeyframeTrackDisabled();
@@ -595,6 +596,23 @@ void EditorStateTest::compositeFromSelectionUndoRedo()
     state.redo();
     QCOMPARE(state.project()->tracks().at(0).clips.at(0).type, drift::ClipType::Composite);
     QCOMPARE(library.count(), 2);
+}
+
+void EditorStateTest::compositeClipGetsAPreviewBox()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    setUpTwoClipSelection(library, state);
+    state.makeCompositeFromSelection();
+    state.setPlayheadSeconds(2.0);
+
+    bool found = false;
+    for (const QVariant &entry : state.previewClipsAtPlayhead()) {
+        const QVariantMap box = entry.toMap();
+        if (box.value(QStringLiteral("kind")).toString() == QStringLiteral("composite"))
+            found = true;
+    }
+    QVERIFY(found);
 }
 
 void EditorStateTest::compositeTabEditUndoesFromMain()

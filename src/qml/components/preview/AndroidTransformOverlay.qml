@@ -555,7 +555,8 @@ Item {
                     // reshaped (text, subtitles, shapes) scale freely.
                     readonly property bool lockRatio: isCorner
                             && (handle.box.kind === "video"
-                                || handle.box.kind === "image")
+                                || handle.box.kind === "image"
+                                || handle.box.kind === "composite")
 
                     x: (modelData.dx === 0 ? handle.width / 2
                                            : (modelData.dx < 0 ? 0 : handle.width)) - width / 2
