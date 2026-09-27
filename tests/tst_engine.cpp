@@ -1037,6 +1037,18 @@ void EngineTest::clipGizmoSolvesDrags()
     QCOMPARE(spun.pose.rotation, 90.0);
     QVERIFY(std::abs(spun.pose.pose3d.rotationX) < 1e-6 && std::abs(spun.pose.pose3d.rotationY) < 1e-6);
 
+    // The global X ring on a centred clip is edge-on, a vertical line: dragging along it turns
+    // the clip about X, and dragging across it does nothing.
+    const QPointF xTop = o + QPointF(0, -radius);
+    const DragResult tiltedX = drag(flat, Tool::Rotate, Orientation::Global, QStringLiteral("x"),
+                                    xTop, xTop + QPointF(0, -60), false, scale);
+    QVERIFY2(std::abs(tiltedX.pose.pose3d.rotationX) > 10.0,
+             qPrintable(QString::number(tiltedX.pose.pose3d.rotationX)));
+    const DragResult acrossX = drag(flat, Tool::Rotate, Orientation::Global, QStringLiteral("x"),
+                                    xTop, xTop + QPointF(60, 0), false, scale);
+    QVERIFY2(std::abs(acrossX.pose.pose3d.rotationX) < 1e-3,
+             qPrintable(QString::number(acrossX.pose.pose3d.rotationX)));
+
     // On a tilted and spun clip, a global Y turn and a local Y turn store different angles.
     Pose spunPose = flat;
     spunPose.rotation = 90;

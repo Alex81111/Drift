@@ -463,8 +463,15 @@ DragResult drag(const Pose &start, Tool tool, Orientation orientation, const QSt
     const QVector3D r1 = s.ray(now);
     const double facing = std::abs(QVector3D::dotProduct(r0.normalized(), a));
     if (facing < 0.08) {
-        // The ring is edge-on: its plane gives no angle, so read it off the horizontal drag.
-        degrees = (now.x() - press.x()) * 0.5;
+        // The ring is edge-on: its plane gives no angle, so read it off the drag along the line
+        // it projects to. A +turn carries the ring's nearest point along a × toEye.
+        const QVector3D along = QVector3D::crossProduct(a, (s.eye() - origin).normalized());
+        QPointF p0;
+        QPointF p1;
+        QPointF dir(1, 0);
+        if (s.project(origin, &p0) && s.project(origin + along * 10.f, &p1))
+            dir = unit(p1 - p0);
+        degrees = QPointF::dotProduct(now - press, dir) * 0.5;
     } else {
         const auto hit = [&](const QVector3D &r) {
             const double t = QVector3D::dotProduct(origin - s.eye(), a) / QVector3D::dotProduct(r, a);
