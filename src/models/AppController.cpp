@@ -7176,7 +7176,7 @@ void AppController::pushProjectEdit(const drift::Project &before, const QString 
     //
     // This is also where a track created by this edit gets its id — nested lanes address their
     // parent by it, and the dozen places that append a track all leave it empty.
-    normalizeProjectStructure();
+    normalizeProjectStructure(&before);
     syncCompositeAssetDurations();
     // Belt and braces for the tracks cache: normalizeProjectStructure() rewrites the project, and
     // every edit in the app reaches this function or finishEdit(). One bool write buys immunity
@@ -8524,7 +8524,7 @@ void AppController::moveClipToTrack(int trackIndex, int clipIndex, int newTrackI
 
     // Verify the leader clip can land on the destination track
     const drift::Clip &leaderClip = m_project.tracks().at(trackIndex).clips.at(clipIndex);
-    if (!m_project.tracks().at(newTrackIndex).allowsClipType(leaderClip.type))
+    if (!m_project.tracks().at(newTrackIndex).acceptsClip(leaderClip))
         return;
     const QString leaderId = leaderClip.id;
 
@@ -8562,7 +8562,7 @@ void AppController::moveClipToTrack(int trackIndex, int clipIndex, int newTrackI
         } else {
             const int candidate = pair.first + trackDelta;
             if (candidate >= 0 && candidate < m_project.tracks().size()
-                && m_project.tracks().at(candidate).allowsClipType(c.type)) {
+                && m_project.tracks().at(candidate).acceptsClip(c)) {
                 destTrack = candidate;
             }
         }
@@ -13306,7 +13306,8 @@ void AppController::syncLinkedAdjustments(drift::Project &project) const
         if (!track.isAdjustment())
             continue;
         for (drift::Clip &adjustment : track.clips) {
-            if (adjustment.linkedClipId.isEmpty())
+            if (adjustment.linkedClipId.isEmpty()
+                || adjustment.adjustmentKind == drift::AdjustmentKind::Transform)
                 continue;
             const auto it = spans.constFind(adjustment.linkedClipId);
             if (it == spans.constEnd()) {
@@ -13323,7 +13324,7 @@ void AppController::syncLinkedAdjustments(drift::Project &project) const
     }
 }
 
-void AppController::normalizeProjectStructure()
+void AppController::normalizeProjectStructure(const drift::Project *before)
 {
     m_project.ensureTrackIds();
     const QList<QPair<QString, int>> selection = captureSelectionByTrackId();
@@ -13332,6 +13333,8 @@ void AppController::normalizeProjectStructure()
     drift::liftAdjustmentClipsToOwnTracks(m_project);
     drift::hoistClipEffectsToAdjustmentLanes(m_project);
     normalizeAdjustmentLanes(m_project);
+    drift::normalizeTransformLayers(m_project.tracks(), before ? &before->tracks() : nullptr);
+    m_project.ensureTrackIds();
     clampStoredTransitionDurations(m_project);
     restoreSelectionByTrackId(selection);
 }
@@ -13477,7 +13480,7 @@ void AppController::addAdjustmentClipWithEffect(const QString &effectId, int tra
         if (index < 0 || index >= m_project.tracks().size())
             return false;
         const drift::Track &t = m_project.tracks().at(index);
-        return t.isAdjustment() && !t.isAdjustmentLane();
+        return t.isAdjustment() && !t.isAdjustmentLane() && !t.isTransformLayer();
     };
 
     if (!usableTarget(target)) {
@@ -13622,7 +13625,8 @@ void AppController::moveAdjustmentToLane(int fromTrack, int fromClip, int parent
     if (fromClip < 0 || fromClip >= m_project.tracks().at(fromTrack).clips.size())
         return;
     const drift::Clip &source = m_project.tracks().at(fromTrack).clips.at(fromClip);
-    if (source.type != drift::ClipType::Adjustment)
+    if (source.type != drift::ClipType::Adjustment
+        || source.adjustmentKind == drift::AdjustmentKind::Transform)
         return;
     if (parentTrackIndex < 0 || parentTrackIndex >= m_project.tracks().size())
         return;
@@ -13676,7 +13680,9 @@ void AppController::moveAdjustmentToOwnTrack(int fromTrack, int fromClip, double
         return;
     if (fromClip < 0 || fromClip >= m_project.tracks().at(fromTrack).clips.size())
         return;
-    if (m_project.tracks().at(fromTrack).clips.at(fromClip).type != drift::ClipType::Adjustment)
+    if (m_project.tracks().at(fromTrack).clips.at(fromClip).type != drift::ClipType::Adjustment
+        || m_project.tracks().at(fromTrack).clips.at(fromClip).adjustmentKind
+               == drift::AdjustmentKind::Transform)
         return;
 
     const drift::Project before = m_project;
@@ -13742,7 +13748,9 @@ void AppController::relinkAdjustment(int trackIndex, int clipIndex, int mediaTra
         return;
     if (clipIndex < 0 || clipIndex >= m_project.tracks().at(trackIndex).clips.size())
         return;
-    if (m_project.tracks().at(trackIndex).clips.at(clipIndex).type != drift::ClipType::Adjustment)
+    if (m_project.tracks().at(trackIndex).clips.at(clipIndex).type != drift::ClipType::Adjustment
+        || m_project.tracks().at(trackIndex).clips.at(clipIndex).adjustmentKind
+               == drift::AdjustmentKind::Transform)
         return;
     if (mediaTrack < 0 || mediaTrack >= m_project.tracks().size())
         return;
@@ -13913,7 +13921,7 @@ bool AppController::trackAcceptsDropKind(int trackIndex, const QString &kind) co
         return false;
     const drift::Track &track = m_project.tracks().at(trackIndex);
     if (const std::optional<drift::ClipType> type = placeableClipType(kind))
-        return track.allowsClipType(*type) && !track.isAdjustmentLane();
+        return track.allowsClipType(*type) && !track.isAdjustmentLane() && !track.isTransformLayer();
     return true;
 }
 
@@ -13996,6 +14004,10 @@ QVariantMap AppController::planAssetDrop(const QString &kind, const QString &pay
 
     if (!isClipTargetedKind(kind))
         return rejectDrop();
+    // A transform layer carries a transform and nothing else; effects and masks belong on the
+    // clips it moves, or on an adjustment layer.
+    if (track.isTransformLayer())
+        return rejectDrop(tr("Transform layers take no effects or masks."));
 
     const bool audioTrack = track.type == drift::TrackType::Audio;
     const int clipIndex = clipIndexAtTime(track, drift::secondsToUs(at));
@@ -22315,14 +22327,23 @@ void AppController::pasteAtPlayhead()
 
         int targetTrack = -1;
         for (int i = 0; i < m_project.tracks().size(); ++i) {
-            if (m_project.tracks().at(i).type == item.trackType && m_project.tracks().at(i).allowsClipType(clip.type)) {
+            if (m_project.tracks().at(i).type == item.trackType && m_project.tracks().at(i).acceptsClip(clip)) {
                 targetTrack = i;
                 break;
             }
         }
+        if (targetTrack < 0 && clip.type == drift::ClipType::Adjustment
+            && clip.adjustmentKind == drift::AdjustmentKind::Transform) {
+            QString lowest;
+            for (const drift::Track &t : m_project.tracks()) {
+                if (drift::isTransformableTrack(t))
+                    lowest = t.id;
+            }
+            targetTrack = drift::insertTransformTrack(m_project.tracks(), 0, lowest);
+        }
         if (targetTrack < 0)
             targetTrack = drift::ensureTrackForClipType(m_project, clip.type, true);
-        if (targetTrack < 0 || !m_project.tracks()[targetTrack].allowsClipType(clip.type))
+        if (targetTrack < 0 || !m_project.tracks()[targetTrack].acceptsClip(clip))
             continue;
         drift::Track &track = m_project.tracks()[targetTrack];
         track.clips.append(clip);

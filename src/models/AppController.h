@@ -2454,7 +2454,7 @@ protected:
     // on a media clip, and every lane is adjacent to and directly above its parent. Both passes
     // can insert or reorder tracks, so the selection is carried across by id. Idempotent and
     // cheap when nothing is out of place, which is why it can run on every edit.
-    void normalizeProjectStructure();
+    void normalizeProjectStructure(const drift::Project *before = nullptr);
     // Keeps open tabs pointing at sequences that exist, and the active one among them.
     void reconcileSequenceTabs();
     // A composite asset's duration follows its sequence's content.

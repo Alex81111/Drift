@@ -171,6 +171,8 @@ private slots:
     void rebaseClipLayoutShiftsKeyframedPosition();
     void rebaseClipLayoutHoldsNestedContentStill();
     void transformLayerRoundTrips();
+    void transformSpanFollowsTrackEdits();
+    void transformNormalizerLiftsStrays();
     void retargetClipToSourceKeepsPlacementAndSyncsSource();
     void retargetClipToSourceClearsPerSourceState();
     void retargetClipToSourceKeepsAGeometricMask();
@@ -3847,6 +3849,113 @@ void CoreTest::transformLayerRoundTrips()
     QCOMPARE(loadedClip.transformW.evaluateAt(0), 960.0);
     QCOMPARE(loadedClip.rotation.evaluateAt(0), 15.0);
     QVERIFY(!json.value(QStringLiteral("tracks")).toArray().at(1).toObject().contains(QStringLiteral("spanEndTrackId")));
+}
+
+namespace {
+
+drift::Track namedTrack(drift::TrackType type, const QString &id)
+{
+    drift::Track track{.type = type};
+    track.id = id;
+    return track;
+}
+
+} // namespace
+
+void CoreTest::transformSpanFollowsTrackEdits()
+{
+    QList<drift::Track> tracks;
+    drift::insertTransformTrack(tracks, 0, QStringLiteral("v3"));
+    tracks[0].id = QStringLiteral("layer");
+    tracks.append(namedTrack(drift::TrackType::Video, QStringLiteral("v1")));
+    tracks.append(namedTrack(drift::TrackType::Audio, QStringLiteral("a1")));
+    tracks.append(namedTrack(drift::TrackType::Video, QStringLiteral("v2")));
+    tracks.append(namedTrack(drift::TrackType::Video, QStringLiteral("v3")));
+    tracks.append(namedTrack(drift::TrackType::Video, QStringLiteral("v4")));
+
+    // Audio inside the range is not moved.
+    QCOMPARE(drift::transformSpanTrackIndexes(tracks, 0), (QList<int>{1, 3, 4}));
+    QCOMPARE(drift::transformLayersCovering(tracks, 4), QList<int>{0});
+    QVERIFY(drift::transformLayersCovering(tracks, 5).isEmpty());
+
+    // A track inserted inside the range is covered.
+    tracks.insert(2, namedTrack(drift::TrackType::Text, QStringLiteral("t1")));
+    QCOMPARE(drift::transformSpanTrackIndexes(tracks, 0), (QList<int>{1, 2, 4, 5}));
+
+    // A lane named as the end resolves to its parent.
+    drift::Track lane = namedTrack(drift::TrackType::Adjustment, QStringLiteral("lane"));
+    lane.adjustmentScope = drift::AdjustmentScope::ParentTrack;
+    lane.parentTrackId = QStringLiteral("v2");
+    tracks.insert(5, lane);
+    tracks[0].spanEndTrackId = QStringLiteral("lane");
+    QCOMPARE(drift::transformSpanEndIndex(tracks, 0), 4);
+    drift::normalizeTransformLayers(tracks);
+    QCOMPARE(tracks.at(0).spanEndTrackId, QStringLiteral("v2"));
+    tracks.removeAt(5);
+    tracks[0].spanEndTrackId = QStringLiteral("v3");
+
+    // The end deleted: the span moves up to the nearest survivor that was inside it.
+    const QList<drift::Track> before = tracks;
+    tracks.removeAt(5);
+    drift::normalizeTransformLayers(tracks, &before);
+    QCOMPARE(tracks.at(0).spanEndTrackId, QStringLiteral("v2"));
+
+    // With nothing to recover from, a dangling end is cleared.
+    tracks[0].spanEndTrackId = QStringLiteral("gone");
+    drift::normalizeTransformLayers(tracks);
+    QVERIFY(tracks.at(0).spanEndTrackId.isEmpty());
+    QVERIFY(drift::transformSpanTrackIndexes(tracks, 0).isEmpty());
+
+    // The end moved above the layer: nothing covered, but the id is kept for the way back.
+    tracks[0].spanEndTrackId = QStringLiteral("v2");
+    tracks.move(4, 0);
+    drift::normalizeTransformLayers(tracks);
+    QCOMPARE(tracks.at(1).spanEndTrackId, QStringLiteral("v2"));
+    QCOMPARE(drift::transformSpanEndIndex(tracks, 1), -1);
+    tracks.move(0, 4);
+    QCOMPARE(drift::transformSpanEndIndex(tracks, 0), 4);
+
+    // Nested layers compose outermost first.
+    drift::insertTransformTrack(tracks, 2, QStringLiteral("v2"));
+    QCOMPARE(drift::transformLayersCovering(tracks, 5), (QList<int>{0, 2}));
+}
+
+void CoreTest::transformNormalizerLiftsStrays()
+{
+    QList<drift::Track> tracks;
+    drift::insertTransformTrack(tracks, 0, QStringLiteral("v1"));
+    drift::Clip transform = drift::makeTransformClip(0, drift::secondsToUs(2.0));
+    transform.linkedClipId = QStringLiteral("someone");
+    tracks[0].clips.append(transform);
+    drift::Clip effects;
+    effects.id = QStringLiteral("fx");
+    effects.type = drift::ClipType::Adjustment;
+    effects.timelineDuration = drift::secondsToUs(2.0);
+    tracks[0].clips.append(effects);
+    drift::Track standalone = namedTrack(drift::TrackType::Adjustment, QStringLiteral("adj"));
+    drift::Clip stray = drift::makeTransformClip(0, drift::secondsToUs(1.0));
+    standalone.clips.append(stray);
+    tracks.append(standalone);
+    tracks.append(namedTrack(drift::TrackType::Video, QStringLiteral("v1")));
+    tracks.append(namedTrack(drift::TrackType::Video, QStringLiteral("v2")));
+
+    drift::normalizeTransformLayers(tracks);
+    drift::ensureTrackIds(tracks);
+
+    // The effects clip left the layer for a standalone track directly below it.
+    QCOMPARE(tracks.at(0).clips.size(), 1);
+    QVERIFY(tracks.at(0).clips.at(0).linkedClipId.isEmpty());
+    QVERIFY(tracks.at(1).isAdjustment() && !tracks.at(1).isTransformLayer());
+    QCOMPARE(tracks.at(1).clips.at(0).id, QStringLiteral("fx"));
+    // The stray transform clip got a layer of its own, covering the next track down.
+    QVERIFY(tracks.at(2).isTransformLayer());
+    QCOMPARE(tracks.at(2).clips.at(0).id, stray.id);
+    QCOMPARE(tracks.at(2).spanEndTrackId, QStringLiteral("v1"));
+    QVERIFY(tracks.at(3).clips.isEmpty());
+    for (const drift::Track &track : tracks) {
+        for (const drift::Clip &clip : track.clips)
+            QVERIFY(track.acceptsClip(clip));
+    }
 }
 
 // A canvas resize reaches every sequence, and a composite's box scales with the canvas it shows,

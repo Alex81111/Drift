@@ -157,6 +157,36 @@ void hoistClipEffectsToAdjustmentLanes(Project &project);
 // an adjustment was just a clip squatting on a video track. INSERTS TRACKS.
 void liftAdjustmentClipsToOwnTracks(Project &project);
 
+// Transform layers. A Range track at index T covers the non-lane tracks with index in (T, E],
+// where E is its spanEndTrackId (a lane named as the end resolves to its parent). Lanes ride with
+// their parent. Audio tracks and standalone effect adjustments inside the range are not moved;
+// Range tracks inside it nest, their own parent composing outer × inner.
+
+// E, or -1 when the layer covers nothing (no end, a missing end, or an end at or above it).
+int transformSpanEndIndex(const QList<Track> &tracks, int layerIndex);
+
+// True for the tracks a transform layer moves: video, text, subtitle and graphic tracks.
+bool isTransformableTrack(const Track &track);
+
+// The transformable tracks the layer at `layerIndex` covers, top to bottom.
+QList<int> transformSpanTrackIndexes(const QList<Track> &tracks, int layerIndex);
+
+// The Range tracks covering `trackIndex` (a lane counts as its parent), outermost first.
+QList<int> transformLayersCovering(const QList<Track> &tracks, int trackIndex);
+
+// Inserts an empty Range track at `index` spanning to `spanEndTrackId`; returns `index`.
+int insertTransformTrack(QList<Track> &tracks, int index, const QString &spanEndTrackId);
+
+// An identity transform clip over [startUs, startUs + durationUs).
+Clip makeTransformClip(TimeUs startUs, TimeUs durationUs);
+
+// Keeps transform layers well formed after any edit. Range tracks hold only Transform clips and
+// Transform clips live only on Range tracks (strays are lifted onto a track of their own, never
+// dropped); Transform clips are never pinned; a lane named as a span end resolves to its parent.
+// A span end that no longer exists moves up to the nearest track that `before` shows inside the
+// span and still exists, or is cleared when there is none or no `before` to ask. Ids must exist.
+void normalizeTransformLayers(QList<Track> &tracks, const QList<Track> *before = nullptr);
+
 int ensureTrackForClipType(Project &project, ClipType type, bool insertAtTop = false);
 
 // Picks a track of the right type whose span at [startUs, startUs+durationUs) is free, creating one

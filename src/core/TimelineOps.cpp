@@ -478,6 +478,198 @@ void migrateClipMasksToAdjustmentLanes(Project &project)
     }
 }
 
+namespace {
+
+int trackIndexIn(const QList<Track> &tracks, const QString &id)
+{
+    if (id.isEmpty())
+        return -1;
+    for (int i = 0; i < tracks.size(); ++i) {
+        if (tracks.at(i).id == id)
+            return i;
+    }
+    return -1;
+}
+
+bool isTransformClip(const Clip &clip)
+{
+    return clip.type == ClipType::Adjustment && clip.adjustmentKind == AdjustmentKind::Transform;
+}
+
+// Lanes sit with their parent, so a lane is covered exactly when its parent is.
+int coverageIndex(const QList<Track> &tracks, int trackIndex)
+{
+    const Track &track = tracks.at(trackIndex);
+    if (!track.isAdjustmentLane())
+        return trackIndex;
+    return trackIndexIn(tracks, track.parentTrackId);
+}
+
+} // namespace
+
+int transformSpanEndIndex(const QList<Track> &tracks, int layerIndex)
+{
+    if (layerIndex < 0 || layerIndex >= tracks.size() || !tracks.at(layerIndex).isTransformLayer())
+        return -1;
+    const int end = trackIndexIn(tracks, tracks.at(layerIndex).spanEndTrackId);
+    if (end < 0)
+        return -1;
+    const int resolved = coverageIndex(tracks, end);
+    return resolved > layerIndex ? resolved : -1;
+}
+
+bool isTransformableTrack(const Track &track)
+{
+    return track.type == TrackType::Video || track.type == TrackType::Text
+           || track.type == TrackType::Subtitle || track.type == TrackType::Shape;
+}
+
+QList<int> transformSpanTrackIndexes(const QList<Track> &tracks, int layerIndex)
+{
+    QList<int> result;
+    const int end = transformSpanEndIndex(tracks, layerIndex);
+    for (int i = layerIndex + 1; i <= end; ++i) {
+        if (isTransformableTrack(tracks.at(i)))
+            result.append(i);
+    }
+    return result;
+}
+
+QList<int> transformLayersCovering(const QList<Track> &tracks, int trackIndex)
+{
+    if (trackIndex < 0 || trackIndex >= tracks.size())
+        return {};
+    const int index = coverageIndex(tracks, trackIndex);
+    QList<int> result;
+    for (int layer = 0; layer < index; ++layer) {
+        if (tracks.at(layer).isTransformLayer() && transformSpanEndIndex(tracks, layer) >= index)
+            result.append(layer);
+    }
+    return result;
+}
+
+int insertTransformTrack(QList<Track> &tracks, int index, const QString &spanEndTrackId)
+{
+    Track track;
+    track.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    track.type = TrackType::Adjustment;
+    track.adjustmentScope = AdjustmentScope::Range;
+    track.spanEndTrackId = spanEndTrackId;
+    index = qBound(0, index, int(tracks.size()));
+    tracks.insert(index, track);
+    return index;
+}
+
+Clip makeTransformClip(TimeUs startUs, TimeUs durationUs)
+{
+    Clip clip;
+    clip.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    clip.type = ClipType::Adjustment;
+    clip.adjustmentKind = AdjustmentKind::Transform;
+    clip.name = QStringLiteral("Transform");
+    clip.timelineStart = startUs;
+    clip.timelineDuration = durationUs;
+    clip.srcIn = 0;
+    clip.srcOut = durationUs;
+    return clip;
+}
+
+void normalizeTransformLayers(QList<Track> &tracks, const QList<Track> *before)
+{
+    // The settled case — no layer and no stray transform clip — must cost one scan.
+    bool any = false;
+    for (const Track &track : tracks) {
+        if (track.isTransformLayer()) {
+            any = true;
+            break;
+        }
+        if (track.isAdjustment()) {
+            for (const Clip &clip : track.clips)
+                any = any || isTransformClip(clip);
+        }
+        if (any)
+            break;
+    }
+    if (!any)
+        return;
+
+    // Pairing. Walk bottom-up so inserting above a track never shifts one still to visit.
+    for (int i = tracks.size() - 1; i >= 0; --i) {
+        if (tracks.at(i).isTransformLayer()) {
+            QList<Clip> strays;
+            for (int c = tracks[i].clips.size() - 1; c >= 0; --c) {
+                if (!isTransformClip(tracks.at(i).clips.at(c)))
+                    strays.prepend(tracks[i].clips.takeAt(c));
+            }
+            // Directly below the layer, which is inside its span, so a lifted clip keeps moving
+            // with the group it sat in.
+            for (int c = strays.size() - 1; c >= 0; --c) {
+                Track lifted;
+                lifted.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+                lifted.type = trackTypeForClipType(strays.at(c).type);
+                lifted.clips.append(strays.at(c));
+                tracks.insert(i + 1, lifted);
+            }
+        } else if (tracks.at(i).isAdjustment()) {
+            Track lifted;
+            for (int c = tracks[i].clips.size() - 1; c >= 0; --c) {
+                if (isTransformClip(tracks.at(i).clips.at(c)))
+                    lifted.clips.prepend(tracks[i].clips.takeAt(c));
+            }
+            if (lifted.clips.isEmpty())
+                continue;
+            // A stray from a lane moves its parent; one from a standalone track moves the next
+            // track down, the nearest thing it could have been meant for.
+            QString end;
+            if (tracks.at(i).isAdjustmentLane()) {
+                end = tracks.at(i).parentTrackId;
+            } else {
+                for (int j = i + 1; j < tracks.size() && end.isEmpty(); ++j) {
+                    if (isTransformableTrack(tracks.at(j)))
+                        end = tracks.at(j).id;
+                }
+            }
+            const int layer = tracks.at(i).isAdjustmentLane()
+                                  ? qMax(0, trackIndexIn(tracks, tracks.at(i).parentTrackId))
+                                  : i;
+            insertTransformTrack(tracks, layer, end);
+            tracks[layer].clips = lifted.clips;
+            // Everything from `layer` down moved one; revisit the slot the next track now holds.
+            ++i;
+        }
+    }
+
+    for (Track &track : tracks) {
+        if (!track.isTransformLayer())
+            continue;
+        for (Clip &clip : track.clips)
+            clip.linkedClipId.clear();
+    }
+
+    for (int i = 0; i < tracks.size(); ++i) {
+        Track &layer = tracks[i];
+        if (!layer.isTransformLayer() || layer.spanEndTrackId.isEmpty())
+            continue;
+        const int end = trackIndexIn(tracks, layer.spanEndTrackId);
+        if (end >= 0) {
+            if (tracks.at(end).isAdjustmentLane())
+                layer.spanEndTrackId = tracks.at(end).parentTrackId;
+            continue;
+        }
+        QString survivor;
+        if (before) {
+            const int oldLayer = trackIndexIn(*before, layer.id);
+            const int oldEnd = trackIndexIn(*before, layer.spanEndTrackId);
+            for (int j = oldEnd - 1; oldLayer >= 0 && j > oldLayer && survivor.isEmpty(); --j) {
+                const Track &candidate = before->at(j);
+                if (!candidate.isAdjustmentLane() && trackIndexIn(tracks, candidate.id) >= 0)
+                    survivor = candidate.id;
+            }
+        }
+        layer.spanEndTrackId = survivor;
+    }
+}
+
 void liftAdjustmentClipsToOwnTracks(Project &project)
 {
     QList<Track> &tracks = project.tracks();

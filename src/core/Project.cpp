@@ -1029,6 +1029,11 @@ Project Project::fromJson(const QJsonObject &object, QString *errorOut)
         // combinable. Runs after the v4 pass, which is what mints the track ids a lane needs.
         migrateClipMasksToAdjustmentLanes(project);
     }
+    // A dangling span end has no earlier state to recover from here, so it is cleared.
+    project.forEachTrackList([](QList<Track> &tracks) {
+        normalizeTransformLayers(tracks);
+        drift::ensureTrackIds(tracks);
+    });
     // Version 6 added ClipType::Vector. Nothing to migrate; the bump exists so an older build
     // refuses the file instead of loading those clips as videos with no path.
     // Version 7 turned the flat text look into shading layers and the animIn/animOut kinds into
