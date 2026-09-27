@@ -423,6 +423,14 @@
         <source>Cut a shape or a subject out of the selected clip</source>
         <translation>Découper une forme ou un sujet dans le clip sélectionné</translation>
     </message>
+    <message>
+        <source>Transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move, scale or tilt several tracks as one</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AndroidBottomRail</name>
@@ -483,6 +491,14 @@
     <message>
         <source>Split</source>
         <translation>Scinder</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
+    </message>
+    <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Fade</source>
@@ -1037,6 +1053,38 @@
     </message>
     <message>
         <source>Group the selected clips into one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move, scale or tilt the selected clips&apos; tracks as one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The layer moving this clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select covered clips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every clip this layer moves</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose which tracks this layer moves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1619,6 +1667,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Transform layer: moves, scales and turns every track its bracket covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Keyframes</source>
         <translation>Images clés</translation>
     </message>
@@ -1707,6 +1759,24 @@
     <message>
         <source>Show export progress</source>
         <translation>Afficher la progression de l&apos;exportation</translation>
+    </message>
+</context>
+<context>
+    <name>AndroidTransformOverlay</name>
+    <message numerus="yes">
+        <source>%1 · %n clip(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
+    </message>
+    <message>
+        <source>Select %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3404,6 +3474,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Transform selection together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>3D gizmo: move</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3448,8 +3526,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Audio adjustment</source>
+        <translation type="unfinished">Ajustement audio</translation>
+    </message>
+    <message>
         <source>Drop a transition where two clips meet.</source>
         <translation type="unfinished">Déposez une transition à la jonction de deux clips.</translation>
+    </message>
+    <message>
+        <source>Transform layers take no effects or masks.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Audio effects go on clips with sound.</source>
@@ -3525,6 +3611,37 @@
     <message>
         <source>Text converted to subtitles</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform layer added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform clip added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change transform span</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Transform layer now covers %n track(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <source>Transition added</source>
@@ -6907,6 +7024,10 @@
         <translation>Type</translation>
     </message>
     <message>
+        <source>Transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Original dimensions: %1 × %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8741,6 +8862,10 @@
     <message>
         <source>Audio adjustment</source>
         <translation>Ajustement audio</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
     </message>
     <message>
         <source>New track</source>
@@ -12630,6 +12755,26 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select covered clips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Split at current time</source>
         <translation>Diviser à l&apos;heure actuelle</translation>
     </message>
@@ -12758,6 +12903,10 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform layer: moves, scales and turns every track its bracket covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12956,6 +13105,14 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation>Effacer la zone de travail</translation>
     </message>
     <message>
+        <source>Add transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform layer — moves the selected clips&apos; tracks as one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Main</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13094,6 +13251,10 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
+    </message>
+    <message>
         <source>Adjustment</source>
         <translation type="unfinished">Ajustement</translation>
     </message>
@@ -13147,6 +13308,10 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>TF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>FX</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13171,6 +13336,10 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation>V</translation>
     </message>
     <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
+    </message>
+    <message>
         <source>Adjustment</source>
         <translation type="unfinished">Ajustement</translation>
     </message>
@@ -13191,6 +13360,18 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation>Graphique</translation>
     </message>
     <message>
+        <source>Everything below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Stop recording</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13200,6 +13381,26 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Record voiceover (mic)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn transform on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn transform off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select covered clips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform layer above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13220,6 +13421,10 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Scroll over the header to fine-tune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13334,6 +13539,14 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation>Cet onglet ne s&apos;applique pas aux clips audio.</translation>
     </message>
     <message>
+        <source>Also moved by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Move to a time, set a value, then click the diamond to add a keyframe. With Auto keyframes on, dragging a slider or the preview also creates them.</source>
         <translation>Déplacez vers un temps, définissez une valeur, puis cliquez sur le diamant pour ajouter un point clé. Avec les points clés automatiques activés, faire glisser un curseur ou la prévisualisation crée également des points clés.</translation>
     </message>
@@ -13347,6 +13560,10 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Offset (px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Measured inside %1&apos;s frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13376,6 +13593,10 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     <message>
         <source>Rotate 90°</source>
         <translation>Tourner 90°</translation>
+    </message>
+    <message>
+        <source>Tilt the whole group as one flat card</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Tilt the clip and push it in depth, with 3D grips on the preview. Turning it off flattens the clip again.</source>
@@ -13446,12 +13667,133 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
+    </message>
+    <message>
         <source>3D layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Corrects the source&apos;s own rotation losslessly — unlike Angle above, this changes decoding, not just the on-screen box.</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransformLayerCard</name>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
+    </message>
+    <message>
+        <source>Audio</source>
+        <translation type="unfinished">Audio</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">Texte</translation>
+    </message>
+    <message>
+        <source>Subtitle</source>
+        <translation type="unfinished">Sous-titre</translation>
+    </message>
+    <message>
+        <source>Graphic</source>
+        <translation type="unfinished">Graphique</translation>
+    </message>
+    <message>
+        <source>Adjustment</source>
+        <translation type="unfinished">Ajustement</translation>
+    </message>
+    <message>
+        <source>Video</source>
+        <translation type="unfinished">Vidéo</translation>
+    </message>
+    <message>
+        <source>Everything below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moves, scales, turns and fades every track under it as one. Each clip keeps its own transform inside the group.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nothing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the playhead</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No covered clip plays here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clip</source>
+        <translation type="unfinished">Clip</translation>
+    </message>
+    <message numerus="yes">
+        <source>+%n more</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>TransformOverlay</name>
+    <message numerus="yes">
+        <source>%1 · %n clip(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">Transformation</translation>
+    </message>
+    <message>
+        <source>Select %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select the transform layer moving this clip (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransformSpanBracket</name>
+    <message numerus="yes">
+        <source>%n track(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Transform layer span end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Covers %n track(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

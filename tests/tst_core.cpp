@@ -3826,6 +3826,8 @@ void CoreTest::transformLayerRoundTrips()
     transform.rotation.setKeyframe(0, 15.0);
     layer.clips.append(transform);
     QVERIFY(layer.acceptsClip(transform));
+    // Its box shows the whole canvas, so a canvas resize scales it like a composite's.
+    QVERIFY(drift::clipBoxIsCanvasReferenced(transform));
     project.tracks().append(layer);
     drift::Track v1{.type = drift::TrackType::Video};
     v1.id = QStringLiteral("v1");

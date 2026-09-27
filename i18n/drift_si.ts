@@ -422,6 +422,14 @@
         <source>Cut a shape or a subject out of the selected clip</source>
         <translation>තෝරාගත් ක්ලිපයෙන් හැඩයක් හෝ විෂයයක් කපා වෙන් කරන්න</translation>
     </message>
+    <message>
+        <source>Transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move, scale or tilt several tracks as one</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AndroidBottomRail</name>
@@ -482,6 +490,14 @@
     <message>
         <source>Split</source>
         <translation>බෙදන්න</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
+    </message>
+    <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Fade</source>
@@ -1036,6 +1052,38 @@
     </message>
     <message>
         <source>Group the selected clips into one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move, scale or tilt the selected clips&apos; tracks as one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The layer moving this clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select covered clips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every clip this layer moves</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose which tracks this layer moves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1618,6 +1666,10 @@
         <translation type="unfinished">විචල්‍ය රාමු අනුපාතය. මෙම ක්ලිපය එහි ශ්‍රව්‍ය සමඟ අසමමුහුර්ත විය හැක. එය මත දකුණු ක්ලික් කර &apos;සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න&apos; තෝරන්න.</translation>
     </message>
     <message>
+        <source>Transform layer: moves, scales and turns every track its bracket covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Keyframes</source>
         <translation>කීෆ්‍රේම</translation>
     </message>
@@ -1706,6 +1758,24 @@
     <message>
         <source>Show export progress</source>
         <translation>නිර්යාත ප්‍රගතිය පෙන්වන්න</translation>
+    </message>
+</context>
+<context>
+    <name>AndroidTransformOverlay</name>
+    <message numerus="yes">
+        <source>%1 · %n clip(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
+    </message>
+    <message>
+        <source>Select %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3398,6 +3468,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Transform selection together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>3D gizmo: move</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3442,8 +3520,16 @@
         <translation>ස්ථාවර කිරීමේ විශ්ලේෂණය අසමත් විය: %1</translation>
     </message>
     <message>
+        <source>Audio adjustment</source>
+        <translation type="unfinished">ශ්‍රව්‍ය ගැලපුම්</translation>
+    </message>
+    <message>
         <source>Drop a transition where two clips meet.</source>
         <translation type="unfinished">ක්ලිප් දෙකක් හමුවන තැනට සංක්‍රාන්තියක් දමන්න.</translation>
+    </message>
+    <message>
+        <source>Transform layers take no effects or masks.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Audio effects go on clips with sound.</source>
@@ -3519,6 +3605,37 @@
     <message>
         <source>Text converted to subtitles</source>
         <translation>පෙළ උපසිරැසි බවට පරිවර්තනය කරන ලදී</translation>
+    </message>
+    <message>
+        <source>Add transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform layer added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform clip added</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change transform span</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Transform layer now covers %n track(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <source>Transition added</source>
@@ -6905,6 +7022,10 @@
         <translation>වර්ගය</translation>
     </message>
     <message>
+        <source>Transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Original dimensions: %1 × %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8738,6 +8859,10 @@
     <message>
         <source>Audio adjustment</source>
         <translation>ශ්‍රව්‍ය ගැලපුම්</translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
     </message>
     <message>
         <source>New track</source>
@@ -12625,6 +12750,26 @@ If playback stutters, try another.</source>
         <translation>සංයුක්තයක් (Composite) සාදන්න</translation>
     </message>
     <message>
+        <source>Transform together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select covered clips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Split at current time</source>
         <translation>වත්මන් වේලාවේදී වෙන් කරන්න</translation>
     </message>
@@ -12754,6 +12899,10 @@ If playback stutters, try another.</source>
     <message>
         <source>Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format.</source>
         <translation type="unfinished">විචල්‍ය රාමු අනුපාතය. මෙම ක්ලිපය එහි ශ්‍රව්‍ය සමඟ අසමමුහුර්ත විය හැක. එය මත දකුණු ක්ලික් කර &apos;සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න&apos; තෝරන්න.</translation>
+    </message>
+    <message>
+        <source>Transform layer: moves, scales and turns every track its bracket covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save effect preset</source>
@@ -12951,6 +13100,14 @@ If playback stutters, try another.</source>
         <translation>වැඩ කලාපය හිස් කරන්න</translation>
     </message>
     <message>
+        <source>Add transform layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform layer — moves the selected clips&apos; tracks as one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Main</source>
         <translation>ප්‍රධාන</translation>
     </message>
@@ -13089,6 +13246,10 @@ If playback stutters, try another.</source>
         <translation type="unfinished">ආවරණය (Mask)</translation>
     </message>
     <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
+    </message>
+    <message>
         <source>Adjustment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13142,6 +13303,10 @@ If playback stutters, try another.</source>
         <translation>වීඩියෝ + තරංග ආකාරය</translation>
     </message>
     <message>
+        <source>TF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>FX</source>
         <translation>FX</translation>
     </message>
@@ -13166,6 +13331,10 @@ If playback stutters, try another.</source>
         <translation>V</translation>
     </message>
     <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
+    </message>
+    <message>
         <source>Adjustment</source>
         <translation>ගැලපුම (Adjustment)</translation>
     </message>
@@ -13186,6 +13355,18 @@ If playback stutters, try another.</source>
         <translation>ග්‍රැෆික්</translation>
     </message>
     <message>
+        <source>Everything below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Stop recording</source>
         <translation>පටිගත කිරීම නවත්වන්න</translation>
     </message>
@@ -13196,6 +13377,26 @@ If playback stutters, try another.</source>
     <message>
         <source>Record voiceover (mic)</source>
         <translation>හඬ කැවීම් පටිගත කරන්න (මයික්‍රෆෝනය)</translation>
+    </message>
+    <message>
+        <source>Turn transform on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn transform off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select covered clips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add transform layer above</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Track height</source>
@@ -13216,6 +13417,10 @@ If playback stutters, try another.</source>
     <message>
         <source>Scroll over the header to fine-tune</source>
         <translation>සියුම්ව සීරුමාරු කිරීමට ශීර්ෂය මත ස්ක්‍රෝල් කරන්න</translation>
+    </message>
+    <message>
+        <source>Covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Video</source>
@@ -13329,6 +13534,14 @@ If playback stutters, try another.</source>
         <translation>මෙම ටැබය ශ්‍රව්‍ය ක්ලිප් සඳහා අදාළ නොවේ.</translation>
     </message>
     <message>
+        <source>Also moved by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">තෝරන්න</translation>
+    </message>
+    <message>
         <source>Move to a time, set a value, then click the diamond to add a keyframe. With Auto keyframes on, dragging a slider or the preview also creates them.</source>
         <translation>වේලාවකට ගොස්, අගයක් සකසා, කීෆ්‍රේමයක් එක් කිරීමට දියමන්ති ලකුණ ක්ලික් කරන්න. ස්වයංක්‍රීය කීෆ්‍රේම ක්‍රියාත්මක විට, ස්ලයිඩරයක් හෝ පෙරදසුන ඇදීමෙන් ද ඒවා නිර්මාණය වේ.</translation>
     </message>
@@ -13343,6 +13556,10 @@ If playback stutters, try another.</source>
     <message>
         <source>Offset (px)</source>
         <translation>විස්ථාපනය (px)</translation>
+    </message>
+    <message>
+        <source>Measured inside %1&apos;s frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Size (px)</source>
@@ -13371,6 +13588,10 @@ If playback stutters, try another.</source>
     <message>
         <source>Rotate 90°</source>
         <translation>90° ක් කරකවන්න</translation>
+    </message>
+    <message>
+        <source>Tilt the whole group as one flat card</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Tilt the clip and push it in depth, with 3D grips on the preview. Turning it off flattens the clip again.</source>
@@ -13441,12 +13662,133 @@ If playback stutters, try another.</source>
         <translation>දිශානතිය නිවැරදි කරන්න</translation>
     </message>
     <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
+    </message>
+    <message>
         <source>3D layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Corrects the source&apos;s own rotation losslessly — unlike Angle above, this changes decoding, not just the on-screen box.</source>
         <translation>මූලාශ්‍රයේ භ්‍රමණය හානියකින් තොරව නිවැරදි කරයි — ඉහත Angle මෙන් නොව, මෙය තිරයේ ඇති කොටුව පමණක් නොව විකේතනය (decoding) ද වෙනස් කරයි.</translation>
+    </message>
+</context>
+<context>
+    <name>TransformLayerCard</name>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
+    </message>
+    <message>
+        <source>Audio</source>
+        <translation type="unfinished">ශ්‍රව්‍ය</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished">පෙළ</translation>
+    </message>
+    <message>
+        <source>Subtitle</source>
+        <translation type="unfinished">උපසිරැසි</translation>
+    </message>
+    <message>
+        <source>Graphic</source>
+        <translation type="unfinished">ග්‍රැෆික්</translation>
+    </message>
+    <message>
+        <source>Adjustment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Video</source>
+        <translation type="unfinished">වීඩියෝ</translation>
+    </message>
+    <message>
+        <source>Everything below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moves, scales, turns and fades every track under it as one. Each clip keeps its own transform inside the group.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nothing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the playhead</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No covered clip plays here.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clip</source>
+        <translation type="unfinished">ක්ලිප්</translation>
+    </message>
+    <message numerus="yes">
+        <source>+%n more</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>TransformOverlay</name>
+    <message numerus="yes">
+        <source>%1 · %n clip(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished">පරිවර්තනය</translation>
+    </message>
+    <message>
+        <source>Select %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select the transform layer moving this clip (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransformSpanBracket</name>
+    <message numerus="yes">
+        <source>%n track(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Transform layer span end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Covers %n track(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

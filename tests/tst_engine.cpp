@@ -9440,7 +9440,17 @@ void EngineTest::transformParentReachesEveryCoveredLayer()
     composite.srcOut = composite.timelineDuration;
     composites.clips.append(composite);
 
-    project.tracks() = {standalone, composites, video};
+    drift::Track models{.type = drift::TrackType::Shape};
+    drift::Clip model;
+    model.id = QStringLiteral("model");
+    model.type = drift::ClipType::Model3d;
+    model.path = QStringLiteral(DRIFT_TEST_DATA_DIR "/cube.glb");
+    model.model3d.path = model.path;
+    model.timelineDuration = drift::secondsToUs(4.0);
+    model.srcOut = model.timelineDuration;
+    models.clips.append(model);
+
+    project.tracks() = {standalone, models, composites, video};
     drift::insertTransformTrack(project.tracks(), 0, QStringLiteral("v"));
     drift::Clip layer = drift::makeTransformClip(0, drift::secondsToUs(4.0));
     layer.transformX.setKeyframe(0, 10.0);
@@ -9453,8 +9463,12 @@ void EngineTest::transformParentReachesEveryCoveredLayer()
     bool sawTransition = false;
     bool sawAdjustment = false;
     bool sawComposite = false;
+    bool sawModel = false;
     for (const GpuItem &item : scene.items) {
-        if (item.layer.nested) {
+        if (item.layer.model3d) {
+            QVERIFY(item.layer.hasParent);
+            sawModel = true;
+        } else if (item.layer.nested) {
             QVERIFY(item.layer.hasParent);
             sawComposite = true;
         } else if (item.isTransition) {
@@ -9465,7 +9479,7 @@ void EngineTest::transformParentReachesEveryCoveredLayer()
             sawAdjustment = true;
         }
     }
-    QVERIFY(sawTransition && sawAdjustment && sawComposite);
+    QVERIFY(sawTransition && sawAdjustment && sawComposite && sawModel);
 }
 
 void EngineTest::exporterProducesPlayableFileWithBackground()
