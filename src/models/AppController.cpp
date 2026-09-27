@@ -26306,6 +26306,8 @@ QVariantMap AppController::mcpCompactClip(int trackIndex, int clipIndex, bool in
     };
     if (!clip.sequenceId.isEmpty())
         out.insert(QStringLiteral("sequenceId"), clip.sequenceId);
+    if (clip.type == drift::ClipType::Adjustment)
+        out.insert(QStringLiteral("adjustmentKind"), drift::adjustmentKindToString(clip.adjustmentKind));
     if (!includeCanvas)
         return out;
 
@@ -26367,6 +26369,24 @@ QJsonObject AppController::mcpInspect(const McpInspectOptions &options) const
             {QStringLiteral("muted"), track.muted},
             {QStringLiteral("hidden"), track.hidden},
         };
+        if (track.isAdjustment())
+            row.insert(QStringLiteral("scope"), drift::adjustmentScopeToString(track.adjustmentScope));
+        if (track.isAdjustmentLane())
+            row.insert(QStringLiteral("parent"), drift::adjustmentLaneParentIndex(m_project, t));
+        if (track.isTransformLayer()) {
+            QJsonArray covers;
+            for (const int i : drift::transformSpanTrackIndexes(projectTracks, t))
+                covers.append(i);
+            row.insert(QStringLiteral("span_end"), drift::transformSpanEndIndex(projectTracks, t));
+            row.insert(QStringLiteral("covers"), covers);
+        }
+        {
+            QJsonArray transformedBy;
+            for (const int layer : drift::transformLayersCovering(projectTracks, t))
+                transformedBy.append(layer);
+            if (!transformedBy.isEmpty())
+                row.insert(QStringLiteral("transformedBy"), transformedBy);
+        }
         if (detail && t < trackModels.size()) {
             const QVariantMap tm = trackModels.at(t).toMap();
             if (tm.value(QStringLiteral("clipDisplay")).toInt()

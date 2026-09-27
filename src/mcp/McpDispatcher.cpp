@@ -722,6 +722,10 @@ QJsonObject McpDispatcher::applyOneUnchecked(const QString &tool, const QJsonObj
         return opRenameAsset(args);
     if (tool == QLatin1String("add_track"))
         return opAddTrack(args);
+    if (tool == QLatin1String("make_transform_layer"))
+        return opMakeTransformLayer(args);
+    if (tool == QLatin1String("set_transform_span"))
+        return opSetTransformSpan(args);
     if (tool == QLatin1String("remove_track"))
         return opRemoveTrack(args);
     if (tool == QLatin1String("set_track"))
@@ -1008,9 +1012,111 @@ QJsonObject McpDispatcher::opRenameAsset(const QJsonObject &args)
     return ok({{QStringLiteral("index"), index}, {QStringLiteral("name"), name}});
 }
 
+QJsonObject McpDispatcher::transformSpanJson(int track) const
+{
+    const QVariantMap coverage = m_controller->transformLayerCoverage(track);
+    QJsonArray covers;
+    for (const QVariant &i : coverage.value(QStringLiteral("covers")).toList())
+        covers.append(i.toInt());
+    return {{QStringLiteral("end"), coverage.value(QStringLiteral("endIndex"), -1).toInt()},
+            {QStringLiteral("covers"), covers}};
+}
+
+QJsonArray McpDispatcher::transformedBy(int track) const
+{
+    QJsonArray out;
+    for (const QVariant &layer : m_controller->transformLayersCovering(track))
+        out.append(layer.toInt());
+    return out;
+}
+
+QJsonObject McpDispatcher::opMakeTransformLayer(const QJsonObject &args)
+{
+    QStringList ids;
+    for (const QJsonValue &v : args.value(QStringLiteral("clips")).toArray()) {
+        const QString id = v.toString().trimmed();
+        if (m_controller->mcpLocateClip(id).first < 0)
+            return err("not_found", QStringLiteral("Unknown clip %1").arg(id));
+        ids << id;
+    }
+    if (ids.isEmpty())
+        return err("bad_args", QStringLiteral("clips must name at least one clip"));
+    const double at = args.contains(QStringLiteral("at")) ? jsonNumber(args.value(QStringLiteral("at")), -1) : -1.0;
+    const double dur = args.contains(QStringLiteral("dur")) ? jsonNumber(args.value(QStringLiteral("dur")), -1) : -1.0;
+    const QVariantMap made = m_controller->makeTransformLayerForClips(ids, at, dur);
+    if (made.isEmpty())
+        return err("bad_args", QStringLiteral("None of the clips is on a video, text, subtitle or graphic track"));
+    const QString id = made.value(QStringLiteral("id")).toString();
+    ClipRef ref = resolveClip(QJsonObject{{QStringLiteral("clip"), id}});
+    if (args.contains(QStringLiteral("name")) && ref.valid()) {
+        m_controller->setClipName(ref.track, ref.clip, args.value(QStringLiteral("name")).toString());
+        ref = resolveClip(QJsonObject{{QStringLiteral("clip"), id}});
+    }
+    return ok({{QStringLiteral("clip"), id},
+               {QStringLiteral("track"), ref.track},
+               {QStringLiteral("index"), ref.clip},
+               {QStringLiteral("span"), transformSpanJson(ref.track)}});
+}
+
+QJsonObject McpDispatcher::opSetTransformSpan(const QJsonObject &args)
+{
+    const int track = jsonInt(args.value(QStringLiteral("track")));
+    const QVariantList options = m_controller->transformSpanOptions(track);
+    if (track < 0 || track >= m_controller->tracks().size()
+        || !m_controller->tracks().at(track).toMap().value(QStringLiteral("isTransformLayer")).toBool())
+        return err("not_found", QStringLiteral("track %1 is not a transform layer").arg(track));
+    int end = -1;
+    if (args.contains(QStringLiteral("end_clip"))) {
+        end = m_controller->mcpLocateClip(args.value(QStringLiteral("end_clip")).toString().trimmed()).first;
+        if (end < 0)
+            return err("not_found", QStringLiteral("Unknown end_clip"));
+    } else if (args.contains(QStringLiteral("end"))) {
+        end = jsonInt(args.value(QStringLiteral("end")));
+    } else {
+        return err("bad_args", QStringLiteral("end or end_clip required"));
+    }
+    QStringList valid;
+    for (const QVariant &option : options) {
+        const QVariantMap o = option.toMap();
+        valid << QString::number(o.value(QStringLiteral("endIndex")).toInt());
+        if (o.value(QStringLiteral("endIndex")).toInt() == end) {
+            m_controller->setTransformSpan(track, o.value(QStringLiteral("endId")).toString());
+            return ok({{QStringLiteral("track"), track}, {QStringLiteral("span"), transformSpanJson(track)}});
+        }
+    }
+    return err("bad_args", QStringLiteral("end %1 is not a valid span end; valid: [%2]")
+                               .arg(end)
+                               .arg(valid.join(QStringLiteral(", "))));
+}
+
 QJsonObject McpDispatcher::opAddTrack(const QJsonObject &args)
 {
     const QString type = args.value(QStringLiteral("type")).toString().trimmed().toLower();
+    if (type == QLatin1String("transform")) {
+        QString endId;
+        if (args.contains(QStringLiteral("span_end"))) {
+            const QList<drift::Track> &tracks = m_controller->project()->tracks();
+            const int end = jsonInt(args.value(QStringLiteral("span_end")));
+            if (end < 0 || end >= tracks.size() || !drift::isTransformableTrack(tracks.at(end)))
+                return err("bad_args", QStringLiteral("span_end must be a video, text, subtitle or graphic track"));
+            // The new layer goes on top, so every existing layer above the end nests in it and
+            // must not reach past it.
+            for (int layer = 0; layer < end; ++layer) {
+                if (tracks.at(layer).isTransformLayer() && drift::transformSpanEndIndex(tracks, layer) > end)
+                    return err("bad_args", QStringLiteral("span_end %1 would cut through the transform "
+                                                          "layer at track %2").arg(end).arg(layer));
+            }
+            endId = tracks.at(end).id;
+        }
+        m_controller->addTransformTrack();
+        if (!endId.isEmpty())
+            m_controller->setTransformSpan(0, endId);
+        const ClipRef ref = resolveClip(QJsonObject{{QStringLiteral("track"), 0}, {QStringLiteral("index"), 0}});
+        return ok({{QStringLiteral("track"), 0},
+                   {QStringLiteral("type"), type},
+                   {QStringLiteral("clip"), ref.id},
+                   {QStringLiteral("span"), transformSpanJson(0)}});
+    }
     const int before = m_controller->tracks().size();
     m_controller->addTrack(type);
     if (m_controller->tracks().size() == before)
@@ -1257,7 +1363,11 @@ QJsonObject McpDispatcher::opSetTransform(const QJsonObject &args)
     if (!m_controller->mcpSetClipCanvas(ref.track, ref.clip, patch))
         return err("bad_args", QStringLiteral("Transform refused"));
     const ClipRef after = resolveClip(QJsonObject{{QStringLiteral("clip"), ref.id}});
-    return ok(clipFeedback(after));
+    QJsonObject extra;
+    const QJsonArray parented = transformedBy(after.track);
+    if (!parented.isEmpty())
+        extra.insert(QStringLiteral("parented"), parented);
+    return ok(clipFeedback(after, extra));
 }
 
 QJsonObject McpDispatcher::opResetTransform(const QJsonObject &args)
@@ -1267,7 +1377,11 @@ QJsonObject McpDispatcher::opResetTransform(const QJsonObject &args)
         return clipRefError(args);
     m_controller->resetClipTransform(ref.track, ref.clip);
     const ClipRef after = resolveClip(QJsonObject{{QStringLiteral("clip"), ref.id}});
-    return ok(clipFeedback(after));
+    QJsonObject extra;
+    const QJsonArray parented = transformedBy(after.track);
+    if (!parented.isEmpty())
+        extra.insert(QStringLiteral("parented"), parented);
+    return ok(clipFeedback(after, extra));
 }
 
 QJsonObject McpDispatcher::opSeek(const QJsonObject &args)

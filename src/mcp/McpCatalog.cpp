@@ -12,7 +12,7 @@ namespace {
 
 const QStringList kTrackTypes = {QStringLiteral("video"), QStringLiteral("audio"),
                                  QStringLiteral("text"), QStringLiteral("subtitle"),
-                                 QStringLiteral("shape")};
+                                 QStringLiteral("shape"), QStringLiteral("transform")};
 
 QJsonObject clipRefProps()
 {
@@ -494,9 +494,35 @@ const QList<Op> &ops()
 
         { "add_track", "timeline", "Need a new lane",
           "Prepend a track. New track becomes index 0, so every existing track index shifts down by "
-          "one — re-read inspect before reusing track/index clip references.",
-          objectSchema({{QStringLiteral("type"), enumProp(QStringLiteral("Track type"), kTrackTypes)}},
+          "one — re-read inspect before reusing track/index clip references. type transform adds a "
+          "transform layer: a parent transform over every visual track from just below it down to "
+          "span_end (default: the lowest visual track), holding one identity clip over the whole "
+          "timeline. Returns {track, clip, span:{end, covers}} for it; move the group with "
+          "set_transform on that clip.",
+          objectSchema({{QStringLiteral("type"), enumProp(QStringLiteral("Track type"), kTrackTypes)},
+                        {QStringLiteral("span_end"), integerProp(QStringLiteral("transform only: index (as numbered before the add) of the last track the layer covers"))}},
                        {QStringLiteral("type")}) },
+        { "make_transform_layer", "timeline", "Move several tracks as one",
+          "Add a transform layer directly above the topmost track holding one of `clips`, covering "
+          "down to the lowest, with one clip over their time range (or [at, at+dur)). The clips keep "
+          "their own transforms; set_transform on the returned clip moves, scales, rotates, tilts "
+          "(layer3d) and fades the whole group. One undo step. Returns {clip, track, index, "
+          "span:{end, covers}}.",
+          objectSchema({{QStringLiteral("clips"), arrayProp({{QStringLiteral("type"), QStringLiteral("string")}},
+                                                            QStringLiteral("Clip ids to group"))},
+                        {QStringLiteral("at"), numberProp(QStringLiteral("Start in seconds (default: the clips' earliest start)"))},
+                        {QStringLiteral("dur"), numberProp(QStringLiteral("Duration in seconds (default: to the clips' latest end)"))},
+                        {QStringLiteral("name"), stringProp(QStringLiteral("Name for the transform clip"))}},
+                       {QStringLiteral("clips")}) },
+        { "set_transform_span", "timeline", "Change which tracks a transform layer covers",
+          "Set the last track the transform layer at `track` covers, by track index (`end`) or by a "
+          "clip on it (`end_clip`). The end must be a visual track below the layer and may not cut "
+          "through a nested layer's span or reach past an enclosing one; bad_args lists the valid "
+          "ends. Returns {track, span:{end, covers}}.",
+          objectSchema({{QStringLiteral("track"), integerProp(QStringLiteral("Transform layer track index"))},
+                        {QStringLiteral("end"), integerProp(QStringLiteral("Index of the last covered track"))},
+                        {QStringLiteral("end_clip"), stringProp(QStringLiteral("A clip id on the last covered track"))}},
+                       {QStringLiteral("track")}) },
         { "remove_track", "timeline", "Delete a lane and its clips",
           "Delete a track and everything on it.",
           objectSchema({{QStringLiteral("track"), integerProp(QStringLiteral("Track index"))}},

@@ -8,6 +8,14 @@ Tracks work done on `main` **since the last public release**. Use this to see wh
 
 ## ✅ Fixed
 
+- Composite clips had no box on the preview, so they could only be moved and scaled from the inspector. Their corners keep the aspect like footage.
+- Changing the video size or cropping the canvas only rebased the timeline that was open: clips inside composites kept their old positions, and composites were stretched onto the new size. Every timeline is rebased now, and a composite's box scales with the canvas so what it shows holds still.
+- **Behaviour change:** MCP `set_transform` added a second keyframe at the playhead whenever a property had one key — which every new clip does — so a plain move became an animation. It now moves the single key; only a property that is already animated, or auto-key, gets a key at the playhead, as the tool always described.
+- Standalone adjustment layers darkened and thickened soft edges over a transparent background (including inside composites): the canvas was fed to the effects premultiplied and then drawn over itself.
+- **Behaviour change:** A mask or effect pinned to one clip also applied to its neighbour on the same track wherever the two were on screen together, as during a transition. A pinned adjustment now applies to its own clip only.
+- The "Audio adjustment" track option added an empty video adjustment track. It now adds an audio adjustment track holding an audio-effects clip at the playhead.
+- **Behaviour change:** Imported video, images and vector graphics are centred on the canvas instead of sitting in the top-left corner, and Reset transform puts them back to that centred fit rather than stretching them over the whole canvas.
+
 - Importing on Android wrote the copy under whatever name the document provider reported, so a name carrying a character the storage volume will not accept — or one longer than an encrypted volume such as a Samsung Secure Folder container can hold — failed with nothing but "could not open that file". Names are now made storable first: separators, control characters and the reserved set are replaced, trailing dots and spaces dropped, and an over-long name is cut with its extension kept. Two documents that want the same copy are numbered apart rather than one silently standing in for the other.
 - An export started by an agent overwrote the settings the export dialog remembers, and an omitted audio-only or GIF switch carried over from the previous render — which could turn a video export into an audio file with nothing to say so.
 - Adding a transition could bind it to a clip that overlapped almost all of the outgoing one instead of the clip at the cut, and a transition loaded from an older project could claim a span far longer than the clips it joins.
@@ -27,5 +35,7 @@ Tracks work done on `main` **since the last public release**. Use this to see wh
 - The Duotone effect rendered a black frame instead of tinting the picture, and its shadow and highlight colours could not be changed.
 
 ## ✨ Added
+
+- Transform layers: move, scale, rotate, tilt and fade several tracks as one, without nesting them in a composite. Select clips and choose Transform together (Ctrl+G), or add a Transform track; a bracket in the track headers shows what the layer covers and its foot drags to change that. Each clip keeps its own transform inside the group, layers nest, and Shift+G selects the layer moving the selected clip. Also on Android and through MCP (`make_transform_layer`, `set_transform_span`, `add_track` type `transform`).
 
 ## 🎨 Improved

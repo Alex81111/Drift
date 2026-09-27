@@ -396,6 +396,37 @@ intro/outro animations and text animations stay flat, on top of the tilt. A clip
 are all zero renders exactly as before. `inspect` and
 `set_transform` readouts include `layer3d` and the four fields only on a 3D layer.
 
+### Transform layers
+
+A **transform layer** moves, scales, rotates, tilts and fades several tracks as one without nesting
+them in a composite. It is an adjustment track with scope `range`: it covers every video, text,
+subtitle and graphic track from just below it down to its **span end**, and each clip on it is a
+transform clip (`adjustmentKind: "transform"`) whose ordinary transform is applied as a parent to
+every clip it covers. Per-clip transforms stay as they are; a covered clip renders as
+parent × its own transform, so its `x`/`y`/`w`/`h` are still measured inside the canvas and the
+layer carries them.
+
+- `make_transform_layer({clips:[ids]})` adds a layer directly above the topmost of those clips'
+  tracks, spanning to the lowest, with one clip over their time range. `add_track({type:"transform",
+  span_end?})` adds one at the top instead (default span: every visual track below), with an identity
+  clip over the whole timeline.
+- `set_transform` on the transform clip moves the group. Its box defaults to the full canvas, which is
+  the identity; shrink `w`/`h` to scale the group, set `rotation`, or `layer3d` with `rotationX`/
+  `rotationY`/`z` to tilt it as one flat card. `opacity` multiplies into every covered clip.
+  `set_keyframe` and clip intro/outro animations work on it like on any clip.
+- `set_transform_span({track, end | end_clip})` changes the span. The end must be a visual track
+  below the layer; it may not cut through a nested layer's span or reach past an enclosing one.
+- Layers nest: a layer inside another's span is itself moved, and composes outer × inner.
+- `set_track({hidden:true})` on a layer bypasses it: the covered tracks stay visible, unmoved.
+- `inspect` rows: adjustment tracks report `scope`, lanes `parent`, a layer `span_end` and `covers`,
+  and any covered track `transformedBy` (layer indexes, outermost first). `set_transform` and
+  `reset_transform` on a covered clip report `parented`.
+
+Limits: opacity is multiplied per clip, so overlapping covered clips show through each other (a true
+group fade still needs a composite); standalone effect adjustments inside the span, and their
+masks, are not moved; a transition mixes after both of its sides have been moved; and content a clip
+places off-canvas becomes visible when the group is scaled down.
+
 ### 3D models
 
 The `model3d` toolbox puts a glTF binary (`.glb` only — a `.gltf` with sidecar files would not

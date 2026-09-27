@@ -84,6 +84,7 @@ private slots:
     void validateEnumAndRange();
     void effectParamWritesRejectUnknownKeys();
     void setTransformKeysOnlyAnimatedOrAutoKeyed();
+    void transformLayerTools();
     void unknownOpSuggests();
     void listEffectsCompactAndById();
     void listEmojiHasIds();
@@ -3873,6 +3874,89 @@ void McpTest::setTransformKeysOnlyAnimatedOrAutoKeyed()
     setX(50.0);
     QCOMPARE(clip().transformX.keyframes().size(), 3);
     QCOMPARE(clip().transformX.evaluateAt(drift::secondsToUs(1.0) - clip().timelineStart), 50.0);
+}
+
+void McpTest::transformLayerTools()
+{
+    AssetLibrary library;
+    AppController state(&library);
+    drift::mcp::McpDispatcher dispatcher(&state);
+    state.project()->tracks().clear();
+    for (const QString &name : {QStringLiteral("top"), QStringLiteral("bottom")}) {
+        drift::Track track{.type = drift::TrackType::Text};
+        drift::Clip clip;
+        clip.id = name;
+        clip.name = name;
+        clip.type = drift::ClipType::Text;
+        clip.timelineDuration = drift::secondsToUs(3.0);
+        clip.srcOut = clip.timelineDuration;
+        track.clips.append(clip);
+        state.project()->tracks().append(track);
+    }
+    state.project()->ensureTrackIds();
+    const auto dump = [](const QJsonObject &r) { return QJsonDocument(r).toJson(QJsonDocument::Compact); };
+    const QString top = QStringLiteral("top");
+    const QString bottom = QStringLiteral("bottom");
+    const int trackCount = state.project()->tracks().size();
+
+    QJsonObject r = dispatcher.applyOne(QStringLiteral("make_transform_layer"),
+                                        {{QStringLiteral("clips"), QJsonArray{top, bottom}},
+                                         {QStringLiteral("name"), QStringLiteral("Group")}});
+    QVERIFY2(r.value(QStringLiteral("ok")).toBool(), dump(r).constData());
+    QCOMPARE(r.value(QStringLiteral("track")).toInt(), 0);
+    QCOMPARE(r.value(QStringLiteral("span")).toObject().value(QStringLiteral("covers")).toArray(),
+             (QJsonArray{1, 2}));
+    QCOMPARE(state.project()->tracks().at(0).clips.at(0).name, QStringLiteral("Group"));
+    const QString layerClip = r.value(QStringLiteral("clip")).toString();
+
+    // Moving the layer reports what it parents; a child's own set_transform says it is parented.
+    r = dispatcher.applyOne(QStringLiteral("set_transform"),
+                            {{QStringLiteral("clip"), layerClip}, {QStringLiteral("x"), 100.0},
+                             {QStringLiteral("w"), 960.0}, {QStringLiteral("h"), 540.0}});
+    QVERIFY2(r.value(QStringLiteral("ok")).toBool(), dump(r).constData());
+    r = dispatcher.applyOne(QStringLiteral("set_transform"),
+                            {{QStringLiteral("clip"), top}, {QStringLiteral("opacity"), 0.5}});
+    QCOMPARE(r.value(QStringLiteral("parented")).toArray(), QJsonArray{0});
+
+    // inspect: the layer's scope and span, the covered tracks' parent, the clip's kind.
+    const QJsonObject inspect = state.mcpInspect({true, false, false, false, -1, -1, QString()});
+    const QJsonArray rows = inspect.value(QStringLiteral("tracks")).toArray();
+    const QJsonObject layerRow = rows.at(0).toObject();
+    QCOMPARE(layerRow.value(QStringLiteral("scope")).toString(), QStringLiteral("range"));
+    QCOMPARE(layerRow.value(QStringLiteral("span_end")).toInt(), 2);
+    QCOMPARE(layerRow.value(QStringLiteral("items")).toArray().at(0).toObject()
+                 .value(QStringLiteral("adjustmentKind")).toString(),
+             QStringLiteral("transform"));
+    QCOMPARE(rows.at(2).toObject().value(QStringLiteral("transformedBy")).toArray(), QJsonArray{0});
+
+    // Narrow the span, by index and by clip; a bad end names the valid ones.
+    r = dispatcher.applyOne(QStringLiteral("set_transform_span"),
+                            {{QStringLiteral("track"), 0}, {QStringLiteral("end"), 1}});
+    QVERIFY2(r.value(QStringLiteral("ok")).toBool(), dump(r).constData());
+    QCOMPARE(r.value(QStringLiteral("span")).toObject().value(QStringLiteral("covers")).toArray(), QJsonArray{1});
+    r = dispatcher.applyOne(QStringLiteral("set_transform_span"),
+                            {{QStringLiteral("track"), 0}, {QStringLiteral("end_clip"), bottom}});
+    QCOMPARE(r.value(QStringLiteral("span")).toObject().value(QStringLiteral("end")).toInt(), 2);
+    r = dispatcher.applyOne(QStringLiteral("set_transform_span"),
+                            {{QStringLiteral("track"), 0}, {QStringLiteral("end"), 0}});
+    QCOMPARE(r.value(QStringLiteral("error")).toString(), QStringLiteral("bad_args"));
+    QVERIFY(r.value(QStringLiteral("detail")).toString().contains(QStringLiteral("valid: [1, 2]")));
+
+    // add_track transform, spanning to the track named (numbered before the add). Ending on "top"
+    // would cut through the first layer's span, so that is refused; "bottom" nests it.
+    r = dispatcher.applyOne(QStringLiteral("add_track"),
+                            {{QStringLiteral("type"), QStringLiteral("transform")},
+                             {QStringLiteral("span_end"), 1}});
+    QCOMPARE(r.value(QStringLiteral("error")).toString(), QStringLiteral("bad_args"));
+    QCOMPARE(state.project()->tracks().size(), trackCount + 1);
+    r = dispatcher.applyOne(QStringLiteral("add_track"),
+                            {{QStringLiteral("type"), QStringLiteral("transform")},
+                             {QStringLiteral("span_end"), 2}});
+    QVERIFY2(r.value(QStringLiteral("ok")).toBool(), dump(r).constData());
+    QVERIFY(!r.value(QStringLiteral("clip")).toString().isEmpty());
+    QCOMPARE(r.value(QStringLiteral("span")).toObject().value(QStringLiteral("covers")).toArray(),
+             (QJsonArray{2, 3}));
+    QCOMPARE(state.project()->tracks().size(), trackCount + 2);
 }
 
 // These writes used to return ok whatever you sent them: a misspelt key was stored in the project
