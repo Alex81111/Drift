@@ -3908,6 +3908,10 @@ void McpTest::transformLayerTools()
              (QJsonArray{1, 2}));
     QCOMPARE(state.project()->tracks().at(0).clips.at(0).name, QStringLiteral("Group"));
     const QString layerClip = r.value(QStringLiteral("clip")).toString();
+    // A fresh transform clip has no size keys; it reports the canvas it fills, not 0x0.
+    const QVariantMap compact = state.mcpCompactClip(0, 0, true);
+    QCOMPARE(compact.value(QStringLiteral("w")).toDouble(), double(state.project()->width()));
+    QCOMPARE(compact.value(QStringLiteral("h")).toDouble(), double(state.project()->height()));
 
     // Moving the layer reports what it parents; a child's own set_transform says it is parented.
     r = dispatcher.applyOne(QStringLiteral("set_transform"),
