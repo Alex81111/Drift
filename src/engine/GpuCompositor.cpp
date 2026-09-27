@@ -365,17 +365,12 @@ void main() {
 )";
 
 // A composed canvas is premultiplied, while every layer target is straight alpha.
-GlTarget nestedLayerTarget(GlRuntime &rt, QOpenGLExtraFunctions *gl, const GpuScene &nested)
+GlTarget unpremultipliedCopy(GlRuntime &rt, QOpenGLExtraFunctions *gl, const GlTarget &canvas)
 {
     QOpenGLShaderProgram *program = rt.builtinProgram(
         QStringLiteral("__unpremul__"), kQuadVertexShader, kUnpremultiplyFragShader);
     if (!program)
         return {};
-
-    GlTarget canvas = rt.acquireTarget(nested.canvasSize.width(), nested.canvasSize.height());
-    if (!canvas.isValid())
-        return {};
-    composeOnGlThread(rt, nested, canvas);
 
     GlTarget out = rt.acquireTarget(canvas.width, canvas.height);
     if (out.isValid()) {
@@ -390,6 +385,17 @@ GlTarget nestedLayerTarget(GlRuntime &rt, QOpenGLExtraFunctions *gl, const GpuSc
         program->release();
         out.fbo->release();
     }
+    return out;
+}
+
+GlTarget nestedLayerTarget(GlRuntime &rt, QOpenGLExtraFunctions *gl, const GpuScene &nested)
+{
+    GlTarget canvas = rt.acquireTarget(nested.canvasSize.width(), nested.canvasSize.height());
+    if (!canvas.isValid())
+        return {};
+    composeOnGlThread(rt, nested, canvas);
+
+    GlTarget out = unpremultipliedCopy(rt, gl, canvas);
     rt.releaseTarget(std::move(canvas));
     return out;
 }
@@ -599,9 +605,14 @@ struct OcclusionDraw
     bool cutout = false;
 };
 
+// How a Normal or Add layer meets the canvas. Erase scales the canvas by one minus the layer's
+// coverage and Add sums onto it; the two together replace the canvas by the layer's coverage.
+enum class CanvasWrite { Over, Erase, Add };
+
 void drawLayerOnCanvas(GlRuntime &rt, QOpenGLExtraFunctions *gl, GlTarget &canvas,
                        const GlTarget &layerTarget, const GpuLayer &layer, drift::BlendMode blend,
-                       const QSize &canvasSize, const OcclusionDraw *occlusion = nullptr);
+                       const QSize &canvasSize, const OcclusionDraw *occlusion = nullptr,
+                       CanvasWrite write = CanvasWrite::Over);
 
 // Where a media mask's pixels land inside the coverage target. The mask's rect is normalized to
 // the clip frame; the fit mode then decides what happens when the media's aspect differs from it.
@@ -859,7 +870,7 @@ GlTarget depthCanvasTarget(GlRuntime &rt, QOpenGLExtraFunctions *gl, const GpuLa
 // blend mode. For non-fixed-function modes the canvas is ping-ponged.
 void drawLayerOnCanvas(GlRuntime &rt, QOpenGLExtraFunctions *gl, GlTarget &canvas,
                        const GlTarget &layerTarget, const GpuLayer &layer, drift::BlendMode blend,
-                       const QSize &canvasSize, const OcclusionDraw *occlusion)
+                       const QSize &canvasSize, const OcclusionDraw *occlusion, CanvasWrite write)
 {
     if (!layerTarget.isValid() || layer.rect.width() < 0.5 || layer.rect.height() < 0.5)
         return;
@@ -949,7 +960,9 @@ void drawLayerOnCanvas(GlRuntime &rt, QOpenGLExtraFunctions *gl, GlTarget &canva
         canvas.fbo->bind();
         gl->glViewport(0, 0, canvas.width, canvas.height);
         gl->glEnable(GL_BLEND);
-        if (blend == drift::BlendMode::Add)
+        if (write == CanvasWrite::Erase)
+            gl->glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
+        else if (blend == drift::BlendMode::Add || write == CanvasWrite::Add)
             gl->glBlendFunc(GL_ONE, GL_ONE);
         else
             gl->glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // premultiplied source-over
@@ -1055,6 +1068,16 @@ GlTarget renderIsolatedLayer(GlRuntime &rt, QOpenGLExtraFunctions *gl, const Gpu
     drawLayerOnCanvas(rt, gl, isolated, source, layer, drift::BlendMode::Normal, canvasSize);
     rt.releaseTarget(std::move(source));
     return isolated;
+}
+
+bool replacesSeeThroughCanvas(const GpuScene &scene, drift::BlendMode blend)
+{
+    if (blend != drift::BlendMode::Normal)
+        return false;
+    if (scene.backgroundBlur && !scene.blurSource.isNull())
+        return false;
+    const QColor &c = scene.backgroundColor.isValid() ? scene.backgroundColor : QColor(Qt::black);
+    return c.alpha() < 255;
 }
 
 void fillBackground(GlRuntime &rt, QOpenGLExtraFunctions *gl, GlTarget &canvas, const GpuScene &scene)
@@ -1173,12 +1196,24 @@ void composeOnGlThread(GlRuntime &rt, const GpuScene &scene, GlTarget &canvas, b
             if (item.layer.effects.isEmpty() || item.layer.opacity <= 0.001)
                 continue;
 
-            GlTarget copy = rt.acquireTarget(canvasSize.width(), canvasSize.height());
-            if (!copy.isValid())
-                continue;
-            if (!blitTextureToTarget(rt, gl, canvas.texture(), copy)) {
-                rt.releaseTarget(std::move(copy));
-                continue;
+            // Over a see-through background the canvas holds premultiplied colour the effects would
+            // read as straight, and drawing the result over its own source would count the
+            // content twice. Such canvases are unpremultiplied first and replaced afterwards;
+            // opaque ones keep the plain copy and source-over, which is the same there.
+            const bool seeThrough = replacesSeeThroughCanvas(scene, item.blend);
+            GlTarget copy;
+            if (seeThrough) {
+                copy = unpremultipliedCopy(rt, gl, canvas);
+                if (!copy.isValid())
+                    continue;
+            } else {
+                copy = rt.acquireTarget(canvasSize.width(), canvasSize.height());
+                if (!copy.isValid())
+                    continue;
+                if (!blitTextureToTarget(rt, gl, canvas.texture(), copy)) {
+                    rt.releaseTarget(std::move(copy));
+                    continue;
+                }
             }
 
             GlTarget target = std::move(copy);
@@ -1220,7 +1255,23 @@ void composeOnGlThread(GlRuntime &rt, const GpuScene &scene, GlTarget &canvas, b
                 target = std::move(next);
             }
 
-            drawLayerOnCanvas(rt, gl, canvas, target, item.layer, item.blend, canvasSize);
+            if (seeThrough) {
+                GlTarget coverage = rt.acquireTarget(canvasSize.width(), canvasSize.height());
+                if (coverage.isValid()) {
+                    coverage.fbo->bind();
+                    gl->glViewport(0, 0, coverage.width, coverage.height);
+                    gl->glClearColor(1.f, 1.f, 1.f, 1.f);
+                    gl->glClear(GL_COLOR_BUFFER_BIT);
+                    coverage.fbo->release();
+                    drawLayerOnCanvas(rt, gl, canvas, coverage, item.layer, item.blend, canvasSize,
+                                      nullptr, CanvasWrite::Erase);
+                    rt.releaseTarget(std::move(coverage));
+                    drawLayerOnCanvas(rt, gl, canvas, target, item.layer, item.blend, canvasSize,
+                                      nullptr, CanvasWrite::Add);
+                }
+            } else {
+                drawLayerOnCanvas(rt, gl, canvas, target, item.layer, item.blend, canvasSize);
+            }
             rt.releaseTarget(std::move(target));
             continue;
         }

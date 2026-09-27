@@ -320,6 +320,7 @@ private slots:
     void maskLaneOpsCombineAcrossLanes();
     void soleMediaMaskCarriesTheDecontaminatedForeground();
     void aVideoEffectsAdjustmentKeepsItsOwnMask();
+    void standaloneAdjustmentKeepsSeeThroughCanvasAlpha();
     void exporterProducesPlayableFileWithBackground();
     void exporterProducesAudioOnlyMp3();
     void exporterTagsSdrBt709ColorMetadata();
@@ -9033,6 +9034,51 @@ void EngineTest::aVideoEffectsAdjustmentKeepsItsOwnMask()
     QVERIFY(scene.items.constFirst().isAdjustment);
     QCOMPARE(scene.items.constFirst().layer.masks.size(), 1);
     QCOMPARE(scene.items.constFirst().layer.masks.constFirst().shape, drift::MaskShape::Ellipse);
+}
+
+// Over a transparent background a do-nothing adjustment used to square the canvas's alpha into
+// its colour and then draw the result over itself, darkening and thickening every soft edge.
+void EngineTest::standaloneAdjustmentKeepsSeeThroughCanvasAlpha()
+{
+    if (!GpuCompositor::isAvailable())
+        QSKIP("No GPU compositor available");
+
+    QImage red(32, 32, QImage::Format_RGBA8888);
+    red.fill(QColor(255, 0, 0, 128));
+    GpuItem clip;
+    clip.layer.valid = true;
+    clip.layer.source = red;
+    clip.layer.rect = QRectF(0, 0, 32, 32);
+
+    GpuScene scene;
+    scene.canvasSize = QSize(32, 32);
+    scene.backgroundColor = Qt::transparent;
+    scene.items.append(clip);
+    const QImage plain = GpuCompositor::render(scene);
+    QVERIFY(!plain.isNull());
+
+    drift::Effect brightness;
+    brightness.catalogId = QStringLiteral("adjust.brightness");
+    brightness.parameters.insert(QStringLiteral("brightness"), 0.0);
+    GpuItem adjustment;
+    adjustment.isAdjustment = true;
+    adjustment.layer.valid = true;
+    adjustment.layer.rect = QRectF(0, 0, 32, 32);
+    adjustment.layer.effects.append(brightness);
+    scene.items.append(adjustment);
+    const QImage adjusted = GpuCompositor::render(scene);
+    QVERIFY(!adjusted.isNull());
+
+    const QColor a = plain.pixelColor(16, 16);
+    const QColor b = adjusted.pixelColor(16, 16);
+    QVERIFY2(qAbs(a.alpha() - b.alpha()) <= 2 && qAbs(a.red() - b.red()) <= 2,
+             qPrintable(QStringLiteral("plain %1 adjusted %2").arg(a.name(QColor::HexArgb), b.name(QColor::HexArgb))));
+
+    // Opaque projects keep the plain copy-and-draw path.
+    scene.backgroundColor = Qt::black;
+    const QImage opaqueAdjusted = GpuCompositor::render(scene);
+    scene.items.removeLast();
+    QCOMPARE(opaqueAdjusted.pixelColor(16, 16), GpuCompositor::render(scene).pixelColor(16, 16));
 }
 
 void EngineTest::exporterProducesPlayableFileWithBackground()
