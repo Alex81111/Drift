@@ -4776,6 +4776,23 @@ void EditorStateTest::dropEffectOnGapAddsAdjustmentLayer()
             foundAdjustment = true;
     }
     QVERIFY(foundAdjustment);
+
+    // On a lower track it lands directly above that track, not over everything; a second drop
+    // there reuses the same adjustment track, and each drop is one undo step.
+    setUpTransformTracks(state);
+    for (drift::Track &track : state.project()->tracks())
+        track.type = drift::TrackType::Video;
+    const int tracksBefore = state.project()->tracks().size();
+    state.dropAsset(QStringLiteral("effect"), QStringLiteral("x"), QString(), 2, 6.0, -1);
+    QCOMPARE(state.project()->tracks().size(), tracksBefore + 1);
+    QVERIFY(state.project()->tracks().at(2).isAdjustment());
+    QCOMPARE(state.project()->tracks().at(3).id, QStringLiteral("s3"));
+    state.dropAsset(QStringLiteral("effect"), QStringLiteral("x"), QString(), 3, 12.0, -1);
+    QCOMPARE(state.project()->tracks().size(), tracksBefore + 1);
+    QCOMPARE(state.project()->tracks().at(2).clips.size(), 2);
+    state.undo();
+    state.undo();
+    QCOMPARE(state.project()->tracks().size(), tracksBefore);
 }
 
 void EditorStateTest::dropRejectsClipKindOverEmptyNonVideoTrack()

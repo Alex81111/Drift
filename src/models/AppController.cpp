@@ -14208,14 +14208,31 @@ QVariantMap AppController::dropAsset(const QString &kind, const QString &payload
         return plan;
     }
 
-    // mode == "gap"
+    // mode == "gap". An effect dropped on a track's empty space grades what is under that track,
+    // so its adjustment goes directly above it: reusing a free standalone adjustment track that
+    // already sits there, else a new one. Any other placement changes what it applies to.
+    const auto adjustmentTrackAbove = [this, at](int trackIndex) {
+        const drift::TimeUs start = drift::secondsToUs(at);
+        const drift::TimeUs end = start + drift::kImageClipDurationUs;
+        if (trackIndex > 0) {
+            const drift::Track &above = m_project.tracks().at(trackIndex - 1);
+            bool free = above.isAdjustment() && !above.isAdjustmentLane() && !above.isTransformLayer();
+            for (const drift::Clip &clip : above.clips)
+                free = free && (clip.timelineEnd() <= start || clip.timelineStart >= end);
+            if (free)
+                return trackIndex - 1;
+        }
+        return drift::insertTrackAboveForClipType(m_project, trackIndex, drift::ClipType::Adjustment);
+    };
     if (kind == QLatin1String("effect")) {
-        addAdjustmentClipWithEffect(payload, -1, at);
+        mcpBeginBatch();
+        addAdjustmentClipWithEffect(payload, adjustmentTrackAbove(track), at);
+        mcpEndBatch(tr("Add adjustment layer"), true);
     } else if (kind == QLatin1String("mask")) {
         addMaskLaneClip(track, payload, at);
     } else if (kind == QLatin1String("effectStack")) {
         mcpBeginBatch();
-        addAdjustmentClipWithEffect(QString(), -1, at);
+        addAdjustmentClipWithEffect(QString(), adjustmentTrackAbove(track), at);
         if (m_selectedTrack >= 0 && m_selectedClip >= 0)
             applyEffectPreset(m_selectedTrack, m_selectedClip, payload);
         mcpEndBatch(tr("Add adjustment layer"), true);
