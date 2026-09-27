@@ -24,6 +24,7 @@ private slots:
     void init();
     void roundTripsMixedStorage();
     void dedupesRepeatedPaths();
+    void keepsDocumentResourceLayout();
     void compressesTextButNotMedia();
     void skipsAlreadyExtractedBlobs();
     void degradesMissingMediaToReference();
@@ -231,6 +232,61 @@ void TestProjectBundle::dedupesRepeatedPaths()
     QHash<QString, QString> remap;
     QVERIFY2(extract(path, dir.path(), {}, &remap, &error), qPrintable(error));
     QCOMPARE(dir.entryList(QDir::Files).size(), 2);
+}
+
+void TestProjectBundle::keepsDocumentResourceLayout()
+{
+    // Two animations from different folders that both name images/img_0.png, one image also used
+    // as standalone media, and a referenced document whose resource must stay behind with it.
+    QVERIFY(QDir(m_tmp.path()).mkpath(QStringLiteral("a/images")));
+    QVERIFY(QDir(m_tmp.path()).mkpath(QStringLiteral("b/images")));
+    QVERIFY(QDir(m_tmp.path()).mkpath(QStringLiteral("c/images")));
+    const QString docA = writeSource(QStringLiteral("a/anim.json"), "{\"a\":1}");
+    const QString imgA = writeSource(QStringLiteral("a/images/img_0.png"), QByteArray(300, 'A'));
+    const QString docB = writeSource(QStringLiteral("b/anim.json"), "{\"b\":2}");
+    const QString imgB = writeSource(QStringLiteral("b/images/img_0.png"), QByteArray(200, 'B'));
+    const QString docC = writeSource(QStringLiteral("c/anim.json"), "{\"c\":3}");
+    const QString imgC = writeSource(QStringLiteral("c/images/img_0.png"), QByteArray(100, 'C'));
+
+    const auto entry = [](const QString &path, const QString &resourceOf, bool embedded) {
+        MediaEntry e;
+        e.originalPath = path;
+        e.resourceOf = resourceOf;
+        e.embedded = embedded;
+        return e;
+    };
+    WriteRequest request = sampleRequest();
+    request.media = {entry(imgA, QString(), true), entry(docA, QString(), true),
+                     entry(imgA, docA, true),      entry(docB, QString(), true),
+                     entry(imgB, docB, true),      entry(docC, QString(), false),
+                     entry(imgC, docC, true)};
+
+    const QString path = m_tmp.filePath(QStringLiteral("layout.drift"));
+    QString error;
+    QVERIFY2(write(path, request, {}, &error), qPrintable(error));
+    const auto info = readManifest(path, &error);
+    QVERIFY2(info.has_value(), qPrintable(error));
+    QVERIFY(!info->media.at(6).embedded);
+    QCOMPARE(info->media.at(6).resourceOf, docC);
+
+    const QString dest = m_tmp.filePath(QStringLiteral("layout-out"));
+    QHash<QString, QString> remap;
+    QVERIFY2(extract(path, dest, {}, &remap, &error), qPrintable(error));
+
+    // Documents and standalone media are remapped; resources are found beside their document.
+    QCOMPARE(remap.size(), 3);
+    const auto readAt = [](const QString &file) {
+        QFile f(file);
+        return f.open(QIODevice::ReadOnly) ? f.readAll() : QByteArray();
+    };
+    const QString outA = remap.value(docA);
+    const QString outB = remap.value(docB);
+    QVERIFY(QFileInfo(outA).absolutePath() != QFileInfo(outB).absolutePath());
+    QCOMPARE(readAt(outA), readAt(docA));
+    QCOMPARE(readAt(outB), readAt(docB));
+    QCOMPARE(readAt(QFileInfo(outA).absolutePath() + QStringLiteral("/images/img_0.png")), readAt(imgA));
+    QCOMPARE(readAt(QFileInfo(outB).absolutePath() + QStringLiteral("/images/img_0.png")), readAt(imgB));
+    QCOMPARE(readAt(remap.value(imgA)), readAt(imgA));
 }
 
 void TestProjectBundle::compressesTextButNotMedia()

@@ -24252,7 +24252,8 @@ drift::bundle::WriteRequest AppController::buildWriteRequest(bool embedSource) c
     // to references into the extraction dir, which the startup sweep is free to delete.
     if (!embedSource) {
         for (drift::bundle::MediaEntry &entry : request.media) {
-            if (m_embeddedSources.contains(entry.originalPath))
+            if (m_embeddedSources.contains(entry.originalPath)
+                || m_embeddedSources.contains(entry.resourceOf))
                 entry.embedded = true;
         }
     }
@@ -25002,7 +25003,8 @@ void AppController::loadProject(const QUrl &url)
 
         m_embeddedSources.clear();
         for (const drift::bundle::MediaEntry &entry : bundle.media) {
-            if (entry.embedded && entry.role == drift::bundle::MediaRole::Source)
+            if (entry.embedded && entry.role == drift::bundle::MediaRole::Source
+                && entry.resourceOf.isEmpty())
                 m_embeddedSources.insert(remap.value(entry.originalPath, entry.originalPath));
         }
 
@@ -25082,6 +25084,24 @@ void AppController::remapProjectPaths(const QHash<QString, QString> &remap)
         }
     }
 
+    // A relinked copy has a new path and mtime, which the fingerprint reads as a different file.
+    // The size still has to agree: the transcript is only carried over for the same bytes.
+    QHash<QString, drift::TranscriptPtr> transcripts = m_project.transcripts();
+    for (auto it = transcripts.begin(); it != transcripts.end(); ++it) {
+        if (!it.value())
+            continue;
+        QString path = it.value()->source.path;
+        if (!repoint(path))
+            continue;
+        const drift::SourceFingerprint moved = drift::SourceFingerprint::of(path);
+        if (moved.size != it.value()->source.size)
+            continue;
+        auto updated = std::make_shared<drift::Transcript>(*it.value());
+        updated->source = moved;
+        it.value() = std::move(updated);
+    }
+    m_project.setTranscripts(transcripts);
+
     m_project.forEachTrackList([&](QList<drift::Track> &tracks) {
         for (drift::Track &track : tracks) {
             for (drift::Clip &clip : track.clips) {
@@ -25090,6 +25110,15 @@ void AppController::remapProjectPaths(const QHash<QString, QString> &remap)
                 repoint(clip.mask.mediaFgrPath);
                 repoint(clip.faceTrackPath);
                 repoint(clip.depthPath);
+                repoint(clip.stabilizePath);
+                for (drift::VectorSlotValue &slot : clip.vector.slotValues) {
+                    if (slot.type == drift::VectorSlotValue::Type::Image)
+                        repoint(slot.image);
+                }
+                for (drift::TextShadingLayer &layer : clip.textStyle.layers)
+                    repoint(layer.paint.texture.path);
+                for (drift::TextShadingLayer &layer : clip.shapeStyle.layers)
+                    repoint(layer.paint.texture.path);
                 for (drift::Effect &effect : clip.effects) {
                     const EffectPresetEntry *def = effectDefForId(effect.catalogId);
                     if (!def)

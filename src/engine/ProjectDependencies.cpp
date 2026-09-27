@@ -9,8 +9,14 @@
 #include "core/Project.h"
 
 #include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QSet>
 #include <QStandardPaths>
+#include <QXmlStreamReader>
 
 namespace drift::bundle {
 namespace {
@@ -29,6 +35,65 @@ bool isUnder(const QString &path, const QString &dir)
         return false;
     const QString root = QDir::cleanPath(dir);
     return QDir::cleanPath(path).startsWith(root + QLatin1Char('/'));
+}
+
+// A reference the renderer resolves against the document's directory (SkiaVectorResources), as an
+// absolute path, or empty when it is inline, remote, or would climb out of that directory.
+QString documentRelativeFile(const QString &documentDir, const QString &dir, const QString &name)
+{
+    if (name.isEmpty() || name.startsWith(QLatin1String("data:")) || name.contains(QLatin1String("://"))
+        || dir.contains(QLatin1String("://")))
+        return {};
+    QString rel = QDir::cleanPath(dir + QLatin1Char('/') + name);
+    while (rel.startsWith(QLatin1Char('/')))
+        rel.remove(0, 1);
+    if (rel.isEmpty() || rel.startsWith(QLatin1String("..")) || QFileInfo(rel).isAbsolute())
+        return {};
+    const QString path = QDir(documentDir).filePath(rel);
+    return QFileInfo(path).isFile() ? path : QString();
+}
+
+// The files a Lottie or SVG document loads from beside itself: Lottie image assets ("u" + "p")
+// and font files ("fPath"), SVG <image> hrefs. A .lottie import unpacks its images next to the
+// JSON exactly this way.
+QStringList documentResources(const QString &documentPath)
+{
+    const QString suffix = QFileInfo(documentPath).suffix().toLower();
+    if (suffix != QLatin1String("json") && suffix != QLatin1String("svg"))
+        return {};
+    QFile file(documentPath);
+    if (!file.open(QIODevice::ReadOnly))
+        return {};
+    const QString dir = QFileInfo(documentPath).absolutePath();
+    QStringList out;
+
+    if (suffix == QLatin1String("json")) {
+        const QJsonObject root = QJsonDocument::fromJson(file.readAll()).object();
+        for (const QJsonValue &value : root.value(QStringLiteral("assets")).toArray()) {
+            const QJsonObject asset = value.toObject();
+            if (asset.value(QStringLiteral("e")).toInt() == 1)
+                continue;
+            out.append(documentRelativeFile(dir, asset.value(QStringLiteral("u")).toString(),
+                                            asset.value(QStringLiteral("p")).toString()));
+        }
+        const QJsonArray fonts =
+            root.value(QStringLiteral("fonts")).toObject().value(QStringLiteral("list")).toArray();
+        for (const QJsonValue &value : fonts)
+            out.append(documentRelativeFile(dir, QString(),
+                                            value.toObject().value(QStringLiteral("fPath")).toString()));
+    } else {
+        QXmlStreamReader xml(&file);
+        while (!xml.atEnd()) {
+            if (xml.readNext() != QXmlStreamReader::StartElement || xml.name() != QLatin1String("image"))
+                continue;
+            for (const QXmlStreamAttribute &attribute : xml.attributes()) {
+                if (attribute.name() == QLatin1String("href"))
+                    out.append(documentRelativeFile(dir, QString(), attribute.value().toString()));
+            }
+        }
+    }
+    out.removeAll(QString());
+    return out;
 }
 
 void addAddon(const addon::InstalledAddon *installed, const QString &kind,
@@ -72,15 +137,29 @@ QList<MediaEntry> collectMedia(const Project &project, bool embedSource)
     QList<MediaEntry> media;
     QSet<QString> seen;
 
-    const auto append = [&](const QString &path, MediaRole role, bool embedded) {
-        if (path.isEmpty() || seen.contains(path))
-            return;
-        seen.insert(path);
+    const auto appendEntry = [&](const QString &path, const QString &resourceOf, MediaRole role,
+                                 bool embedded) {
+        const QString key = resourceOf + QLatin1Char('\n') + path;
+        if (path.isEmpty() || seen.contains(key))
+            return false;
+        seen.insert(key);
         MediaEntry entry;
         entry.originalPath = path;
+        entry.resourceOf = resourceOf;
         entry.role = role;
         entry.embedded = embedded;
         media.append(entry);
+        return true;
+    };
+    const auto append = [&](const QString &path, MediaRole role, bool embedded) {
+        if (!appendEntry(path, QString(), role, embedded) || role != MediaRole::Source)
+            return;
+        for (const QString &resource : documentResources(path))
+            appendEntry(resource, path, MediaRole::Source, embedded);
+    };
+    const auto appendTextures = [&](const QList<TextShadingLayer> &layers) {
+        for (const TextShadingLayer &layer : layers)
+            append(layer.paint.texture.path, MediaRole::Source, embedSource);
     };
 
     for (const QString &id : project.assetOrder()) {
@@ -112,6 +191,13 @@ QList<MediaEntry> collectMedia(const Project &project, bool embedSource)
             append(clip.mask.mediaFgrPath, MediaRole::Matte, true);
             append(clip.faceTrackPath, MediaRole::FaceTrack, true);
             append(clip.depthPath, MediaRole::Depth, true);
+            append(clip.stabilizePath, MediaRole::Stabilized, true);
+            for (const VectorSlotValue &slot : clip.vector.slotValues) {
+                if (slot.type == VectorSlotValue::Type::Image)
+                    append(slot.image, MediaRole::Source, embedSource);
+            }
+            appendTextures(clip.textStyle.layers);
+            appendTextures(clip.shapeStyle.layers);
             for (const Effect &effect : clip.effects) {
                 const EffectPresetEntry *def = effectDefForId(effect.catalogId);
                 if (!def)
