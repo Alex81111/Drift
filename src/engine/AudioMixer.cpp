@@ -525,6 +525,23 @@ size_t liveAdjustments(const QList<const drift::Clip *> &candidates, drift::Time
     return key;
 }
 
+// The subset of a track's live lane adjustments that applies to `hostClipId`: an adjustment pinned
+// to a clip (linkedClipId) is that clip's alone, so across a crossfade the outgoing clip's audio
+// chain stays off the incoming one.
+size_t adjustmentsForClip(const QList<const drift::Clip *> &trackLive, const QString &hostClipId,
+                          QList<const drift::Clip *> &live)
+{
+    live.clear();
+    size_t key = 0;
+    for (const drift::Clip *adjustment : trackLive) {
+        if (!adjustment->linkedClipId.isEmpty() && adjustment->linkedClipId != hostClipId)
+            continue;
+        live.append(adjustment);
+        key = qHashMulti(key, adjustment->id);
+    }
+    return key;
+}
+
 } // namespace
 
 void AudioMixer::mix(drift::TimeUs timelineStartUs, int sampleCount, int sampleRate,
@@ -565,6 +582,7 @@ void AudioMixer::mix(drift::TimeUs timelineStartUs, int sampleCount, int sampleR
     }
     const AudioAdjustments &adjustments = serial != 0 ? m_adjustments : unsnapshotted;
     QList<const drift::Clip *> live;
+    QList<const drift::Clip *> trackLive;
 
     QHash<int, QPair<float, float>> newTrackLevels;
     for (int ti = 0; ti < tracks.size(); ++ti) {
@@ -577,24 +595,27 @@ void AudioMixer::mix(drift::TimeUs timelineStartUs, int sampleCount, int sampleR
         if (track.isAdjustment())
             continue;
 
-        const size_t laneKey =
-            liveAdjustments(adjustments.lanes.value(ti), timelineStartUs, live);
+        liveAdjustments(adjustments.lanes.value(ti), timelineStartUs, trackLive);
 
         float peakL = 0.0f;
         float peakR = 0.0f;
         if (track.type == drift::TrackType::Audio) {
-            for (const drift::Clip &clip : track.clips)
+            for (const drift::Clip &clip : track.clips) {
+                const size_t laneKey = adjustmentsForClip(trackLive, clip.id, live);
                 accumulateClipAudio(*project, clip, track, timelineStartUs, sampleCount, sampleRate,
                                     interleavedStereoOut, m_clipAudioMutex, m_clipAudio,
                                     live, laneKey, m_streamSalt, m_depth, serial, &peakL, &peakR);
+            }
         } else if (track.type == drift::TrackType::Video) {
             for (const drift::Clip &clip : track.clips) {
                 if ((clip.type == drift::ClipType::Video || clip.type == drift::ClipType::Composite)
-                    && !clip.suppressEmbeddedAudio)
+                    && !clip.suppressEmbeddedAudio) {
+                    const size_t laneKey = adjustmentsForClip(trackLive, clip.id, live);
                     accumulateClipAudio(*project, clip, track, timelineStartUs, sampleCount,
                                         sampleRate, interleavedStereoOut, m_clipAudioMutex,
                                         m_clipAudio, live, laneKey, m_streamSalt, m_depth, serial,
                                         &peakL, &peakR);
+                }
             }
         }
         newTrackLevels.insert(ti, {peakL, peakR});

@@ -10996,6 +10996,36 @@ void EngineTest::audioAdjustmentLanesAndMasterBus()
                                 .arg(wetRms).arg(dryRms)));
     }
 
+    // --- pinned: only the clip it is linked to hears it ---------------------------------------
+    // A crossfade plays the outgoing clip's neighbour over the same instant; its pinned chain used
+    // to be picked up by time alone and land on both.
+    for (const bool pinnedHere : {false, true}) {
+        drift::Project project = makeRetimedToneProject(path, 1.0, false);
+        project.ensureTrackIds();
+        const drift::Clip &host = project.tracks().at(0).clips.at(0);
+
+        drift::Track lane;
+        lane.type = drift::TrackType::Adjustment;
+        lane.adjustmentScope = drift::AdjustmentScope::ParentTrack;
+        lane.parentTrackId = project.tracks().at(0).id;
+        drift::Clip adjustment;
+        adjustment.id = QStringLiteral("pinned");
+        adjustment.type = drift::ClipType::Adjustment;
+        adjustment.adjustmentKind = drift::AdjustmentKind::AudioEffects;
+        adjustment.linkedClipId = pinnedHere ? host.id : QStringLiteral("someone-else");
+        adjustment.timelineDuration = host.timelineDuration;
+        adjustment.audioEffects.append(quieter);
+        lane.clips.append(adjustment);
+        project.tracks().append(lane);
+        project.ensureTrackIds();
+
+        const double rms = rmsOf(project);
+        if (pinnedHere)
+            QVERIFY2(rms < dryRms * 0.8, qPrintable(QString::number(rms)));
+        else
+            QVERIFY2(rms > dryRms * 0.95, qPrintable(QString::number(rms)));
+    }
+
     // --- standalone: the master bus ------------------------------------------------------
     {
         drift::Project project = makeRetimedToneProject(path, 1.0, false);
