@@ -291,6 +291,7 @@ private slots:
     void timeEchoBlendIncludesHistoryContribution();
     void timeEchoDeterministicAtFixedTimelineTime();
     void timeEchoBlendsPriorVideoFrames();
+    void timeEchoOnALaneBlendsPriorVideoFrames();
     void shockwavePulseZeroStrengthPassthrough();
     void shockwavePulseChangesPixelsNearWavefront();
     void compositorCrossfadeBetweenShapeClips();
@@ -7741,6 +7742,57 @@ void EngineTest::timeEchoDeterministicAtFixedTimelineTime()
     const QImage second = compositor.compositeAt(timeUs);
     QCOMPARE(first, second);
     QVERIFY(!first.isNull());
+}
+
+// Effects live on lane adjustments now, and the trail used to be looked for on the clip alone —
+// so a time_echo added the ordinary way did nothing at all.
+void EngineTest::timeEchoOnALaneBlendsPriorVideoFrames()
+{
+    if (!GpuCompositor::isAvailable())
+        QSKIP("No GPU compositor available");
+
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = makeColorSegmentsVideo(dir);
+    if (path.isEmpty())
+        QSKIP("ffmpeg not available to generate a test clip");
+
+    drift::Project project;
+    project.setResolution(64, 64);
+    project.setFps(25);
+    project.tracks().clear();
+    project.tracks().append(drift::Track{.type = drift::TrackType::Video});
+    drift::Clip clip;
+    clip.id = QStringLiteral("video");
+    clip.type = drift::ClipType::Video;
+    clip.path = path;
+    clip.timelineDuration = drift::secondsToUs(3.0);
+    project.tracks()[0].clips.append(clip);
+    project.ensureTrackIds();
+
+    FrameCompositor compositor;
+    compositor.setProject(&project);
+    constexpr drift::TimeUs timeUs = drift::secondsToUs(2.1);
+    const QImage withoutEcho = compositor.compositeAt(timeUs);
+
+    const int lane = drift::ensureAdjustmentLane(project, 0, drift::AdjustmentKind::VideoEffects, 0,
+                                                 clip.timelineDuration);
+    QVERIFY(lane >= 0);
+    drift::Clip adjustment;
+    adjustment.id = QStringLiteral("echo");
+    adjustment.type = drift::ClipType::Adjustment;
+    adjustment.linkedClipId = clip.id;
+    adjustment.timelineDuration = clip.timelineDuration;
+    adjustment.effects.append(makeTimeEchoEffect(QStringLiteral("add")));
+    project.tracks()[lane].clips.append(adjustment);
+    compositor.setProject(&project);
+
+    GpuScene scene;
+    QVERIFY(compositor.buildSceneAt(timeUs, FrameCompositor::RenderOptions{}, &scene));
+    QCOMPARE(scene.items.size(), 1);
+    for (const drift::Effect &effect : scene.items.constFirst().layer.effects)
+        QVERIFY(effect.catalogId != QStringLiteral("time_echo"));
+    QVERIFY(compositor.compositeAt(timeUs) != withoutEcho);
 }
 
 void EngineTest::timeEchoBlendsPriorVideoFrames()

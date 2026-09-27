@@ -583,8 +583,12 @@ QList<drift::Effect> laneAdjustmentEffects(const drift::Project &project, int tr
                 continue;
             if (!adjustment.linkedClipId.isEmpty() && adjustment.linkedClipId != hostClipId)
                 continue;
-            result.append(
-                resolvedClipEffects(adjustment, timelineUs - adjustment.timelineStart));
+            // time_echo stays in: buildGpuLayer lifts it out for the decode, which is the only
+            // place a trail can be built. Resolved here, against the adjustment's own start.
+            for (const drift::Effect &effect : adjustment.effects) {
+                if (effect.enabled)
+                    result.append(effect.resolvedAt(timelineUs - adjustment.timelineStart));
+            }
         }
     }
     return result;
@@ -858,12 +862,11 @@ QImage bottommostVisualFrame(const drift::Project &project, drift::TimeUs timeli
 // time_echo trail (which needs several decoded frames). Effects and the mask are
 // deliberately left to the GPU.
 QImage gpuSourceForClip(const drift::Clip &clip, drift::TimeUs timelineUs, int maxWidth, int maxHeight,
-                        int projectFps, int maxTimeEchoHistoryFrames)
+                        int projectFps, int maxTimeEchoHistoryFrames, const drift::Effect *timeEcho)
 {
     if (clip.path.isEmpty())
         return {};
 
-    const drift::Effect *timeEcho = findTimeEchoEffect(clip.effects);
     if (!timeEcho)
         return decodeClipMediaFrame(clip, timelineUs, maxWidth, maxHeight);
 
@@ -905,13 +908,14 @@ QImage gpuSourceForClip(const drift::Clip &clip, drift::TimeUs timelineUs, int m
 
 // Prefer the preview AVFrame path for plain video; fall back to RGBA QImage
 // when time_echo needs CPU blending or preview decode fails.
+// `timeEcho` is the clip's own time_echo or the one a lane adjustment gives it; null for none.
 void fillGpuLayerPixels(GpuLayer &layer, const drift::Clip &clip, drift::TimeUs timelineUs, int maxWidth,
-                        int maxHeight, int projectFps, int maxTimeEchoHistoryFrames)
+                        int maxHeight, int projectFps, int maxTimeEchoHistoryFrames,
+                        const drift::Effect *timeEcho)
 {
     if (clip.path.isEmpty())
         return;
 
-    const drift::Effect *timeEcho = findTimeEchoEffect(clip.effects);
     if (!timeEcho && clip.type == drift::ClipType::Video) {
         const drift::VideoRead read = drift::resolveVideoRead(clip, timelineUs, t_allowProxies);
         // Same enlarged bound as collectVideoRequests and decodeClipMediaFrame, so a framed clip
@@ -928,7 +932,7 @@ void fillGpuLayerPixels(GpuLayer &layer, const drift::Clip &clip, drift::TimeUs 
     }
 
     layer.source = gpuSourceForClip(clip, timelineUs, maxWidth, maxHeight, projectFps,
-                                    maxTimeEchoHistoryFrames);
+                                    maxTimeEchoHistoryFrames, timeEcho);
 }
 
 // The word the playhead sits on, for styles whose accent rule follows the speech. -1 for every
@@ -1109,6 +1113,21 @@ GpuLayer buildGpuLayer(const drift::Project &project, const drift::Clip &clip,
 
     const drift::TimeUs clipTimeUs = timelineUs - clip.timelineStart;
 
+    // A time_echo is a trail of decoded frames, not a shader pass, so a lane's one is taken out of
+    // the chain and handed to the decode. The clip's own, if it has one, wins.
+    const drift::Effect *timeEcho = findTimeEchoEffect(clip.effects);
+    drift::Effect laneEcho;
+    QList<drift::Effect> laneChain;
+    laneChain.reserve(laneEffects.size());
+    for (const drift::Effect &effect : laneEffects) {
+        if (effect.catalogId != QStringLiteral("time_echo")) {
+            laneChain.append(effect);
+        } else if (!timeEcho) {
+            laneEcho = effect;
+            timeEcho = &laneEcho;
+        }
+    }
+
     double x = 0.0;
     double y = 0.0;
     double w = 0.0;
@@ -1224,7 +1243,7 @@ GpuLayer buildGpuLayer(const drift::Project &project, const drift::Clip &clip,
     } else {
         // Bounded by the canvas, not the layout rect — see decodeClipMediaFrame.
         fillGpuLayerPixels(layer, clip, timelineUs, canvasWidth, canvasHeight, projectFps,
-                           maxTimeEchoHistoryFrames);
+                           maxTimeEchoHistoryFrames, timeEcho);
         layer.effects = resolvedClipEffects(clip, clipTimeUs);
     }
 
@@ -1250,7 +1269,7 @@ GpuLayer buildGpuLayer(const drift::Project &project, const drift::Clip &clip,
     layer.clipTimeUs = timelineUs - clip.timelineStart;
     // After the clip's own chain: a lane sits above the clip in the timeline, so it reads as the
     // later treatment. Derived face slots come after, so a lane's face effect binds too.
-    layer.effects.append(laneEffects);
+    layer.effects.append(laneChain);
     layer.faceSlots = faceSlotsForClip(clip, layer.effects, timelineUs);
     layer.depth = depthFrameForClip(clip, layer.effects, timelineUs);
     layer.valid = true;
