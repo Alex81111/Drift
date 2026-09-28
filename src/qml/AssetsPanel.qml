@@ -544,6 +544,18 @@ PanelFrame {
             Toasts.error(qsTr("Couldn’t import that folder."))
     }
 
+    function collectMedia() {
+        var url = FileDialogs.openDirectory(qsTr("Collect Media to Folder"))
+        if (!url || url.toString() === "")
+            return
+        collectMediaDialog.folder = url
+        collectMediaDialog.open()
+    }
+
+    CollectMediaDialog {
+        id: collectMediaDialog
+    }
+
     // Selects a tab by id. Used by cross-panel jumps such as the properties
     // panel's "Browse effects" / "Browse audio effects" empty-state actions.
     function showTab(tabId) {
@@ -965,6 +977,15 @@ PanelFrame {
                                 text: qsTr("Import Folder…")
                                 icon.name: Theme.icons.folderInput
                                 onTriggered: root.importFolder()
+                            }
+
+                            ThemedMenuSeparator { }
+
+                            ThemedMenuItem {
+                                text: qsTr("Collect Media to Folder…")
+                                icon.name: Theme.icons.folderOutput
+                                enabled: !EditorState.collectingMedia
+                                onTriggered: root.collectMedia()
                             }
                         }
                     }

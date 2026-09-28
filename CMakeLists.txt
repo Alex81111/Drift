@@ -1170,6 +1170,7 @@ qt_add_qml_module(drift
         src/qml/components/PackageProgressDialog.qml
         src/qml/components/ExportDialog.qml
         src/qml/components/ExportProgressDialog.qml
+        src/qml/components/CollectMediaDialog.qml
         src/qml/components/ReverseProgressDialog.qml
         src/qml/components/SubtitleProgressDialog.qml
         src/qml/components/CircularProgress.qml

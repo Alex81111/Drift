@@ -1,4 +1,5 @@
 #include "engine/ProjectBundle.h"
+#include "engine/ProjectDependencies.h"
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
@@ -33,6 +34,10 @@ private slots:
     void rejectsCorruptManifest();
     void rejectsBadMagic();
     void cancellingWriteKeepsPreviousFile();
+    void collectsIntoTypedFolders();
+    void collectReusesSameBytesAndSuffixesOthers();
+    void collectMoveDeletesOriginals();
+    void cancelledCollectMoveRestoresOriginals();
 
 private:
     QString writeSource(const QString &name, const QByteArray &content) const;
@@ -426,6 +431,136 @@ void TestProjectBundle::cancellingWriteKeepsPreviousFile()
     QFile file(path);
     QVERIFY(file.open(QIODevice::ReadOnly));
     QCOMPARE(file.readAll(), before);
+}
+
+namespace {
+
+MediaEntry collectEntry(const QString &path, const QString &resourceOf = QString(),
+                        MediaRole role = MediaRole::Source)
+{
+    MediaEntry e;
+    e.originalPath = path;
+    e.resourceOf = resourceOf;
+    e.role = role;
+    return e;
+}
+
+QByteArray readAll(const QString &path)
+{
+    QFile f(path);
+    return f.open(QIODevice::ReadOnly) ? f.readAll() : QByteArray();
+}
+
+} // namespace
+
+void TestProjectBundle::collectsIntoTypedFolders()
+{
+    QVERIFY(QDir(m_tmp.path()).mkpath(QStringLiteral("src/anim/images")));
+    const QString clip = writeSource(QStringLiteral("src/clip.mp4"), QByteArray(500, 'v'));
+    const QString doc = writeSource(QStringLiteral("src/anim/anim.json"), "{}");
+    const QString img = writeSource(QStringLiteral("src/anim/images/img_0.png"), "png");
+    const QString matte = writeSource(QStringLiteral("src/matte.mkv"), "matte");
+    const QList<MediaEntry> media = {collectEntry(clip), collectEntry(doc), collectEntry(img, doc),
+                                     collectEntry(matte, QString(), MediaRole::Matte),
+                                     collectEntry(m_tmp.filePath(QStringLiteral("gone.mp4")))};
+    const QHash<QString, QString> subfolders = {{clip, QStringLiteral("Video")},
+                                                {matte, QStringLiteral("Derived")}};
+
+    const QString dest = m_tmp.filePath(QStringLiteral("collect-typed"));
+    QVERIFY(QDir().mkpath(dest));
+    QHash<QString, QString> remap;
+    QString error;
+    QVERIFY2(collectToFolder(media, subfolders, dest, false, {}, &remap, nullptr, &error),
+             qPrintable(error));
+
+    // The missing file is skipped; the resource travels with its document but is not remapped.
+    QCOMPARE(remap.size(), 3);
+    QCOMPARE(remap.value(clip), QDir(dest).filePath(QStringLiteral("Video/clip.mp4")));
+    QCOMPARE(remap.value(matte), QDir(dest).filePath(QStringLiteral("Derived/matte.mkv")));
+    QCOMPARE(remap.value(doc), QDir(dest).filePath(QStringLiteral("Other/anim/anim.json")));
+    QCOMPARE(readAll(QDir(dest).filePath(QStringLiteral("Other/anim/images/img_0.png"))),
+             QByteArray("png"));
+    QVERIFY(QFileInfo::exists(clip));
+}
+
+void TestProjectBundle::collectReusesSameBytesAndSuffixesOthers()
+{
+    QVERIFY(QDir(m_tmp.path()).mkpath(QStringLiteral("x")));
+    QVERIFY(QDir(m_tmp.path()).mkpath(QStringLiteral("y")));
+    const QString first = writeSource(QStringLiteral("x/take.mp4"), "first");
+    const QString second = writeSource(QStringLiteral("y/take.mp4"), "other");
+    const QHash<QString, QString> subfolders = {{first, QStringLiteral("Video")},
+                                                {second, QStringLiteral("Video")}};
+    const QString dest = m_tmp.filePath(QStringLiteral("collect-reuse"));
+    QVERIFY(QDir().mkpath(dest));
+
+    QHash<QString, QString> remap;
+    QString error;
+    QVERIFY2(collectToFolder({collectEntry(first), collectEntry(second)}, subfolders, dest, false,
+                             {}, &remap, nullptr, &error),
+             qPrintable(error));
+    const QString firstOut = QDir(dest).filePath(QStringLiteral("Video/take.mp4"));
+    const QString secondOut = QDir(dest).filePath(QStringLiteral("Video/take (2).mp4"));
+    QCOMPARE(remap.value(first), firstOut);
+    QCOMPARE(remap.value(second), secondOut);
+    QCOMPARE(readAll(secondOut), QByteArray("other"));
+
+    // Collecting again finds both already there instead of making a third and fourth copy.
+    QHash<QString, QString> again;
+    QVERIFY2(collectToFolder({collectEntry(first), collectEntry(second)}, subfolders, dest, false,
+                             {}, &again, nullptr, &error),
+             qPrintable(error));
+    QCOMPARE(again, remap);
+    QCOMPARE(QDir(QDir(dest).filePath(QStringLiteral("Video"))).entryList(QDir::Files).size(), 2);
+}
+
+void TestProjectBundle::collectMoveDeletesOriginals()
+{
+    QVERIFY(QDir(m_tmp.path()).mkpath(QStringLiteral("src/anim/images")));
+    const QString clip = writeSource(QStringLiteral("src/clip.mp4"), "video");
+    const QString doc = writeSource(QStringLiteral("src/anim/anim.json"), "{}");
+    const QString img = writeSource(QStringLiteral("src/anim/images/img_0.png"), "png");
+    // The image is also a bin asset in its own right, so the move needs it twice.
+    const QList<MediaEntry> media = {collectEntry(doc), collectEntry(img, doc), collectEntry(img),
+                                     collectEntry(clip)};
+    const QHash<QString, QString> subfolders = {{clip, QStringLiteral("Video")},
+                                                {img, QStringLiteral("Images")}};
+    const QString dest = m_tmp.filePath(QStringLiteral("collect-move"));
+    QVERIFY(QDir().mkpath(dest));
+
+    QHash<QString, QString> remap;
+    int undeleted = -1;
+    QString error;
+    QVERIFY2(collectToFolder(media, subfolders, dest, true, {}, &remap, &undeleted, &error),
+             qPrintable(error));
+    QCOMPARE(undeleted, 0);
+    QVERIFY(!QFileInfo::exists(clip));
+    QVERIFY(!QFileInfo::exists(doc));
+    QVERIFY(!QFileInfo::exists(img));
+    QCOMPARE(readAll(remap.value(clip)), QByteArray("video"));
+    QCOMPARE(readAll(remap.value(img)), QByteArray("png"));
+    QCOMPARE(readAll(QDir(dest).filePath(QStringLiteral("Other/anim/images/img_0.png"))),
+             QByteArray("png"));
+}
+
+void TestProjectBundle::cancelledCollectMoveRestoresOriginals()
+{
+    const QString a = writeSource(QStringLiteral("a.mp4"), QByteArray(100, 'a'));
+    const QString b = writeSource(QStringLiteral("b.mp4"), QByteArray(100, 'b'));
+    const QString dest = m_tmp.filePath(QStringLiteral("collect-cancel"));
+    QVERIFY(QDir().mkpath(dest));
+
+    int calls = 0;
+    const auto cancelSecond = [&calls](qint64, qint64) { return ++calls < 2; };
+    QHash<QString, QString> remap;
+    QString error;
+    QVERIFY(!collectToFolder({collectEntry(a), collectEntry(b)}, {}, dest, true, cancelSecond,
+                             &remap, nullptr, &error));
+    QVERIFY(remap.isEmpty());
+    QCOMPARE(readAll(a), QByteArray(100, 'a'));
+    QCOMPARE(readAll(b), QByteArray(100, 'b'));
+    QVERIFY(!QFileInfo::exists(QDir(dest).filePath(QStringLiteral("Other/a.mp4"))));
+    QVERIFY(!QFileInfo::exists(QDir(dest).filePath(QStringLiteral("Other/b.mp4"))));
 }
 
 QTEST_MAIN(TestProjectBundle)

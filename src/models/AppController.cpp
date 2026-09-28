@@ -24895,6 +24895,109 @@ void AppController::cancelPackage()
     m_packageCancel = 1;
 }
 
+void AppController::collectMediaToFolder(const QUrl &folder, bool move)
+{
+    const QString dest = folder.toLocalFile();
+    if (dest.isEmpty() || !QFileInfo(dest).isDir()) {
+        setLastMessage(tr("That folder isn’t valid"), QStringLiteral("error"));
+        return;
+    }
+    if (m_collectingMedia)
+        return;
+
+    // Built here, on the GUI thread, for the same reason packageProject builds its request here.
+    const QList<drift::bundle::MediaEntry> media = drift::bundle::collectMedia(m_project, false);
+    QHash<QString, QString> subfolders;
+    for (const drift::bundle::MediaEntry &entry : media) {
+        if (!entry.resourceOf.isEmpty())
+            continue;
+        QString folderName = QStringLiteral("Other");
+        if (entry.role != drift::bundle::MediaRole::Source)
+            folderName = QStringLiteral("Derived");
+        else if (AssetLibrary::isVideoPath(entry.originalPath))
+            folderName = QStringLiteral("Video");
+        else if (AssetLibrary::isAudioPath(entry.originalPath))
+            folderName = QStringLiteral("Audio");
+        else if (AssetLibrary::isImagePath(entry.originalPath))
+            folderName = QStringLiteral("Images");
+        subfolders.insert(entry.originalPath, folderName);
+    }
+
+    m_collectMediaCancel = 0;
+    m_collectingMedia = true;
+    m_collectMediaProgress = 0.0;
+    emit collectingMediaChanged();
+    emit collectMediaProgressChanged();
+
+    const int generation = m_loadGeneration;
+    (void)QtConcurrent::run([this, media, subfolders, dest, move, generation]() {
+        const auto progress = [this](qint64 done, qint64 total) {
+            if (m_collectMediaCancel.loadRelaxed())
+                return false;
+            const double fraction = total > 0 ? double(done) / double(total) : 0.0;
+            QMetaObject::invokeMethod(
+                this,
+                [this, fraction]() {
+                    m_collectMediaProgress = fraction;
+                    emit collectMediaProgressChanged();
+                },
+                Qt::QueuedConnection);
+            return true;
+        };
+        QHash<QString, QString> remap;
+        int undeleted = 0;
+        QString error;
+        const bool ok = drift::bundle::collectToFolder(media, subfolders, dest, move, progress,
+                                                       &remap, &undeleted, &error);
+        QMetaObject::invokeMethod(
+            this,
+            [this, ok, remap, undeleted, error, move, generation]() {
+                m_collectingMedia = false;
+                emit collectingMediaChanged();
+                if (!ok) {
+                    setLastMessage(error, QStringLiteral("error"));
+                    return;
+                }
+                // The dialog is modal, so only a project opened from outside the UI (MCP, a
+                // second instance handing over a file) can get here; its paths are not these.
+                if (generation != m_loadGeneration)
+                    return;
+                if (remap.isEmpty()) {
+                    setLastMessage(tr("All media is already in that folder"), QStringLiteral("info"));
+                    return;
+                }
+
+                const drift::Project before = m_project;
+                remapProjectPaths(remap);
+                if (move)
+                    m_undoStack.clear();
+                else
+                    pushProjectEdit(before, tr("Collect media"));
+                if (m_assetLibrary)
+                    m_assetLibrary->setProject(&m_project);
+                m_binFolderModel.setProject(&m_project);
+                restoreFilmstripsAfterLoad();
+                notifyTracksChanged();
+                setDirty(true);
+
+                if (undeleted > 0)
+                    setLastMessage(tr("Media collected, but %n original(s) couldn’t be deleted", "",
+                                      undeleted),
+                                   QStringLiteral("warning"));
+                else
+                    setLastMessage(move ? tr("Media moved and relinked")
+                                        : tr("Media copied and relinked"),
+                                   QStringLiteral("success"));
+            },
+            Qt::QueuedConnection);
+    });
+}
+
+void AppController::cancelCollectMedia()
+{
+    m_collectMediaCancel = 1;
+}
+
 void AppController::loadProject(const QUrl &url)
 {
     if (!beginProjectLoad()) {

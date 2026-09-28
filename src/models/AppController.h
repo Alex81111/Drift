@@ -405,6 +405,8 @@ class AppController : public QObject
     Q_PROPERTY(QVariantMap projectMetadata READ projectMetadata NOTIFY projectMetadataChanged)
     Q_PROPERTY(bool packaging READ packaging NOTIFY packagingChanged)
     Q_PROPERTY(double packageProgress READ packageProgress NOTIFY packageProgressChanged)
+    Q_PROPERTY(bool collectingMedia READ collectingMedia NOTIFY collectingMediaChanged)
+    Q_PROPERTY(double collectMediaProgress READ collectMediaProgress NOTIFY collectMediaProgressChanged)
     Q_PROPERTY(QString lastMessage READ lastMessage NOTIFY lastMessageChanged)
     // Severity of lastMessage: "info" | "success" | "warning" | "error". Exists so
     // the QML toast host does not have to guess from the message wording — it used
@@ -1927,6 +1929,8 @@ public:
                                         const QString &description);
     bool packaging() const { return m_packaging; }
     double packageProgress() const { return m_packageProgress; }
+    bool collectingMedia() const { return m_collectingMedia; }
+    double collectMediaProgress() const { return m_collectMediaProgress; }
     Q_INVOKABLE QVariantList subtitleWaveformPeaks(double startSeconds, double durSeconds,
                                                    int sampleCount = 240) const;
     // Beat / onset detection over the mixed timeline audio in [startSeconds, +durSeconds).
@@ -1974,6 +1978,13 @@ public:
     // Imports an OpenTimelineIO (.otio) sequence.
     Q_INVOKABLE void loadOtioTimeline(const QUrl &url);
     Q_INVOKABLE void cancelPackage();
+    // Copies (or moves) every file the project uses — bin media, the images Lottie/SVG documents
+    // load, textures and the derived mattes, face tracks, depth maps and stabilized renders — into
+    // Video/Audio/Images/Derived/Other under the chosen folder, then relinks the project to them.
+    // Runs off the GUI thread. A move leaves the undo history pointing at files that are gone, so
+    // it clears it; a copy is one undoable edit.
+    Q_INVOKABLE void collectMediaToFolder(const QUrl &folder, bool move);
+    Q_INVOKABLE void cancelCollectMedia();
     Q_INVOKABLE void loadProject(const QUrl &url);
     // silent skips the "New project" status message — used by Close Project, which
     // reuses this reset but reports its own "Project closed" message instead; setting
@@ -2189,6 +2200,8 @@ signals:
     void packagingChanged();
     void packageProgressChanged();
     void packageFinished(bool ok, const QString &message);
+    void collectingMediaChanged();
+    void collectMediaProgressChanged();
     // Save completion when saveProject took the Android streaming path (see saveProject). Never
     // emitted on desktop or for a plain, synchronous save — setLastMessage already covers those.
     void projectSaved(bool ok);
@@ -2834,6 +2847,9 @@ protected:
     bool m_packaging = false;
     double m_packageProgress = 0.0;
     QAtomicInt m_packageCancel = 0;
+    bool m_collectingMedia = false;
+    double m_collectMediaProgress = 0.0;
+    QAtomicInt m_collectMediaCancel = 0;
     bool m_faceDetecting = false;
     double m_faceDetectProgress = 0.0;
     QString m_faceDetectStatus;

@@ -4234,6 +4234,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>That folder isn’t valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All media is already in that folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collect media</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Media collected, but %n original(s) couldn’t be deleted</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Media moved and relinked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media copied and relinked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Exporting…</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4695,6 +4726,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Collect Media to Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Market</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4772,6 +4807,10 @@
     </message>
     <message>
         <source>Import Folder…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collect Media to Folder…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5305,6 +5344,41 @@
     </message>
     <message>
         <source>Key works</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CollectMediaDialog</name>
+    <message>
+        <source>Collecting media</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collect media to folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gathering your media into one folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every file this project uses goes into Video, Audio, Images, Derived and Other folders inside “%1”, and the project is relinked to them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy leaves the originals where they are. Move deletes them once everything has landed, and clears undo history.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9631,6 +9705,18 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>%1 is corrupt in this project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn’t read %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn’t write %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn’t create %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

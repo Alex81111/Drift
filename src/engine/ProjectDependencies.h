@@ -2,6 +2,7 @@
 
 #include "ProjectBundle.h"
 
+#include <QHash>
 #include <QList>
 #include <QString>
 
@@ -28,5 +29,25 @@ QList<MediaEntry> collectMedia(const Project &project, bool embedSource);
 // the build contributes nothing. Baked artifacts (subtitle cues, mattes, face tracks) create no
 // dependency — the model that produced them is not needed again.
 QList<AddonRef> collectAddons(const Project &project);
+
+// Gathers the files behind `media` (as collectMedia returns them) under destDir, each in the
+// subfolder `subfolders` names for its originalPath ("Other" when absent), and fills pathRemap
+// with originalPath -> new path for the caller to relink. A Lottie/SVG document that loads files
+// from beside itself gets a folder of its own so those keep their relative layout; they get no
+// remap entry, as in a bundle.
+//
+// A name already taken in destDir is reused when its bytes hash the same, so collecting twice
+// copies nothing, and otherwise the file lands under a " (2)" suffix — nothing there is ever
+// overwritten. Files already inside destDir, missing files, 3D models and files an addon owns
+// are left where they are.
+//
+// `move` renames where the filesystem allows and deletes the originals once everything has
+// landed; a failure or a cancel undoes the renames and removes what this run created, so either
+// the whole set is collected or the project's files are where they were. An original that cannot
+// be deleted afterwards is counted in undeletedOriginals rather than failing the run: the project
+// is already consistent with the new folder.
+bool collectToFolder(const QList<MediaEntry> &media, const QHash<QString, QString> &subfolders,
+                     const QString &destDir, bool move, const ProgressFn &progress,
+                     QHash<QString, QString> *pathRemap, int *undeletedOriginals, QString *error);
 
 } // namespace drift::bundle

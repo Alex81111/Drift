@@ -8,12 +8,17 @@
 #include "TransitionCatalog.h"
 #include "core/Project.h"
 
+#include <algorithm>
+
+#include <QCoreApplication>
+#include <QCryptographicHash>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSaveFile>
 #include <QSet>
 #include <QStandardPaths>
 #include <QXmlStreamReader>
@@ -125,6 +130,31 @@ void addAddon(const addon::InstalledAddon *installed, const QString &kind,
     }
     seen->insert(ref.id, out->size());
     out->append(ref);
+}
+
+QByteArray fileSha256(const QString &path)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        return {};
+    QCryptographicHash hash(QCryptographicHash::Sha256);
+    hash.addData(&file);
+    return hash.result();
+}
+
+bool sameBytes(const QString &a, const QString &b)
+{
+    return QFileInfo(a).size() == QFileInfo(b).size() && fileSha256(a) == fileSha256(b);
+}
+
+// "clip.mp4", "clip (2).mp4", "clip (3).mp4", ...
+QString numberedName(const QString &name, int n)
+{
+    if (n < 2)
+        return name;
+    const QFileInfo info(name);
+    const QString stem = QStringLiteral("%1 (%2)").arg(info.completeBaseName()).arg(n);
+    return info.suffix().isEmpty() ? stem : stem + QLatin1Char('.') + info.suffix();
 }
 
 } // namespace
@@ -273,6 +303,154 @@ QList<AddonRef> collectAddons(const Project &project)
     }
 
     return addons;
+}
+
+bool collectToFolder(const QList<MediaEntry> &media, const QHash<QString, QString> &subfolders,
+                     const QString &destDir, bool move, const ProgressFn &progress,
+                     QHash<QString, QString> *pathRemap, int *undeletedOriginals, QString *error)
+{
+    const QString root = QDir::cleanPath(destDir);
+    const auto fail = [error](const QString &message) {
+        if (error)
+            *error = message;
+        return false;
+    };
+
+    const auto collectable = [&root](const MediaEntry &entry) {
+        return entry.role != MediaRole::Model3d && QFileInfo(entry.originalPath).isFile()
+               && !isUnder(entry.originalPath, root) && !addon::addonForPath(entry.originalPath);
+    };
+
+    QHash<QString, QStringList> resourcesOf;
+    QList<MediaEntry> files;
+    for (const MediaEntry &entry : media) {
+        if (!entry.resourceOf.isEmpty())
+            resourcesOf[entry.resourceOf].append(entry.originalPath);
+        else if (collectable(entry))
+            files.append(entry);
+    }
+
+    qint64 total = 0;
+    for (const MediaEntry &entry : files) {
+        total += QFileInfo(entry.originalPath).size();
+        for (const QString &resource : resourcesOf.value(entry.originalPath))
+            total += QFileInfo(resource).size();
+    }
+
+    // Where each file this run has placed now lives. A move renames the original away, so a file
+    // needed a second time (an image both in the bin and inside a Lottie) is read from here.
+    QHash<QString, QString> placed;
+    QList<QPair<QString, QString>> renamed;
+    QStringList created;
+    QSet<QString> originalsToDelete;
+    QHash<QString, QString> remap;
+    qint64 done = 0;
+
+    const auto current = [&placed](const QString &source) { return placed.value(source, source); };
+
+    const auto rollback = [&]() {
+        for (auto it = renamed.crbegin(); it != renamed.crend(); ++it)
+            QFile::rename(it->second, it->first);
+        for (const QString &path : created)
+            QFile::remove(path);
+    };
+
+    const auto copyFile = [&](const QString &from, const QString &to) {
+        QFile in(from);
+        if (!in.open(QIODevice::ReadOnly))
+            return fail(QCoreApplication::translate("ProjectBundle", "Couldn’t read %1")
+                            .arg(QDir::toNativeSeparators(from)));
+        QSaveFile out(to);
+        if (!out.open(QIODevice::WriteOnly))
+            return fail(QCoreApplication::translate("ProjectBundle", "Couldn’t write %1")
+                            .arg(QDir::toNativeSeparators(to)));
+        QByteArray buffer(1 << 20, Qt::Uninitialized);
+        while (!in.atEnd()) {
+            const qint64 read = in.read(buffer.data(), buffer.size());
+            if (read < 0 || out.write(buffer.constData(), read) != read)
+                return fail(QCoreApplication::translate("ProjectBundle", "Couldn’t write %1")
+                                .arg(QDir::toNativeSeparators(to)));
+            done += read;
+            if (progress && !progress(done, total))
+                return fail(QCoreApplication::translate("ProjectBundle", "Cancelled"));
+        }
+        if (!out.commit())
+            return fail(QCoreApplication::translate("ProjectBundle", "Couldn’t write %1")
+                            .arg(QDir::toNativeSeparators(to)));
+        created.append(to);
+        return true;
+    };
+
+    const auto transfer = [&](const QString &source, const QString &target) {
+        const qint64 size = QFileInfo(current(source)).size();
+        if (QFileInfo::exists(target)) {
+            // Chosen only when the bytes match: the file is already here.
+            done += size;
+        } else {
+            if (!QDir().mkpath(QFileInfo(target).absolutePath()))
+                return fail(QCoreApplication::translate("ProjectBundle", "Couldn’t create %1")
+                                .arg(QDir::toNativeSeparators(QFileInfo(target).absolutePath())));
+            if (move && !placed.contains(source) && QFile::rename(source, target)) {
+                renamed.append({source, target});
+                done += size;
+            } else if (!copyFile(current(source), target)) {
+                return false;
+            }
+        }
+        if (move && !placed.contains(source))
+            originalsToDelete.insert(source);
+        placed.insert(source, placed.value(source, target));
+        return !progress || progress(done, total)
+               || fail(QCoreApplication::translate("ProjectBundle", "Cancelled"));
+    };
+
+    for (const MediaEntry &entry : files) {
+        const QString source = entry.originalPath;
+        const QString folder = QDir(root).filePath(subfolders.value(source, QStringLiteral("Other")));
+        const QString name = QFileInfo(source).fileName();
+        const QStringList resources = resourcesOf.value(source);
+
+        // Pairs of (source, target) that must land together; target names are picked so that
+        // every one is either free or already holds the same bytes.
+        QList<QPair<QString, QString>> pairs;
+        for (int n = 1;; ++n) {
+            pairs.clear();
+            if (resources.isEmpty()) {
+                pairs.append({source, QDir(folder).filePath(numberedName(name, n))});
+            } else {
+                const QDir own(QDir(folder).filePath(
+                    numberedName(QFileInfo(source).completeBaseName(), n)));
+                const QDir documentDir = QFileInfo(source).absoluteDir();
+                pairs.append({source, own.filePath(name)});
+                for (const QString &resource : resources)
+                    pairs.append({resource, own.filePath(documentDir.relativeFilePath(resource))});
+            }
+            const bool fits = std::all_of(pairs.cbegin(), pairs.cend(), [&](const auto &pair) {
+                return !QFileInfo::exists(pair.second) || sameBytes(current(pair.first), pair.second);
+            });
+            if (fits)
+                break;
+        }
+
+        for (const auto &pair : pairs) {
+            if (!transfer(pair.first, pair.second)) {
+                rollback();
+                return false;
+            }
+        }
+        remap.insert(source, pairs.first().second);
+    }
+
+    int undeleted = 0;
+    for (const QString &original : originalsToDelete) {
+        if (QFileInfo::exists(original) && !QFile::remove(original))
+            ++undeleted;
+    }
+    if (undeletedOriginals)
+        *undeletedOriginals = undeleted;
+    if (pathRemap)
+        *pathRemap = remap;
+    return true;
 }
 
 } // namespace drift::bundle
