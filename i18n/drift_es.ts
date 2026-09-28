@@ -722,7 +722,7 @@
     </message>
     <message>
         <source>Couldn’t reach the marketplace.</source>
-        <translation>No pude acceder a la Marketplace.</translation>
+        <translation type="unfinished">No pude acceder a la Marketplace.</translation>
     </message>
     <message>
         <source>“%1” is ready.</source>
@@ -849,7 +849,7 @@
     </message>
     <message>
         <source>Imported from the marketplace.</source>
-        <translation>Importado del mercado.</translation>
+        <translation type="unfinished">Importado del mercado.</translation>
     </message>
 </context>
 <context>
