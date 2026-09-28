@@ -37,6 +37,44 @@
 
 namespace {
 
+// Case-insensitive, with digit runs compared by value so "2" sorts before "10". Hand-rolled
+// because QCollator's numeric mode is unsupported on Qt's non-ICU backend.
+int naturalCompare(const QString &a, const QString &b)
+{
+    qsizetype i = 0;
+    qsizetype j = 0;
+    while (i < a.size() && j < b.size()) {
+        if (a[i].isDigit() && b[j].isDigit()) {
+            while (i < a.size() && a[i] == u'0')
+                ++i;
+            while (j < b.size() && b[j] == u'0')
+                ++j;
+            const qsizetype startA = i;
+            const qsizetype startB = j;
+            while (i < a.size() && a[i].isDigit())
+                ++i;
+            while (j < b.size() && b[j].isDigit())
+                ++j;
+            if (i - startA != j - startB)
+                return i - startA < j - startB ? -1 : 1;
+            const int cmp = QStringView(a).mid(startA, i - startA)
+                                .compare(QStringView(b).mid(startB, j - startB));
+            if (cmp != 0)
+                return cmp;
+            continue;
+        }
+        const int cmp = QStringView(a).mid(i, 1).compare(QStringView(b).mid(j, 1),
+                                                          Qt::CaseInsensitive);
+        if (cmp != 0)
+            return cmp;
+        ++i;
+        ++j;
+    }
+    if (i < a.size() || j < b.size())
+        return i < a.size() ? 1 : -1;
+    return a.compare(b, Qt::CaseInsensitive);
+}
+
 #ifdef Q_OS_ANDROID
 
 constexpr qint64 kImportChunkBytes = 1024 * 1024;
@@ -1439,7 +1477,7 @@ void AssetLibrary::sortByName()
         const drift::MediaAsset *assetB = m_project->asset(b);
         if (!assetA || !assetB)
             return a < b;
-        return assetA->name.compare(assetB->name, Qt::CaseInsensitive) < 0;
+        return naturalCompare(assetA->name, assetB->name) < 0;
     });
     m_project->assetOrder() = order;
     endResetModel();
@@ -1583,7 +1621,7 @@ void AssetLibrary::sortByKind()
             return a < b;
         const int cmp = drift::mediaKindToString(assetA->kind)
                             .compare(drift::mediaKindToString(assetB->kind), Qt::CaseInsensitive);
-        return cmp != 0 ? cmp < 0 : assetA->name.compare(assetB->name, Qt::CaseInsensitive) < 0;
+        return cmp != 0 ? cmp < 0 : naturalCompare(assetA->name, assetB->name) < 0;
     });
     m_project->assetOrder() = order;
     endResetModel();
