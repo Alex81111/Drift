@@ -7884,7 +7884,7 @@
     </message>
     <message>
         <source>In the media bin</source>
-        <translation>Dans la chute média</translation>
+        <translation type="unfinished">Dans la chute média</translation>
     </message>
     <message>
         <source>Marketplace account connected.</source>
@@ -10853,7 +10853,7 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Placement</source>
-        <translation>Disposition</translation>
+        <translation type="unfinished">Disposition</translation>
     </message>
     <message>
         <source>Centre the stroke on the outline, grow it outward, or keep it inside</source>
@@ -10877,7 +10877,7 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Sketchy</source>
-        <translation>Esquisse</translation>
+        <translation type="unfinished">Esquisse</translation>
     </message>
     <message>
         <source>Segment</source>
@@ -10889,7 +10889,7 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Seed</source>
-        <translation>Graine</translation>
+        <translation type="unfinished">Graine</translation>
     </message>
     <message>
         <source>Colour</source>
@@ -10917,7 +10917,7 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Spread</source>
-        <translation>Étalement</translation>
+        <translation type="unfinished">Étalement</translation>
     </message>
     <message>
         <source>Depth</source>
@@ -12219,7 +12219,7 @@ En cas de saccades à la lecture, essayez un autre mode.</translation>
     </message>
     <message>
         <source>Ease</source>
-        <translation>Adouci</translation>
+        <translation type="unfinished">Adouci</translation>
     </message>
     <message>
         <source>Advanced</source>
