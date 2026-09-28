@@ -14,6 +14,7 @@
 #include <QTextOption>
 #include <QtMath>
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
 
@@ -294,6 +295,15 @@ QList<StyledWord> layoutStyledText(const QString &text, const drift::TextStyle &
             const QFontMetricsF wordMetrics(wordFont);
             const QFont &emojiFont = accentFlags.at(wi) ? emojiAccentFont : emojiBaseFont;
 
+            // A ligature spanning several pieces (the لله of most Arabic fonts) comes back from
+            // glyphRuns() for every piece it covers; the first piece keeps it.
+            struct LigatureGlyph {
+                QRawFont font;
+                quint32 index;
+                QPointF pos;
+            };
+            QList<LigatureGlyph> ligatures;
+
             auto appendRun = [&](int from, int to, bool emoji) {
                 QString slice = source.mid(from, to - from);
                 slice.remove(QChar::LineSeparator);
@@ -322,8 +332,19 @@ QList<StyledWord> layoutStyledText(const QString &text, const drift::TextStyle &
                         const QRawFont raw = run.rawFont();
                         const QList<quint32> indexes = run.glyphIndexes();
                         const QList<QPointF> positions = run.positions();
-                        for (qsizetype g = 0; g < indexes.size(); ++g)
+                        const bool splitLigature = run.flags().testFlag(QGlyphRun::SplitLigature);
+                        for (qsizetype g = 0; g < indexes.size(); ++g) {
+                            if (splitLigature) {
+                                const auto claimed = std::find_if(ligatures.cbegin(), ligatures.cend(), [&](const LigatureGlyph &l) {
+                                    return l.index == indexes.at(g) && l.font == raw
+                                           && (l.pos - positions.at(g)).manhattanLength() < 0.5;
+                                });
+                                if (claimed != ligatures.cend())
+                                    continue;
+                                ligatures.append({raw, indexes.at(g), positions.at(g)});
+                            }
                             path.addPath(raw.pathForGlyph(indexes.at(g)).translated(positions.at(g) + shift));
+                        }
                     }
                     const QRectF ink = path.boundingRect();
                     if (ink.isEmpty())
