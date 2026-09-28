@@ -424,11 +424,11 @@
     </message>
     <message>
         <source>Transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය</translation>
     </message>
     <message>
         <source>Move, scale or tilt several tracks as one</source>
-        <translation type="unfinished"></translation>
+        <translation>ට්‍රැක් කිහිපයක් එකක් ලෙස ගෙනයන්න, පරිමාණය කරන්න හෝ ඇල කරන්න</translation>
     </message>
 </context>
 <context>
@@ -493,19 +493,19 @@
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>Transform together</source>
-        <translation type="unfinished"></translation>
+        <translation>එකට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>Fade</source>
-        <translation type="unfinished">Fade (ක්‍රමිකව මැකීම)</translation>
+        <translation>Fade (ක්‍රමිකව මැකීම)</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">වේගය</translation>
+        <translation>වේගය</translation>
     </message>
     <message>
         <source>Duplicate</source>
@@ -521,7 +521,7 @@
     </message>
     <message>
         <source>Move the playhead over the clip to split it</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිපය වෙන් කිරීමට ප්ලේහෙඩ් එක එය මතට ගෙන යන්න</translation>
     </message>
     <message>
         <source>Tap a clip to edit</source>
@@ -621,43 +621,43 @@
     <name>AndroidFadeSheet</name>
     <message>
         <source>Fade</source>
-        <translation type="unfinished">Fade (ක්‍රමිකව මැකීම)</translation>
+        <translation>Fade (ක්‍රමිකව මැකීම)</translation>
     </message>
     <message>
         <source>Done</source>
-        <translation type="unfinished"></translation>
+        <translation>අවසන්</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">රේඛීය</translation>
+        <translation>රේඛීය</translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished"></translation>
+        <translation>සුමට</translation>
     </message>
     <message>
         <source>Natural</source>
-        <translation type="unfinished">ස්වභාවික</translation>
+        <translation>ස්වභාවික</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">අභිරුචි</translation>
+        <translation>අභිරුචි</translation>
     </message>
     <message>
         <source>%1 s</source>
-        <translation type="unfinished">තත් %1</translation>
+        <translation>තත් %1</translation>
     </message>
     <message>
         <source>Fade in</source>
-        <translation type="unfinished"></translation>
+        <translation>Fade in (ක්‍රමිකව මතුවීම)</translation>
     </message>
     <message>
         <source>Fade out</source>
-        <translation type="unfinished"></translation>
+        <translation>Fade out (ක්‍රමිකව මැකී යාම)</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished"></translation>
+        <translation>වක්‍රය</translation>
     </message>
 </context>
 <context>
@@ -917,11 +917,11 @@
     </message>
     <message>
         <source>Unlock source frame ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමු අනුපාතය අගුළු හරින්න</translation>
     </message>
     <message>
         <source>Lock source frame ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමු අනුපාතය අගුළු දමන්න</translation>
     </message>
     <message>
         <source>Trim</source>
@@ -965,7 +965,7 @@
     </message>
     <message>
         <source>Save keeps the original video and stores this framing.</source>
-        <translation type="unfinished"></translation>
+        <translation>සුරැකීම මඟින් මුල් වීඩියෝව තබා ගන්නා අතර මෙම රාමුගත කිරීම සුරකිනු ලබයි.</translation>
     </message>
     <message>
         <source>Nothing changed yet. Trim or crop above, or go back and drag this onto the timeline.</source>
@@ -988,203 +988,203 @@
     </message>
     <message>
         <source>Clip</source>
-        <translation type="unfinished">ක්ලිප්</translation>
+        <translation>ක්ලිප්</translation>
     </message>
     <message>
         <source>Select multiple</source>
-        <translation type="unfinished">බහුවිධ තෝරන්න</translation>
+        <translation>බහුවිධ තෝරන්න</translation>
     </message>
     <message>
         <source>Tap clips to add them to the selection</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිප් තේරීමට එක් කිරීමට ඒවා මත තට්ටු කරන්න</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished">කපන්න</translation>
+        <translation>කපන්න</translation>
     </message>
     <message>
         <source>Remove the clip and keep it to paste</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිපය ඉවත් කර එය ඇලවීම සඳහා තබා ගන්න</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">පිටපත් කරන්න</translation>
+        <translation>පිටපත් කරන්න</translation>
     </message>
     <message>
         <source>Keep a copy to paste</source>
-        <translation type="unfinished"></translation>
+        <translation>ඇලවීම සඳහා පිටපතක් තබා ගන්න</translation>
     </message>
     <message>
         <source>Paste attributes…</source>
-        <translation type="unfinished">ගුණාංග අලවන්න…</translation>
+        <translation>ගුණාංග අලවන්න…</translation>
     </message>
     <message>
         <source>Apply what you copied from another clip</source>
-        <translation type="unfinished"></translation>
+        <translation>වෙනත් ක්ලිපයකින් ඔබ පිටපත් කළ දේ යොදන්න</translation>
     </message>
     <message>
         <source>Rename…</source>
-        <translation type="unfinished">නම වෙනස් කරන්න…</translation>
+        <translation>නම වෙනස් කරන්න…</translation>
     </message>
     <message>
         <source>Change the clip&apos;s name</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිප් එකේ නම වෙනස් කරන්න</translation>
     </message>
     <message>
         <source>Open composite</source>
-        <translation type="unfinished"></translation>
+        <translation>සංයුක්තය විවෘත කරන්න</translation>
     </message>
     <message>
         <source>Edit the clips inside</source>
-        <translation type="unfinished"></translation>
+        <translation>ඇතුළත ඇති ක්ලිප් සංස්කරණය කරන්න</translation>
     </message>
     <message>
         <source>Flatten composite</source>
-        <translation type="unfinished">සංයුක්තය (Composite) සමතලා කරන්න</translation>
+        <translation>සංයුක්තය (Composite) සමතලා කරන්න</translation>
     </message>
     <message>
         <source>Render it into a single video clip</source>
-        <translation type="unfinished"></translation>
+        <translation>එය තනි වීඩියෝ ක්ලිපයක් බවට රෙන්ඩර් කරන්න</translation>
     </message>
     <message>
         <source>Make composite</source>
-        <translation type="unfinished">සංයුක්තයක් (Composite) සාදන්න</translation>
+        <translation>සංයුක්තයක් (Composite) සාදන්න</translation>
     </message>
     <message>
         <source>Group the selected clips into one</source>
-        <translation type="unfinished"></translation>
+        <translation>තෝරාගත් ක්ලිප් එකක් බවට සමූහගත කරන්න</translation>
     </message>
     <message>
         <source>Transform together</source>
-        <translation type="unfinished"></translation>
+        <translation>එකට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>Move, scale or tilt the selected clips&apos; tracks as one</source>
-        <translation type="unfinished"></translation>
+        <translation>තෝරාගත් ක්ලිප්වල ට්‍රැක් එකක් ලෙස ගෙනයන්න, පරිමාණය කරන්න හෝ ඇල කරන්න</translation>
     </message>
     <message>
         <source>Select transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය තෝරන්න</translation>
     </message>
     <message>
         <source>The layer moving this clip</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම ක්ලිපය ගෙනයන ස්තරය</translation>
     </message>
     <message>
         <source>Select covered clips</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය වූ ක්ලිප් තෝරන්න</translation>
     </message>
     <message>
         <source>Every clip this layer moves</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම ස්තරය මඟින් ගෙනයන සෑම ක්ලිපයක්ම</translation>
     </message>
     <message>
         <source>Covers</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය කරයි</translation>
     </message>
     <message>
         <source>Choose which tracks this layer moves</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම ස්තරය මඟින් ගෙනයන ට්‍රැක් තෝරන්න</translation>
     </message>
     <message>
         <source>Unlink</source>
-        <translation type="unfinished">විසන්ධි කරන්න</translation>
+        <translation>විසන්ධි කරන්න</translation>
     </message>
     <message>
         <source>Edit video and its audio separately</source>
-        <translation type="unfinished"></translation>
+        <translation>වීඩියෝව සහ එහි ශ්‍රව්‍ය වෙන වෙනම සංස්කරණය කරන්න</translation>
     </message>
     <message>
         <source>Separate all audio tracks</source>
-        <translation type="unfinished">සියලු ශ්‍රව්‍ය ට්‍රැක් වෙන් කරන්න</translation>
+        <translation>සියලු ශ්‍රව්‍ය ට්‍රැක් වෙන් කරන්න</translation>
     </message>
     <message>
         <source>One audio clip per audio track in the file</source>
-        <translation type="unfinished"></translation>
+        <translation>ගොනුවේ ඇති එක් එක් ශ්‍රව්‍ය ට්‍රැකය සඳහා එක් ශ්‍රව්‍ය ක්ලිපයක් බැගින්</translation>
     </message>
     <message>
         <source>Convert to edit-friendly format</source>
-        <translation type="unfinished">සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න</translation>
+        <translation>සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>Smoother editing for phone and screen recordings</source>
-        <translation type="unfinished"></translation>
+        <translation>දුරකථන සහ තිර පටිගත කිරීම් සඳහා වඩාත් සුමට සංස්කරණයක්</translation>
     </message>
     <message>
         <source>Merge subtitle clips</source>
-        <translation type="unfinished">උපසිරැසි ක්ලිප් ඒකාබද්ධ කරන්න</translation>
+        <translation>උපසිරැසි ක්ලිප් ඒකාබද්ධ කරන්න</translation>
     </message>
     <message>
         <source>Join the selected subtitle clips</source>
-        <translation type="unfinished"></translation>
+        <translation>තෝරාගත් උපසිරැසි ක්ලිප් සම්බන්ධ කරන්න</translation>
     </message>
     <message>
         <source>Merge all subtitles on this track</source>
-        <translation type="unfinished">මෙම ට්‍රැකයේ ඇති සියලුම උපසිරැසි ඒකාබද්ධ කරන්න</translation>
+        <translation>මෙම ට්‍රැකයේ ඇති සියලුම උපසිරැසි ඒකාබද්ධ කරන්න</translation>
     </message>
     <message>
         <source>Join every subtitle clip on the track</source>
-        <translation type="unfinished"></translation>
+        <translation>ට්‍රැකයේ ඇති සෑම උපසිරැසි ක්ලිපයක්ම සම්බන්ධ කරන්න</translation>
     </message>
     <message>
         <source>Convert to text clips</source>
-        <translation type="unfinished">පෙළ ක්ලිප් බවට පරිවර්තනය කරන්න</translation>
+        <translation>පෙළ ක්ලිප් බවට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>One text clip per cue</source>
-        <translation type="unfinished"></translation>
+        <translation>සෑම cue එකකටම එක් පෙළ ක්ලිපයක් බැගින්</translation>
     </message>
     <message>
         <source>Convert to subtitle</source>
-        <translation type="unfinished">උපසිරැසියක් බවට පරිවර්තනය කරන්න</translation>
+        <translation>උපසිරැසියක් බවට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>Turn text clips into subtitle cues</source>
-        <translation type="unfinished"></translation>
+        <translation>පෙළ ක්ලිප් උපසිරැසි cue බවට පත් කරන්න</translation>
     </message>
     <message>
         <source>Unlink from clip</source>
-        <translation type="unfinished">ක්ලිපයෙන් විසන්ධි කරන්න</translation>
+        <translation>ක්ලිපයෙන් විසන්ධි කරන්න</translation>
     </message>
     <message>
         <source>Stop following the clip it is attached to</source>
-        <translation type="unfinished"></translation>
+        <translation>එය අමුණා ඇති ක්ලිපය අනුගමනය කිරීම නවත්වන්න</translation>
     </message>
     <message>
         <source>Move to its own track</source>
-        <translation type="unfinished">වෙනම ට්‍රැකයක් වෙත ගෙන යන්න</translation>
+        <translation>වෙනම ට්‍රැකයක් වෙත ගෙන යන්න</translation>
     </message>
     <message>
         <source>Take the adjustment out of this lane</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම තීරුවෙන් ගැලපුම ඉවතට ගන්න</translation>
     </message>
     <message>
         <source>Effects</source>
-        <translation type="unfinished">ප්‍රයෝග</translation>
+        <translation>ප්‍රයෝග</translation>
     </message>
     <message>
         <source>Copy effects</source>
-        <translation type="unfinished">ප්‍රයෝග පිටපත් කරන්න</translation>
+        <translation>ප්‍රයෝග පිටපත් කරන්න</translation>
     </message>
     <message>
         <source>Keep this clip&apos;s effects to paste</source>
-        <translation type="unfinished"></translation>
+        <translation>ඇලවීම සඳහා මෙම ක්ලිපයේ ප්‍රයෝග තබා ගන්න</translation>
     </message>
     <message>
         <source>Paste effects</source>
-        <translation type="unfinished">ප්‍රයෝග අලවන්න</translation>
+        <translation>ප්‍රයෝග අලවන්න</translation>
     </message>
     <message>
         <source>Add the copied effects to this clip</source>
-        <translation type="unfinished"></translation>
+        <translation>පිටපත් කළ ප්‍රයෝග මෙම ක්ලිපයට එක් කරන්න</translation>
     </message>
     <message>
         <source>Save effects as preset…</source>
-        <translation type="unfinished">ප්‍රයෝග පෙරසැකසුමක් ලෙස සුරකින්න…</translation>
+        <translation>ප්‍රයෝග පෙරසැකසුමක් ලෙස සුරකින්න…</translation>
     </message>
     <message>
         <source>Reuse this look on other clips</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම විලාසය වෙනත් ක්ලිප් මත නැවත භාවිත කරන්න</translation>
     </message>
     <message>
         <source>Trim &amp; timing</source>
@@ -1192,11 +1192,11 @@
     </message>
     <message>
         <source>Split all tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>සියලු ට්‍රැක් වෙන් කරන්න</translation>
     </message>
     <message>
         <source>Cut every clip under the playhead</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්ලේහෙඩ් එක යටතේ ඇති සෑම ක්ලිපයක්ම කපන්න</translation>
     </message>
     <message>
         <source>Trim start</source>
@@ -1647,27 +1647,27 @@
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished">ප්‍රොක්සි</translation>
+        <translation>ප්‍රොක්සි</translation>
     </message>
     <message>
         <source>Previewing from a low-resolution proxy. Export uses the original.</source>
-        <translation type="unfinished">අඩු විභේදනයක් සහිත ප්‍රොක්සියක් මඟින් පෙරදසුන් කෙරේ. නිර්යාතයේදී මුල් පිටපත භාවිත කරයි.</translation>
+        <translation>අඩු විභේදනයක් සහිත ප්‍රොක්සියක් මඟින් පෙරදසුන් කෙරේ. නිර්යාතයේදී මුල් පිටපත භාවිත කරයි.</translation>
     </message>
     <message>
         <source>Edit-friendly</source>
-        <translation type="unfinished">සංස්කරණයට පහසු</translation>
+        <translation>සංස්කරණයට පහසු</translation>
     </message>
     <message>
         <source>Converted to a constant frame rate for smooth editing</source>
-        <translation type="unfinished">සුමට සංස්කරණයක් සඳහා නියත රාමු අනුපාතයකට පරිවර්තනය කරන ලදී</translation>
+        <translation>සුමට සංස්කරණයක් සඳහා නියත රාමු අනුපාතයකට පරිවර්තනය කරන ලදී</translation>
     </message>
     <message>
         <source>Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format.</source>
-        <translation type="unfinished">විචල්‍ය රාමු අනුපාතය. මෙම ක්ලිපය එහි ශ්‍රව්‍ය සමඟ අසමමුහුර්ත විය හැක. එය මත දකුණු ක්ලික් කර &apos;සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න&apos; තෝරන්න.</translation>
+        <translation>විචල්‍ය රාමු අනුපාතය. මෙම ක්ලිපය එහි ශ්‍රව්‍ය සමඟ අසමමුහුර්ත විය හැක. එය මත දකුණු ක්ලික් කර &apos;සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න&apos; තෝරන්න.</translation>
     </message>
     <message>
         <source>Transform layer: moves, scales and turns every track its bracket covers</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය: එහි වරහන මඟින් ආවරණය වන සෑම ට්‍රැකයක්ම ගෙනයයි, පරිමාණය කරයි සහ කරකවයි</translation>
     </message>
     <message>
         <source>Keyframes</source>
@@ -1764,18 +1764,18 @@
     <name>AndroidTransformOverlay</name>
     <message numerus="yes">
         <source>%1 · %n clip(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 · %n ක්ලිපය</numerusform>
+            <numerusform>%1 · %n ක්ලිප්</numerusform>
         </translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>Select %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 තෝරන්න</translation>
     </message>
 </context>
 <context>
@@ -3449,47 +3449,47 @@
     </message>
     <message>
         <source>Effect</source>
-        <translation type="unfinished">ප්‍රයෝගය</translation>
+        <translation>ප්‍රයෝගය</translation>
     </message>
     <message>
         <source>%1 (off)</source>
-        <translation type="unfinished">%1 (අක්‍රියයි)</translation>
+        <translation>%1 (අක්‍රියයි)</translation>
     </message>
     <message>
         <source>Frame video</source>
-        <translation type="unfinished"></translation>
+        <translation>වීඩියෝව රාමුගත කරන්න</translation>
     </message>
     <message>
         <source>Video framing saved</source>
-        <translation type="unfinished"></translation>
+        <translation>වීඩියෝ රාමුගත කිරීම සුරකින ලදී</translation>
     </message>
     <message>
         <source>Frame source video</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර වීඩියෝව රාමුගත කරන්න</translation>
     </message>
     <message>
         <source>Transform selection together</source>
-        <translation type="unfinished"></translation>
+        <translation>තේරීම එකට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>Select transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය තෝරන්න</translation>
     </message>
     <message>
         <source>3D gizmo: move</source>
-        <translation type="unfinished"></translation>
+        <translation>3D gizmo: ගෙනයන්න</translation>
     </message>
     <message>
         <source>3D gizmo: rotate</source>
-        <translation type="unfinished"></translation>
+        <translation>3D gizmo: කරකවන්න</translation>
     </message>
     <message>
         <source>3D gizmo: scale</source>
-        <translation type="unfinished"></translation>
+        <translation>3D gizmo: පරිමාණය කරන්න</translation>
     </message>
     <message>
         <source>3D gizmo: switch global/local axes</source>
-        <translation type="unfinished"></translation>
+        <translation>3D gizmo: ගෝලීය/දේශීය අක්ෂ මාරු කරන්න</translation>
     </message>
     <message>
         <source>Custom guides</source>
@@ -3521,75 +3521,75 @@
     </message>
     <message>
         <source>Audio adjustment</source>
-        <translation type="unfinished">ශ්‍රව්‍ය ගැලපුම්</translation>
+        <translation>ශ්‍රව්‍ය ගැලපුම්</translation>
     </message>
     <message>
         <source>Drop a transition where two clips meet.</source>
-        <translation type="unfinished">ක්ලිප් දෙකක් හමුවන තැනට සංක්‍රාන්තියක් දමන්න.</translation>
+        <translation>ක්ලිප් දෙකක් හමුවන තැනට සංක්‍රාන්තියක් දමන්න.</translation>
     </message>
     <message>
         <source>Transform layers take no effects or masks.</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තර සඳහා ප්‍රයෝග හෝ ආවරණ යෙදිය නොහැක.</translation>
     </message>
     <message>
         <source>Audio effects go on clips with sound.</source>
-        <translation type="unfinished"></translation>
+        <translation>ශ්‍රව්‍ය ප්‍රයෝග යෙදෙන්නේ ශබ්දය සහිත ක්ලිප් මතය.</translation>
     </message>
     <message>
         <source>That goes on a video, image, shape or text clip.</source>
-        <translation type="unfinished"></translation>
+        <translation>එය යෙදෙන්නේ වීඩියෝ, පින්තූර, හැඩතල හෝ පෙළ ක්ලිපයක් මතය.</translation>
     </message>
     <message>
         <source>Drop that onto a clip to apply it.</source>
-        <translation type="unfinished">එය යෙදීමට ක්ලිප් එකක් මතට දමන්න.</translation>
+        <translation>එය යෙදීමට ක්ලිප් එකක් මතට දමන්න.</translation>
     </message>
     <message>
         <source>Add to new track</source>
-        <translation type="unfinished"></translation>
+        <translation>නව ට්‍රැකයකට එක් කරන්න</translation>
     </message>
     <message>
         <source>Move clip in 3D</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිපය 3D තුළ ගෙනයන්න</translation>
     </message>
     <message>
         <source>Rotate clip in 3D</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිපය 3D තුළ කරකවන්න</translation>
     </message>
     <message>
         <source>Scale clip</source>
-        <translation type="unfinished">ක්ලිපය පරිමාණය කරන්න</translation>
+        <translation>ක්ලිපය පරිමාණය කරන්න</translation>
     </message>
     <message>
         <source>Audio effects go on the timeline.</source>
-        <translation type="unfinished"></translation>
+        <translation>ශ්‍රව්‍ය ප්‍රයෝග යෙදෙන්නේ කාලරේඛාව මතය.</translation>
     </message>
     <message>
         <source>Audio goes on the timeline.</source>
-        <translation type="unfinished"></translation>
+        <translation>ශ්‍රව්‍ය යෙදෙන්නේ කාලරේඛාව මතය.</translation>
     </message>
     <message>
         <source>Drop that onto a clip in the preview.</source>
-        <translation type="unfinished"></translation>
+        <translation>එය පෙරදසුනේ ඇති ක්ලිපයක් මතට දමන්න.</translation>
     </message>
     <message>
         <source>Add to preview</source>
-        <translation type="unfinished"></translation>
+        <translation>පෙරදසුනට එක් කරන්න</translation>
     </message>
     <message>
         <source>Enable 3D</source>
-        <translation type="unfinished"></translation>
+        <translation>3D සක්‍රීය කරන්න</translation>
     </message>
     <message>
         <source>Disable 3D</source>
-        <translation type="unfinished"></translation>
+        <translation>3D අක්‍රීය කරන්න</translation>
     </message>
     <message>
         <source>Clip is a 3D layer</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිපය 3D ස්තරයකි</translation>
     </message>
     <message>
         <source>Clip is flat</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිපය පැතලිය</translation>
     </message>
     <message>
         <source>Subtitles converted to text</source>
@@ -3608,33 +3608,33 @@
     </message>
     <message>
         <source>Add transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරයක් එක් කරන්න</translation>
     </message>
     <message>
         <source>Transform layer added</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය එක් කරන ලදී</translation>
     </message>
     <message>
         <source>Add transform clip</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ක්ලිපයක් එක් කරන්න</translation>
     </message>
     <message>
         <source>Transform clip added</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ක්ලිපය එක් කරන ලදී</translation>
     </message>
     <message>
         <source>Transform together</source>
-        <translation type="unfinished"></translation>
+        <translation>එකට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>Change transform span</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන පරාසය වෙනස් කරන්න</translation>
     </message>
     <message numerus="yes">
         <source>Transform layer now covers %n track(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>පරිවර්තන ස්තරය දැන් %n ට්‍රැකයක් ආවරණය කරයි</numerusform>
+            <numerusform>පරිවර්තන ස්තරය දැන් ට්‍රැක් %nක් ආවරණය කරයි</numerusform>
         </translation>
     </message>
     <message>
@@ -3743,11 +3743,11 @@
     </message>
     <message>
         <source>Depth effects read one clip&apos;s depth, so they go on a clip, not on an adjustment layer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Depth ප්‍රයෝග එක් ක්ලිපයක ගැඹුර කියවන බැවින්, ඒවා යෙදෙන්නේ ගැලපුම් ස්තරයක් (adjustment layer) මත නොව ක්ලිපයක් මතය.</translation>
     </message>
     <message>
         <source>Face effects follow one clip&apos;s faces, so they go on a clip, not on an adjustment layer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Face ප්‍රයෝග එක් ක්ලිපයක මුහුණු අනුගමනය කරන බැවින්, ඒවා යෙදෙන්නේ ගැලපුම් ස්තරයක් මත නොව ක්ලිපයක් මතය.</translation>
     </message>
     <message>
         <source>Add effect</source>
@@ -3807,45 +3807,45 @@
     </message>
     <message>
         <source>Could not read the selected file</source>
-        <translation type="unfinished"></translation>
+        <translation>තෝරාගත් ගොනුව කියවීමට නොහැකි විය</translation>
     </message>
     <message numerus="yes">
         <source>Imported %n face prop(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Face prop එකක් ආයාත කරන ලදී</numerusform>
+            <numerusform>Face props %nක් ආයාත කරන ලදී</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>Imported %n face prop(s); %1 skipped: %2</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Face prop එකක් ආයාත කරන ලදී; %1ක් මඟහැරිණි: %2</numerusform>
+            <numerusform>Face props %nක් ආයාත කරන ලදී; %1ක් මඟහැරිණි: %2</numerusform>
         </translation>
     </message>
     <message>
         <source>No face props were imported</source>
-        <translation type="unfinished"></translation>
+        <translation>Face props කිසිවක් ආයාත නොකෙරිණි</translation>
     </message>
     <message>
         <source>Could not delete the face prop</source>
-        <translation type="unfinished"></translation>
+        <translation>Face prop එක මැකීමට නොහැකි විය</translation>
     </message>
     <message>
         <source>Face prop deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Face prop එක මකා දමන ලදී</translation>
     </message>
     <message>
         <source>Add face prop</source>
-        <translation type="unfinished"></translation>
+        <translation>Face prop එකක් එක් කරන්න</translation>
     </message>
     <message>
         <source>Apply face prop</source>
-        <translation type="unfinished"></translation>
+        <translation>Face prop යොදන්න</translation>
     </message>
     <message>
         <source>Face prop applied</source>
-        <translation type="unfinished"></translation>
+        <translation>Face prop යොදන ලදී</translation>
     </message>
     <message>
         <source>Add audio effect</source>
@@ -4195,30 +4195,30 @@
     </message>
     <message>
         <source>That folder isn’t valid</source>
-        <translation type="unfinished"></translation>
+        <translation>එම ෆෝල්ඩරය වලංගු නොවේ</translation>
     </message>
     <message>
         <source>All media is already in that folder</source>
-        <translation type="unfinished"></translation>
+        <translation>සියලු මාධ්‍ය දැනටමත් එම ෆෝල්ඩරයේ ඇත</translation>
     </message>
     <message>
         <source>Collect media</source>
-        <translation type="unfinished"></translation>
+        <translation>මාධ්‍ය එක්රැස් කරන්න</translation>
     </message>
     <message numerus="yes">
         <source>Media collected, but %n original(s) couldn’t be deleted</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>මාධ්‍ය එක්රැස් කරන ලදී, නමුත් %n මුල් පිටපතක් මැකීමට නොහැකි විය</numerusform>
+            <numerusform>මාධ්‍ය එක්රැස් කරන ලදී, නමුත් මුල් පිටපත් %nක් මැකීමට නොහැකි විය</numerusform>
         </translation>
     </message>
     <message>
         <source>Media moved and relinked</source>
-        <translation type="unfinished"></translation>
+        <translation>මාධ්‍ය ගෙනයන ලද අතර නැවත සම්බන්ධ කරන ලදී</translation>
     </message>
     <message>
         <source>Media copied and relinked</source>
-        <translation type="unfinished"></translation>
+        <translation>මාධ්‍ය පිටපත් කරන ලද අතර නැවත සම්බන්ධ කරන ලදී</translation>
     </message>
     <message>
         <source>Exporting…</source>
@@ -4643,7 +4643,7 @@
     </message>
     <message>
         <source>Collect Media to Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>මාධ්‍ය ෆෝල්ඩරයකට එක්රැස් කරන්න</translation>
     </message>
     <message>
         <source>Market</source>
@@ -4727,7 +4727,7 @@
     </message>
     <message>
         <source>Collect Media to Folder…</source>
-        <translation type="unfinished"></translation>
+        <translation>මාධ්‍ය ෆෝල්ඩරයකට එක්රැස් කරන්න…</translation>
     </message>
     <message>
         <source>Import</source>
@@ -5028,11 +5028,11 @@
     </message>
     <message>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>විරාම කර ඇත</translation>
     </message>
     <message>
         <source>Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>පටිගත වෙමින් පවතී</translation>
     </message>
     <message>
         <source>Microphone: %1 (click to switch)</source>
@@ -5092,43 +5092,43 @@
     </message>
     <message>
         <source>Pan %1 — drag to adjust, double-click to center</source>
-        <translation type="unfinished"></translation>
+        <translation>Pan %1 — සීරුමාරු කිරීමට අදින්න, මැදට ගැනීමට දෙවරක් ක්ලික් කරන්න</translation>
     </message>
     <message>
         <source>Mic gain %1 dB (%2%) — scroll to adjust, double-click for 0 dB</source>
-        <translation type="unfinished"></translation>
+        <translation>මයික් Gain %1 dB (%2%) — සීරුමාරු කිරීමට scroll කරන්න, 0 dB සඳහා දෙවරක් ක්ලික් කරන්න</translation>
     </message>
     <message>
         <source>%1 dB — scroll to adjust, double-click for 0 dB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dB — සීරුමාරු කිරීමට scroll කරන්න, 0 dB සඳහා දෙවරක් ක්ලික් කරන්න</translation>
     </message>
     <message>
         <source>Master volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Master ශබ්දය</translation>
     </message>
     <message>
         <source>%1 volume</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ශබ්දය</translation>
     </message>
     <message>
         <source>Mic gain %1 dB</source>
-        <translation type="unfinished"></translation>
+        <translation>මයික් Gain %1 dB</translation>
     </message>
     <message>
         <source>Volume %1 dB</source>
-        <translation type="unfinished"></translation>
+        <translation>ශබ්දය %1 dB</translation>
     </message>
     <message>
         <source> — Shift-drag for fine, double-click for 0 dB</source>
-        <translation type="unfinished"></translation>
+        <translation> — සියුම්ව සකස් කිරීමට Shift සමඟ අදින්න, 0 dB සඳහා දෙවරක් ක්ලික් කරන්න</translation>
     </message>
     <message>
         <source>Add audio track</source>
-        <translation type="unfinished"></translation>
+        <translation>ශ්‍රව්‍ය ට්‍රැකයක් එක් කරන්න</translation>
     </message>
     <message>
         <source>Drag to resize — double-click to fit</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්‍රමාණය වෙනස් කිරීමට අදින්න — සරිලන සේ සැකසීමට දෙවරක් ක්ලික් කරන්න</translation>
     </message>
     <message>
         <source>Master</source>
@@ -5140,19 +5140,19 @@
     </message>
     <message>
         <source>C</source>
-        <translation type="unfinished">C</translation>
+        <translation>C</translation>
     </message>
     <message>
         <source>L%1</source>
-        <translation type="unfinished"></translation>
+        <translation>L%1</translation>
     </message>
     <message>
         <source>R%1</source>
-        <translation type="unfinished"></translation>
+        <translation>R%1</translation>
     </message>
     <message>
         <source> (recording)</source>
-        <translation type="unfinished"></translation>
+        <translation> (පටිගත වෙමින්)</translation>
     </message>
     <message>
         <source>Mute master</source>
@@ -5259,46 +5259,46 @@
     <name>CollectMediaDialog</name>
     <message>
         <source>Collecting media</source>
-        <translation type="unfinished"></translation>
+        <translation>මාධ්‍ය එක්රැස් කරමින්</translation>
     </message>
     <message>
         <source>Collect media to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>මාධ්‍ය ෆෝල්ඩරයකට එක්රැස් කරන්න</translation>
     </message>
     <message>
         <source>Gathering your media into one folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>ඔබේ මාධ්‍ය එක් ෆෝල්ඩරයකට එක්රැස් කරමින්.</translation>
     </message>
     <message>
         <source>Every file this project uses goes into Video, Audio, Images, Derived and Other folders inside “%1”, and the project is relinked to them.</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම ව්‍යාපෘතිය භාවිත කරන සෑම ගොනුවක්ම “%1” තුළ ඇති Video, Audio, Images, Derived සහ Other ෆෝල්ඩර තුළට ඇතුළත් කෙරෙන අතර, ව්‍යාපෘතිය ඒවාට නැවත සම්බන්ධ කරනු ලැබේ.</translation>
     </message>
     <message>
         <source>Copy leaves the originals where they are. Move deletes them once everything has landed, and clears undo history.</source>
-        <translation type="unfinished"></translation>
+        <translation>පිටපත් කිරීමේදී මුල් ගොනු තිබූ තැනම ඉතිරි වේ. ගෙනයාමේදී සියල්ල සම්පූර්ණ වූ පසු ඒවා මකා දමන අතර, අහෝසි කිරීමේ ඉතිහාසය හිස් කරයි.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">අවලංගු කරන්න</translation>
+        <translation>අවලංගු කරන්න</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished"></translation>
+        <translation>ගෙනයන්න</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">පිටපත් කරන්න</translation>
+        <translation>පිටපත් කරන්න</translation>
     </message>
 </context>
 <context>
     <name>ColorEyedropper</name>
     <message>
         <source>Drag to a colour and lift to pick it</source>
-        <translation type="unfinished"></translation>
+        <translation>වර්ණයක් වෙත ඇදගෙන ගොස් එය තෝරාගැනීමට අතහරින්න</translation>
     </message>
     <message>
         <source>Click a colour to pick it. Esc cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>වර්ණයක් තෝරාගැනීමට එය ක්ලික් කරන්න. Esc මඟින් අවලංගු වේ.</translation>
     </message>
 </context>
 <context>
@@ -5703,207 +5703,207 @@
     <name>DriftAssetCard</name>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Add</translation>
+        <translation>Add</translation>
     </message>
     <message>
         <source>%1 s</source>
-        <translation type="unfinished">තත් %1</translation>
+        <translation>තත් %1</translation>
     </message>
     <message numerus="yes">
         <source>%n colour(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n වර්ණයක්</numerusform>
+            <numerusform>වර්ණ %nක්</numerusform>
         </translation>
     </message>
     <message>
         <source>Loops, %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>ලූප් වේ, %1 s</translation>
     </message>
     <message>
         <source>Added</source>
-        <translation type="unfinished"></translation>
+        <translation>එක් කරන ලදී</translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
+        <translation>නැවත උත්සාහ කරන්න</translation>
     </message>
     <message>
         <source>Downloaded, works offline</source>
-        <translation type="unfinished"></translation>
+        <translation>බාගත කර ඇත, නොබැඳිව ක්‍රියා කරයි</translation>
     </message>
 </context>
 <context>
     <name>DriftAssetDetail</name>
     <message>
         <source>Loops seamlessly</source>
-        <translation type="unfinished"></translation>
+        <translation>බාධාවකින් තොරව ලූප් වේ</translation>
     </message>
     <message>
         <source>Plays in, then holds</source>
-        <translation type="unfinished"></translation>
+        <translation>ධාවනය වී, පසුව නතරව පවතී</translation>
     </message>
     <message>
         <source>Plays in, holds, plays out</source>
-        <translation type="unfinished"></translation>
+        <translation>ධාවනය වී, නතරව පැවතී, අවසානයේ ධාවනය වේ</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished">ආපසු</translation>
+        <translation>ආපසු</translation>
     </message>
     <message>
         <source>Colours</source>
-        <translation type="unfinished"></translation>
+        <translation>වර්ණ</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">යළි සකසන්න</translation>
+        <translation>යළි සකසන්න</translation>
     </message>
     <message>
         <source>%1 s</source>
-        <translation type="unfinished">තත් %1</translation>
+        <translation>තත් %1</translation>
     </message>
     <message>
         <source>room for your text</source>
-        <translation type="unfinished"></translation>
+        <translation>ඔබේ පෙළ සඳහා ඉඩ ඇත</translation>
     </message>
     <message>
         <source>3D model, loops every %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>3D ආකෘතිය, සෑම %1 s කට වරක්ම ලූප් වේ</translation>
     </message>
     <message>
         <source>Tracks a face in the clip it is applied to</source>
-        <translation type="unfinished"></translation>
+        <translation>එය යොදන ලද ක්ලිපයේ මුහුණක් හඹා යයි</translation>
     </message>
     <message>
         <source>Licence &lt;a href=&quot;%1&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>බලපත්‍රය &lt;a href=&quot;%1&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Licence %1</source>
-        <translation type="unfinished"></translation>
+        <translation>බලපත්‍රය %1</translation>
     </message>
     <message>
         <source>Apply to selected clip</source>
-        <translation type="unfinished">තෝරාගත් ක්ලිපයට යොදන්න</translation>
+        <translation>තෝරාගත් ක්ලිපයට යොදන්න</translation>
     </message>
     <message>
         <source>Add at playhead</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්ලේහෙඩ් එක ඇති තැනට එක් කරන්න</translation>
     </message>
     <message>
         <source>Select a clip with a face on the timeline first</source>
-        <translation type="unfinished"></translation>
+        <translation>පළමුව කාලරේඛාව මත ඇති මුහුණක් සහිත ක්ලිපයක් තෝරන්න</translation>
     </message>
     <message>
         <source>Add to Face props</source>
-        <translation type="unfinished"></translation>
+        <translation>Face props වෙත එක් කරන්න</translation>
     </message>
     <message>
         <source>Add to media bin</source>
-        <translation type="unfinished"></translation>
+        <translation>Media bin වෙත එක් කරන්න</translation>
     </message>
     <message>
         <source>Select a clip with a face on the timeline to apply this prop.</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම prop එක යෙදීමට කාලරේඛාව මත ඇති මුහුණක් සහිත ක්ලිපයක් තෝරන්න.</translation>
     </message>
     <message>
         <source>Choose colour</source>
-        <translation type="unfinished">වර්ණය තෝරන්න</translation>
+        <translation>වර්ණය තෝරන්න</translation>
     </message>
 </context>
 <context>
     <name>DriftAssetStore</name>
     <message>
         <source>The marketplace is not available in this build.</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම build එකෙහි Marketplace ලබාගත නොහැක.</translation>
     </message>
     <message>
         <source>Could not load Drift Assets. Check your connection and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Drift Assets පූරණය කිරීමට නොහැකි විය. ඔබේ සම්බන්ධතාව පරීක්ෂා කර නැවත උත්සාහ කරන්න.</translation>
     </message>
     <message>
         <source>That asset could not be installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>එම asset එක ස්ථාපනය කිරීමට නොහැකි විය.</translation>
     </message>
     <message>
         <source>Could not write to the app data folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>යෙදුම් දත්ත ෆෝල්ඩරයට ලිවීමට නොහැකි විය.</translation>
     </message>
     <message>
         <source>Could not download that asset. Check your connection and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>එම asset එක බාගත කිරීමට නොහැකි විය. ඔබේ සම්බන්ධතාව පරීක්ෂා කර නැවත උත්සාහ කරන්න.</translation>
     </message>
     <message>
         <source>That download was damaged. Try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>එම බාගැනීම හානි වී ඇත. නැවත උත්සාහ කරන්න.</translation>
     </message>
     <message>
         <source>Could not add that face prop.</source>
-        <translation type="unfinished"></translation>
+        <translation>එම Face prop එක එක් කිරීමට නොහැකි විය.</translation>
     </message>
     <message>
         <source>Could not add that asset to the media bin.</source>
-        <translation type="unfinished"></translation>
+        <translation>එම asset එක Media bin වෙත එක් කිරීමට නොහැකි විය.</translation>
     </message>
 </context>
 <context>
     <name>DriftAssetsHome</name>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">යොදන්න</translation>
+        <translation>යොදන්න</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Add</translation>
+        <translation>Add</translation>
     </message>
     <message>
         <source>Added to Face props</source>
-        <translation type="unfinished"></translation>
+        <translation>Face props වෙත එක් කරන ලදී</translation>
     </message>
     <message>
         <source>Select a video or image clip to apply a face prop</source>
-        <translation type="unfinished"></translation>
+        <translation>Face prop එකක් යෙදීමට වීඩියෝ හෝ පින්තූර ක්ලිපයක් තෝරන්න</translation>
     </message>
     <message>
         <source>Added to the media bin</source>
-        <translation type="unfinished"></translation>
+        <translation>Media bin වෙත එක් කරන ලදී</translation>
     </message>
     <message>
         <source>Couldn’t load Drift Assets</source>
-        <translation type="unfinished"></translation>
+        <translation>Drift Assets පූරණය කිරීමට නොහැකි විය</translation>
     </message>
     <message>
         <source>Try again</source>
-        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
+        <translation>නැවත උත්සාහ කරන්න</translation>
     </message>
     <message>
         <source>No assets here yet</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙහි තවමත් assets කිසිවක් නැත</translation>
     </message>
     <message>
         <source>Drift Assets are still being published. Check back soon.</source>
-        <translation type="unfinished"></translation>
+        <translation>Drift Assets තවමත් ප්‍රකාශයට පත් කරමින් පවතී. ළඟදීම නැවත පරීක්ෂා කරන්න.</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">නැවුම් කරන්න</translation>
+        <translation>නැවුම් කරන්න</translation>
     </message>
     <message>
         <source>See all</source>
-        <translation type="unfinished"></translation>
+        <translation>සියල්ල බලන්න</translation>
     </message>
     <message>
         <source>All assets</source>
-        <translation type="unfinished"></translation>
+        <translation>සියලු වත්කම්</translation>
     </message>
     <message>
         <source>No Drift Assets match “%1”.</source>
-        <translation type="unfinished"></translation>
+        <translation>“%1” සඳහා ගැළපෙන Drift Assets හමු නොවීය.</translation>
     </message>
     <message>
         <source>Search %1 for “%2”</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 තුළ “%2” සොයන්න</translation>
     </message>
 </context>
 <context>
@@ -6124,11 +6124,11 @@
     </message>
     <message>
         <source>Add an adjustment layer to apply effects across all clips underneath, or drag it to where it should go</source>
-        <translation type="unfinished"></translation>
+        <translation>යටින් ඇති සියලු ක්ලිප් වෙත ප්‍රයෝග යෙදීමට ගැළපුම් ස්තරයක් එක් කරන්න, නැතහොත් එය තිබිය යුතු ස්ථානයට අදින්න</translation>
     </message>
     <message>
         <source>Adjustment layer</source>
-        <translation type="unfinished"></translation>
+        <translation>ගැළපුම් ස්තරය</translation>
     </message>
     <message>
         <source>No effects match “%1”.</source>
@@ -6795,146 +6795,146 @@
     <name>FacePropImport</name>
     <message>
         <source>%1 is not a binary glTF model</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ද්විමය glTF ආකෘතියක් නොවේ</translation>
     </message>
     <message>
         <source>Could not write to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 වෙත ලිවීමට නොහැකි විය</translation>
     </message>
     <message>
         <source>prop.json is not valid JSON</source>
-        <translation type="unfinished"></translation>
+        <translation>prop.json වලංගු JSON නොවේ</translation>
     </message>
     <message>
         <source>prop.json is not a face prop</source>
-        <translation type="unfinished"></translation>
+        <translation>prop.json මුහුණු ප්‍රොප් එකක් නොවේ</translation>
     </message>
     <message>
         <source>prop.json needs a newer version of Drift</source>
-        <translation type="unfinished"></translation>
+        <translation>prop.json සඳහා Drift හි නව අනුවාදයක් අවශ්‍ය වේ</translation>
     </message>
     <message>
         <source>invalid prop id “%1”</source>
-        <translation type="unfinished"></translation>
+        <translation>වලංගු නොවන ප්‍රොප් id “%1”</translation>
     </message>
     <message>
         <source>prop.json must name a .glb model in the prop folder</source>
-        <translation type="unfinished"></translation>
+        <translation>prop.json මඟින් prop ෆෝල්ඩරය තුළ ඇති .glb ආකෘතියක් නම් කළ යුතුය</translation>
     </message>
     <message>
         <source>prop.json thumbnail must be a file in the prop folder</source>
-        <translation type="unfinished"></translation>
+        <translation>prop.json හි සිඟිති රූපය prop ෆෝල්ඩරය තුළ ඇති ගොනුවක් විය යුතුය</translation>
     </message>
     <message>
         <source>prop.json names the same file twice</source>
-        <translation type="unfinished"></translation>
+        <translation>prop.json එකම ගොනුව දෙවරක් නම් කර ඇත</translation>
     </message>
     <message>
         <source>param “%1” must be a number</source>
-        <translation type="unfinished"></translation>
+        <translation>“%1” පරාමිතිය සංඛ්‍යාවක් විය යුතුය</translation>
     </message>
     <message>
         <source>param “occlusion” must be true or false</source>
-        <translation type="unfinished"></translation>
+        <translation>“occlusion” පරාමිතිය true හෝ false විය යුතුය</translation>
     </message>
     <message>
         <source>Could not open %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 විවෘත කිරීමට නොහැකි විය</translation>
     </message>
     <message>
         <source>%1 is not a .zip archive. Other archive formats are not supported.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 යනු .zip සංරක්ෂිතයක් නොවේ. වෙනත් සංරක්ෂිත ආකෘති සඳහා සහය නොදක්වයි.</translation>
     </message>
     <message>
         <source>%1 has too many files</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 හි ගොනු අධික ප්‍රමාණයක් පවතී</translation>
     </message>
     <message>
         <source>No face props (prop.json) found in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 තුළ මුහුණු ප්‍රොප් (prop.json) කිසිවක් හමු නොවීය</translation>
     </message>
     <message>
         <source>%1 has too many props</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 හි ප්‍රොප් අධික ප්‍රමාණයක් පවතී</translation>
     </message>
     <message>
         <source>%1 is missing</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 අස්ථානගත වී ඇත</translation>
     </message>
     <message>
         <source>%1 is too large or damaged</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 විශාල වැඩිය හෝ හානි වී ඇත</translation>
     </message>
     <message>
         <source>%1 is too large or unreadable</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 විශාල වැඩිය හෝ කියවිය නොහැක</translation>
     </message>
     <message>
         <source>“%1” is not an imported face prop</source>
-        <translation type="unfinished"></translation>
+        <translation>“%1” යනු ආයාත කරන ලද මුහුණු ප්‍රොප් එකක් නොවේ</translation>
     </message>
     <message>
         <source>Could not delete “%1”</source>
-        <translation type="unfinished"></translation>
+        <translation>“%1” මැකීමට නොහැකි විය</translation>
     </message>
 </context>
 <context>
     <name>FacePropPicker</name>
     <message>
         <source>Prop</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්‍රොප්</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">ආයාත කරන්න</translation>
+        <translation>ආයාත කරන්න</translation>
     </message>
     <message>
         <source>Import face props from a .zip</source>
-        <translation type="unfinished"></translation>
+        <translation>.zip එකකින් මුහුණු ප්‍රොප් ආයාත කරන්න</translation>
     </message>
     <message>
         <source>Import Face Props</source>
-        <translation type="unfinished"></translation>
+        <translation>මුහුණු ප්‍රොප් ආයාත කරන්න</translation>
     </message>
     <message>
         <source>Zip archives (*.zip)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zip සංරක්ෂිත (*.zip)</translation>
     </message>
     <message>
         <source>Import zip…</source>
-        <translation type="unfinished"></translation>
+        <translation>Zip ආයාත කරන්න…</translation>
     </message>
     <message>
         <source>Import folder…</source>
-        <translation type="unfinished"></translation>
+        <translation>ෆෝල්ඩරය ආයාත කරන්න…</translation>
     </message>
     <message>
         <source>No face props installed. Import a .zip from Drift-Assets, or any folder of props that carry a prop.json.</source>
-        <translation type="unfinished"></translation>
+        <translation>කිසිදු මුහුණු ප්‍රොප් එකක් ස්ථාපනය කර නැත. Drift-Assets වෙතින් .zip එකක්, හෝ prop.json අඩංගු ඕනෑම ප්‍රොප් ෆෝල්ඩරයක් ආයාත කරන්න.</translation>
     </message>
     <message>
         <source>Custom model: %1 (missing)</source>
-        <translation type="unfinished"></translation>
+        <translation>අභිරුචි ආකෘතිය: %1 (නොමැත)</translation>
     </message>
     <message>
         <source>Custom model: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>අභිරුචි ආකෘතිය: %1</translation>
     </message>
     <message>
         <source>Delete prop…</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්‍රොප් මකන්න…</translation>
     </message>
     <message>
         <source>Delete this prop?</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම ප්‍රොප් එක මකන්නද?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">මකන්න</translation>
+        <translation>මකන්න</translation>
     </message>
     <message>
         <source>“%1” will be removed from your face props. Effects using it will show it as missing until it is imported again.</source>
-        <translation type="unfinished"></translation>
+        <translation>“%1” ඔබේ මුහුණු ප්‍රොප් වෙතින් ඉවත් කරනු ඇත. එය නැවත ආයාත කරන තෙක්, එය භාවිත කරන ප්‍රයෝග මඟින් එය අස්ථානගත වී ඇති බව පෙන්වනු ඇත.</translation>
     </message>
 </context>
 <context>
@@ -7101,35 +7101,35 @@
     </message>
     <message>
         <source>Transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය</translation>
     </message>
     <message>
         <source>Original dimensions: %1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>මුල් මානයන්: %1 × %2</translation>
     </message>
     <message>
         <source>Source frame box</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමු කොටුව</translation>
     </message>
     <message>
         <source>Unlock source frame ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමු අනුපාතය අගුළු හරින්න</translation>
     </message>
     <message>
         <source>Lock source frame ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමු අනුපාතය අගුළු දමන්න</translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">පළල</translation>
+        <translation>පළල</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">උස</translation>
+        <translation>උස</translation>
     </message>
     <message>
         <source>Edit source frame…</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමුව සංස්කරණය කරන්න…</translation>
     </message>
     <message>
         <source>Starts at</source>
@@ -7483,19 +7483,19 @@
     </message>
     <message>
         <source>Tilt X</source>
-        <translation type="unfinished"></translation>
+        <translation>X ඇලවීම</translation>
     </message>
     <message>
         <source>Tilt Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y ඇලවීම</translation>
     </message>
     <message>
         <source>Depth</source>
-        <translation type="unfinished"></translation>
+        <translation>ගැඹුර</translation>
     </message>
     <message>
         <source>Perspective</source>
-        <translation type="unfinished"></translation>
+        <translation>පර්යාලෝකය</translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -7967,18 +7967,18 @@
     <name>MarketSearchField</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">අවලංගු කරන්න</translation>
+        <translation>අවලංගු කරන්න</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">හිස් කරන්න</translation>
+        <translation>හිස් කරන්න</translation>
     </message>
 </context>
 <context>
     <name>MarketTab</name>
     <message>
         <source>Stock</source>
-        <translation type="unfinished"></translation>
+        <translation>ස්ටොක්</translation>
     </message>
     <message>
         <source>Marketplace unavailable</source>
@@ -7990,23 +7990,23 @@
     </message>
     <message>
         <source>Search assets</source>
-        <translation type="unfinished"></translation>
+        <translation>වත්කම් සොයන්න</translation>
     </message>
     <message>
         <source>Search, or paste a link</source>
-        <translation type="unfinished"></translation>
+        <translation>සොයන්න, නැතහොත් සබැඳියක් අලවන්න</translation>
     </message>
     <message>
         <source>Assets</source>
-        <translation type="unfinished"></translation>
+        <translation>වත්කම්</translation>
     </message>
     <message>
         <source>Stock footage</source>
-        <translation type="unfinished"></translation>
+        <translation>ස්ටොක් දර්ශන</translation>
     </message>
     <message>
         <source>Loading sources…</source>
-        <translation type="unfinished">මූලාශ්‍ර පූරණය වෙමින්…</translation>
+        <translation>මූලාශ්‍ර පූරණය වෙමින්…</translation>
     </message>
     <message>
         <source>Couldn’t reach the marketplace</source>
@@ -8191,7 +8191,7 @@
     </message>
     <message>
         <source>Select a clip first, or drag the mask onto one</source>
-        <translation type="unfinished"></translation>
+        <translation>පළමුව ක්ලිපයක් තෝරන්න, නැතහොත් ආවරණය එය මතට අදින්න</translation>
     </message>
 </context>
 <context>
@@ -8519,7 +8519,7 @@
     </message>
     <message>
         <source>Drag the frame to choose the area to use. The original video stays available for reframing.</source>
-        <translation type="unfinished"></translation>
+        <translation>භාවිත කිරීමට අවශ්‍ය ප්‍රදේශය තෝරා ගැනීමට රාමුව අදින්න. නැවත රාමු කිරීම සඳහා මුල් වීඩියෝව දිගටම ලබාගත හැක.</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -8539,15 +8539,15 @@
     </message>
     <message>
         <source>Original: %1×%2 • Frame: %3×%4</source>
-        <translation type="unfinished"></translation>
+        <translation>මුල්: %1×%2 • රාමුව: %3×%4</translation>
     </message>
     <message>
         <source>Unlock source frame ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමු අනුපාතය අගුළු හරින්න</translation>
     </message>
     <message>
         <source>Lock source frame ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>මූලාශ්‍ර රාමු අනුපාතය අගුළු දමන්න</translation>
     </message>
     <message>
         <source>Reset</source>
@@ -8563,7 +8563,7 @@
     </message>
     <message>
         <source>Save keeps the original video and stores this framing.</source>
-        <translation type="unfinished"></translation>
+        <translation>සුරැකීම මඟින් මුල් වීඩියෝව එලෙසම තබා මෙම රාමුගත කිරීම සුරකියි.</translation>
     </message>
     <message>
         <source>Nothing to save — drag this item onto the timeline when you are ready.</source>
@@ -8571,7 +8571,7 @@
     </message>
     <message>
         <source>Adjust the frame or Reset to restore the full image.</source>
-        <translation type="unfinished"></translation>
+        <translation>සම්පූර්ණ රූපය ප්‍රතිසාධනය කිරීමට රාමුව සකසන්න හෝ යළි සකසන්න.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -8940,7 +8940,7 @@
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>New track</source>
@@ -9223,15 +9223,15 @@
     </message>
     <message>
         <source>Playhead update (median)</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්ලේහෙඩ් යාවත්කාලීනය (මධ්‍යස්ථය)</translation>
     </message>
     <message>
         <source>Playhead update (p95)</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්ලේහෙඩ් යාවත්කාලීනය (p95)</translation>
     </message>
     <message>
         <source>Audio mix load (p95)</source>
-        <translation type="unfinished"></translation>
+        <translation>ශ්‍රව්‍ය මිශ්‍රණ පැටවුම (p95)</translation>
     </message>
     <message>
         <source>Samples</source>
@@ -9543,15 +9543,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Couldn’t read %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 කියවීමට නොහැකි විය</translation>
     </message>
     <message>
         <source>Couldn’t write %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ලිවීමට නොහැකි විය</translation>
     </message>
     <message>
         <source>Couldn’t create %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 සෑදීමට නොහැකි විය</translation>
     </message>
 </context>
 <context>
@@ -11199,7 +11199,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>%1 — click to add, or drag to the timeline or preview</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 — එක් කිරීමට ක්ලික් කරන්න, නැතහොත් කාලරේඛාව හෝ පෙරදසුන වෙත අදින්න</translation>
     </message>
 </context>
 <context>
@@ -11565,146 +11565,146 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>%1 — click to add, or drag to the timeline or preview</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 — එක් කිරීමට ක්ලික් කරන්න, නැතහොත් කාලරේඛාව හෝ පෙරදසුන වෙත අදින්න</translation>
     </message>
 </context>
 <context>
     <name>StockBrowser</name>
     <message>
         <source>Save downloads to</source>
-        <translation type="unfinished"></translation>
+        <translation>බාගැනීම් සුරකින ස්ථානය</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">සියල්ල</translation>
+        <translation>සියල්ල</translation>
     </message>
     <message>
         <source>%1 (%2 left)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2ක් ඉතිරිව ඇත)</translation>
     </message>
     <message numerus="yes">
         <source>Filters — %n applied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>පෙරහන් — %nක් යොදා ඇත</numerusform>
             <numerusform>පෙරහන් — %nක් යොදා ඇත</numerusform>
         </translation>
     </message>
     <message>
         <source>Filters</source>
-        <translation type="unfinished">පෙරහන්</translation>
+        <translation>පෙරහන්</translation>
     </message>
     <message>
         <source>Get from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 වෙතින් ලබාගන්න</translation>
     </message>
     <message>
         <source>Get from this link</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම සබැඳියෙන් ලබාගන්න</translation>
     </message>
     <message>
         <source>Looking up that link…</source>
-        <translation type="unfinished">එම සබැඳිය සොයා බලමින්…</translation>
+        <translation>එම සබැඳිය සොයා බලමින්…</translation>
     </message>
     <message>
         <source>Couldn’t open that link</source>
-        <translation type="unfinished">එම සබැඳිය විවෘත කිරීමට නොහැකි විය</translation>
+        <translation>එම සබැඳිය විවෘත කිරීමට නොහැකි විය</translation>
     </message>
     <message>
         <source>Search failed</source>
-        <translation type="unfinished">සෙවීම අසාර්ථක විය</translation>
+        <translation>සෙවීම අසාර්ථක විය</translation>
     </message>
     <message>
         <source>Try again</source>
-        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
+        <translation>නැවත උත්සාහ කරන්න</translation>
     </message>
     <message>
         <source>No results for “%1”</source>
-        <translation type="unfinished">“%1” සඳහා ප්‍රතිඵල නැත</translation>
+        <translation>“%1” සඳහා ප්‍රතිඵල නැත</translation>
     </message>
     <message>
         <source>Search this source</source>
-        <translation type="unfinished">මෙම මූලාශ්‍රය සොයන්න</translation>
+        <translation>මෙම මූලාශ්‍රය සොයන්න</translation>
     </message>
     <message>
         <source>Paste a link</source>
-        <translation type="unfinished">සබැඳියක් අලවන්න</translation>
+        <translation>සබැඳියක් අලවන්න</translation>
     </message>
     <message>
         <source>Try different words, another source, or clear a filter.</source>
-        <translation type="unfinished"></translation>
+        <translation>වෙනත් වචන, වෙනත් මූලාශ්‍රයක් භාවිත කර බලන්න, නැතහොත් පෙරහනක් හිස් කරන්න.</translation>
     </message>
     <message>
         <source>Type above and press Enter.</source>
-        <translation type="unfinished"></translation>
+        <translation>ඉහත ටයිප් කර Enter ඔබන්න.</translation>
     </message>
     <message>
         <source>Paste a page link above and press Enter.</source>
-        <translation type="unfinished"></translation>
+        <translation>ඉහත පිටු සබැඳියක් අලවා Enter ඔබන්න.</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished">විරාමය</translation>
+        <translation>විරාමය</translation>
     </message>
     <message>
         <source>Play preview</source>
-        <translation type="unfinished"></translation>
+        <translation>පෙරදසුන ධාවනය කරන්න</translation>
     </message>
 </context>
 <context>
     <name>StockItemDetail</name>
     <message>
         <source>Back to results</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්‍රතිඵල වෙත ආපසු</translation>
     </message>
     <message>
         <source>By %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 විසින්</translation>
     </message>
     <message numerus="yes">
         <source>%n coin(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n කාසි</numerusform>
             <numerusform>%n කාසි</numerusform>
         </translation>
     </message>
     <message>
         <source>Downloading…</source>
-        <translation type="unfinished"></translation>
+        <translation>බාගත වෙමින්…</translation>
     </message>
     <message>
         <source>Download again</source>
-        <translation type="unfinished"></translation>
+        <translation>නැවත බාගන්න</translation>
     </message>
     <message>
         <source>Download</source>
-        <translation type="unfinished">බාගන්න</translation>
+        <translation>බාගන්න</translation>
     </message>
     <message>
         <source>You have used today’s downloads from this source</source>
-        <translation type="unfinished"></translation>
+        <translation>ඔබ මෙම මූලාශ්‍රයෙන් අද දිනට හිමි බාගැනීම් භාවිත කර ඇත</translation>
     </message>
     <message>
         <source>Saves to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 වෙත සුරැකේ</translation>
     </message>
     <message>
         <source>You’ll choose a folder the first time</source>
-        <translation type="unfinished"></translation>
+        <translation>ඔබ පළමු වරට ෆෝල්ඩරයක් තෝරා ගනු ඇත</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>වෙනස් කරන්න</translation>
     </message>
 </context>
 <context>
     <name>StockThumb</name>
     <message>
         <source>Cancel download</source>
-        <translation type="unfinished">බාගැනීම අවලංගු කරන්න</translation>
+        <translation>බාගැනීම අවලංගු කරන්න</translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">නැවත උත්සාහ කරන්න</translation>
+        <translation>නැවත උත්සාහ කරන්න</translation>
     </message>
 </context>
 <context>
@@ -12772,19 +12772,19 @@ If playback stutters, try another.</source>
     <name>ThemedColorDialog</name>
     <message>
         <source>Original colour</source>
-        <translation type="unfinished"></translation>
+        <translation>මුල් වර්ණය</translation>
     </message>
     <message>
         <source>Enter a color like #FF0000</source>
-        <translation type="unfinished">#FF0000 වැනි වර්ණ කේතයක් ඇතුළත් කරන්න</translation>
+        <translation>#FF0000 වැනි වර්ණ කේතයක් ඇතුළත් කරන්න</translation>
     </message>
     <message>
         <source>Hex colour</source>
-        <translation type="unfinished"></translation>
+        <translation>Hex වර්ණය</translation>
     </message>
     <message>
         <source>Pick a colour from the window</source>
-        <translation type="unfinished"></translation>
+        <translation>කවුළුවෙන් වර්ණයක් තෝරන්න</translation>
     </message>
 </context>
 <context>
@@ -12841,23 +12841,23 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Transform together</source>
-        <translation type="unfinished"></translation>
+        <translation>එකට පරිවර්තනය කරන්න</translation>
     </message>
     <message>
         <source>Add transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරයක් එක් කරන්න</translation>
     </message>
     <message>
         <source>Select transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය තෝරන්න</translation>
     </message>
     <message>
         <source>Covers…</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය කරන්නේ…</translation>
     </message>
     <message>
         <source>Select covered clips</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය වූ ක්ලිප් තෝරන්න</translation>
     </message>
     <message>
         <source>Split at current time</source>
@@ -12972,27 +12972,27 @@ If playback stutters, try another.</source>
     <name>TimelinePanel</name>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished">ප්‍රොක්සි</translation>
+        <translation>ප්‍රොක්සි</translation>
     </message>
     <message>
         <source>Previewing from a low-resolution proxy. Export uses the original.</source>
-        <translation type="unfinished">අඩු විභේදනයක් සහිත ප්‍රොක්සියක් මඟින් පෙරදසුන් කෙරේ. නිර්යාතයේදී මුල් පිටපත භාවිත කරයි.</translation>
+        <translation>අඩු විභේදනයක් සහිත ප්‍රොක්සියක් මඟින් පෙරදසුන් කෙරේ. නිර්යාතයේදී මුල් පිටපත භාවිත කරයි.</translation>
     </message>
     <message>
         <source>Edit-friendly</source>
-        <translation type="unfinished">සංස්කරණයට පහසු</translation>
+        <translation>සංස්කරණයට පහසු</translation>
     </message>
     <message>
         <source>Converted to a constant frame rate for smooth editing</source>
-        <translation type="unfinished">සුමට සංස්කරණයක් සඳහා නියත රාමු අනුපාතයකට පරිවර්තනය කරන ලදී</translation>
+        <translation>සුමට සංස්කරණයක් සඳහා නියත රාමු අනුපාතයකට පරිවර්තනය කරන ලදී</translation>
     </message>
     <message>
         <source>Variable frame rate. This clip can drift out of sync with its audio. Right-click it and choose Convert to edit-friendly format.</source>
-        <translation type="unfinished">විචල්‍ය රාමු අනුපාතය. මෙම ක්ලිපය එහි ශ්‍රව්‍ය සමඟ අසමමුහුර්ත විය හැක. එය මත දකුණු ක්ලික් කර &apos;සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න&apos; තෝරන්න.</translation>
+        <translation>විචල්‍ය රාමු අනුපාතය. මෙම ක්ලිපය එහි ශ්‍රව්‍ය සමඟ අසමමුහුර්ත විය හැක. එය මත දකුණු ක්ලික් කර &apos;සංස්කරණයට පහසු ආකෘතියකට පරිවර්තනය කරන්න&apos; තෝරන්න.</translation>
     </message>
     <message>
         <source>Transform layer: moves, scales and turns every track its bracket covers</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරය: එහි වරහන මඟින් ආවරණය වන සෑම ට්‍රැකයක්ම ගෙනයයි, ප්‍රමාණය වෙනස් කරයි සහ කරකවයි</translation>
     </message>
     <message>
         <source>Save effect preset</source>
@@ -13191,11 +13191,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add transform layer</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරයක් එක් කරන්න</translation>
     </message>
     <message>
         <source>Add transform layer — moves the selected clips&apos; tracks as one</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තරයක් එක් කරන්න — තෝරාගත් ක්ලිප්වල ට්‍රැක් එකක් ලෙස ගෙනයයි</translation>
     </message>
     <message>
         <source>Main</source>
@@ -13329,27 +13329,27 @@ If playback stutters, try another.</source>
     <name>TimelineTrackItem</name>
     <message>
         <source>Audio adjustment</source>
-        <translation type="unfinished">ශ්‍රව්‍ය ගැලපුම්</translation>
+        <translation>ශ්‍රව්‍ය ගැලපුම්</translation>
     </message>
     <message>
         <source>Mask</source>
-        <translation type="unfinished">ආවරණය (Mask)</translation>
+        <translation>ආවරණය (Mask)</translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>Adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>ගැළපුම</translation>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">උපසිරැසි</translation>
+        <translation>උපසිරැසි</translation>
     </message>
     <message>
         <source>%1, track %2</source>
-        <translation type="unfinished">%1, ට්‍රැකය %2</translation>
+        <translation>%1, ට්‍රැකය %2</translation>
     </message>
 </context>
 <context>
@@ -13394,7 +13394,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>TF</source>
-        <translation type="unfinished"></translation>
+        <translation>TF</translation>
     </message>
     <message>
         <source>FX</source>
@@ -13422,7 +13422,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>Adjustment</source>
@@ -13446,15 +13446,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Everything below</source>
-        <translation type="unfinished"></translation>
+        <translation>පහළ ඇති සියල්ල</translation>
     </message>
     <message>
         <source>%1 only</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 පමණි</translation>
     </message>
     <message>
         <source>%1 to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 සිට %2 දක්වා</translation>
     </message>
     <message>
         <source>Stop recording</source>
@@ -13470,23 +13470,23 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Turn transform on</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තනය ක්‍රියාත්මක කරන්න</translation>
     </message>
     <message>
         <source>Turn transform off</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තනය අක්‍රිය කරන්න</translation>
     </message>
     <message>
         <source>Covers…</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය කරන්නේ…</translation>
     </message>
     <message>
         <source>Select covered clips</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය වූ ක්ලිප් තෝරන්න</translation>
     </message>
     <message>
         <source>Add transform layer above</source>
-        <translation type="unfinished"></translation>
+        <translation>ඉහළින් පරිවර්තන ස්තරයක් එක් කරන්න</translation>
     </message>
     <message>
         <source>Track height</source>
@@ -13510,7 +13510,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Covers</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය</translation>
     </message>
     <message>
         <source>Video</source>
@@ -13601,19 +13601,19 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Tilt X</source>
-        <translation type="unfinished"></translation>
+        <translation>X ඇලවීම</translation>
     </message>
     <message>
         <source>Tilt Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y ඇලවීම</translation>
     </message>
     <message>
         <source>Depth</source>
-        <translation type="unfinished"></translation>
+        <translation>ගැඹුර</translation>
     </message>
     <message>
         <source>Perspective</source>
-        <translation type="unfinished"></translation>
+        <translation>පර්යාලෝකය</translation>
     </message>
     <message>
         <source>Video only</source>
@@ -13625,11 +13625,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Also moved by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 මඟින්ද ගෙනයනු ලබයි</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation type="unfinished">තෝරන්න</translation>
+        <translation>තෝරන්න</translation>
     </message>
     <message>
         <source>Move to a time, set a value, then click the diamond to add a keyframe. With Auto keyframes on, dragging a slider or the preview also creates them.</source>
@@ -13649,7 +13649,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Measured inside %1&apos;s frame</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 හි රාමුව තුළ මනිනු ලැබේ</translation>
     </message>
     <message>
         <source>Size (px)</source>
@@ -13681,51 +13681,51 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Tilt the whole group as one flat card</source>
-        <translation type="unfinished"></translation>
+        <translation>සම්පූර්ණ සමූහයම තනි පැතලි කාඩ්පතක් ලෙස ඇල කරන්න</translation>
     </message>
     <message>
         <source>Tilt the clip and push it in depth, with 3D grips on the preview. Turning it off flattens the clip again.</source>
-        <translation type="unfinished"></translation>
+        <translation>පෙරදසුනෙහි ඇති ත්‍රිමාණ (3D) ග්‍රිප් භාවිතයෙන් ක්ලිපය ඇල කර එය ගැඹුරට තල්ලු කරන්න. එය අක්‍රිය කිරීමෙන් ක්ලිපය නැවත පැතලි වේ.</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished"></translation>
+        <translation>ගෙනයන්න</translation>
     </message>
     <message>
         <source>Arrows on the preview move the clip along each axis</source>
-        <translation type="unfinished"></translation>
+        <translation>පෙරදසුනෙහි ඇති ඊතල මඟින් ක්ලිපය එක් එක් අක්ෂය ඔස්සේ ගෙන යයි</translation>
     </message>
     <message>
         <source>Rotate</source>
-        <translation type="unfinished">කරකවන්න</translation>
+        <translation>කරකවන්න</translation>
     </message>
     <message>
         <source>Rings on the preview turn the clip about each axis</source>
-        <translation type="unfinished"></translation>
+        <translation>පෙරදසුනෙහි ඇති වළලු මඟින් ක්ලිපය එක් එක් අක්ෂය වටා කරකවයි</translation>
     </message>
     <message>
         <source>Handles on the preview stretch the clip along its own edges</source>
-        <translation type="unfinished"></translation>
+        <translation>පෙරදසුනෙහි ඇති හැඬල මඟින් ක්ලිපය එහි දාර ඔස්සේ ඇද දිගු කරයි</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished">%1 (%2)</translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Global</source>
-        <translation type="unfinished"></translation>
+        <translation>ගෝලීය</translation>
     </message>
     <message>
         <source>Gizmo follows the camera: X across, Y down, Z toward you</source>
-        <translation type="unfinished"></translation>
+        <translation>Gizmo කැමරාව අනුගමනය කරයි: X හරහා, Y පහළට, Z ඔබ දෙසට</translation>
     </message>
     <message>
         <source>Local</source>
-        <translation type="unfinished"></translation>
+        <translation>දේශීය</translation>
     </message>
     <message>
         <source>Gizmo follows the clip&apos;s own edges and face, however it is turned</source>
-        <translation type="unfinished"></translation>
+        <translation>ක්ලිපය කෙසේ කරකවා තිබුණද, Gizmo ක්ලිපයේ දාර සහ මුහුණත අනුගමනය කරයි</translation>
     </message>
     <message>
         <source>Flip</source>
@@ -13753,11 +13753,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>3D layer</source>
-        <translation type="unfinished"></translation>
+        <translation>3D ස්තරය</translation>
     </message>
     <message>
         <source>Corrects the source&apos;s own rotation losslessly — unlike Angle above, this changes decoding, not just the on-screen box.</source>
@@ -13768,73 +13768,73 @@ If playback stutters, try another.</source>
     <name>TransformLayerCard</name>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished">ශ්‍රව්‍ය</translation>
+        <translation>ශ්‍රව්‍ය</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">පෙළ</translation>
+        <translation>පෙළ</translation>
     </message>
     <message>
         <source>Subtitle</source>
-        <translation type="unfinished">උපසිරැසි</translation>
+        <translation>උපසිරැසි</translation>
     </message>
     <message>
         <source>Graphic</source>
-        <translation type="unfinished">ග්‍රැෆික්</translation>
+        <translation>ග්‍රැෆික්</translation>
     </message>
     <message>
         <source>Adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>ගැළපුම</translation>
     </message>
     <message>
         <source>Video</source>
-        <translation type="unfinished">වීඩියෝ</translation>
+        <translation>වීඩියෝ</translation>
     </message>
     <message>
         <source>Everything below</source>
-        <translation type="unfinished"></translation>
+        <translation>පහළ ඇති සියල්ල</translation>
     </message>
     <message>
         <source>%1 only</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 පමණි</translation>
     </message>
     <message>
         <source>%1 to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 සිට %2 දක්වා</translation>
     </message>
     <message>
         <source>Moves, scales, turns and fades every track under it as one. Each clip keeps its own transform inside the group.</source>
-        <translation type="unfinished"></translation>
+        <translation>එය යටතේ ඇති සෑම ට්‍රැකයක්ම එකක් ලෙස ගෙනයයි, ප්‍රමාණය වෙනස් කරයි, කරකවයි සහ මැකී යාමට සලස්වයි. සමූහය තුළ සෑම ක්ලිපයක්ම එහිම පරිවර්තනය තබා ගනී.</translation>
     </message>
     <message>
         <source>Covers</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"></translation>
+        <translation>කිසිවක් නැත</translation>
     </message>
     <message>
         <source>At the playhead</source>
-        <translation type="unfinished"></translation>
+        <translation>ප්ලේහෙඩ් එක ඇති තැන</translation>
     </message>
     <message>
         <source>No covered clip plays here.</source>
-        <translation type="unfinished"></translation>
+        <translation>ආවරණය වූ ක්ලිප් කිසිවක් මෙහි ධාවනය නොවේ.</translation>
     </message>
     <message>
         <source>Clip</source>
-        <translation type="unfinished">ක්ලිප්</translation>
+        <translation>ක්ලිප්</translation>
     </message>
     <message numerus="yes">
         <source>+%n more</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>+තවත් %nක්</numerusform>
+            <numerusform>+තවත් %nක්</numerusform>
         </translation>
     </message>
 </context>
@@ -13842,42 +13842,42 @@ If playback stutters, try another.</source>
     <name>TransformOverlay</name>
     <message numerus="yes">
         <source>%1 · %n clip(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 · ක්ලිප් %nක්</numerusform>
+            <numerusform>%1 · ක්ලිප් %nක්</numerusform>
         </translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished">පරිවර්තනය</translation>
+        <translation>පරිවර්තනය</translation>
     </message>
     <message>
         <source>Select %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 තෝරන්න</translation>
     </message>
     <message>
         <source>Select the transform layer moving this clip (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>මෙම ක්ලිපය ගෙනයන පරිවර්තන ස්තරය (%1) තෝරන්න</translation>
     </message>
 </context>
 <context>
     <name>TransformSpanBracket</name>
     <message numerus="yes">
         <source>%n track(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>ට්‍රැක් %nක්</numerusform>
+            <numerusform>ට්‍රැක් %nක්</numerusform>
         </translation>
     </message>
     <message>
         <source>Transform layer span end</source>
-        <translation type="unfinished"></translation>
+        <translation>පරිවර්තන ස්තර පරාසයේ අවසානය</translation>
     </message>
     <message numerus="yes">
         <source>Covers %n track(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>ට්‍රැක් %nක් ආවරණය කරයි</numerusform>
+            <numerusform>ට්‍රැක් %nක් ආවරණය කරයි</numerusform>
         </translation>
     </message>
 </context>
@@ -13991,55 +13991,55 @@ If playback stutters, try another.</source>
     <name>TransitionsTab</name>
     <message>
         <source>Touch and hold a transition, then drag it onto where two clips meet.</source>
-        <translation type="unfinished">සංක්‍රාන්තියක් ස්පර්ශ කරගෙන සිටින්න, ඉන්පසු එය ක්ලිප් දෙකක් හමුවන තැනට අදින්න.</translation>
+        <translation>සංක්‍රාන්තියක් ස්පර්ශ කරගෙන සිටින්න, ඉන්පසු එය ක්ලිප් දෙකක් හමුවන තැනට අදින්න.</translation>
     </message>
     <message>
         <source>Drag onto where two clips overlap. They fade into each other by default.</source>
-        <translation type="unfinished">ක්ලිප් දෙකක් එකිනෙක මත පිහිටන තැනට අදින්න. ඒවා පෙරනිමියෙන් එකිනෙකට Fade වේ.</translation>
+        <translation>ක්ලිප් දෙකක් එකිනෙක මත පිහිටන තැනට අදින්න. ඒවා පෙරනිමියෙන් එකිනෙකට Fade වේ.</translation>
     </message>
     <message>
         <source>Search transitions</source>
-        <translation type="unfinished">සංක්‍රාන්ති සොයන්න</translation>
+        <translation>සංක්‍රාන්ති සොයන්න</translation>
     </message>
     <message>
         <source>No transitions available</source>
-        <translation type="unfinished">සංක්‍රාන්ති කිසිවක් නොමැත</translation>
+        <translation>සංක්‍රාන්ති කිසිවක් නොමැත</translation>
     </message>
     <message>
         <source>Install a transitions pack to add more.</source>
-        <translation type="unfinished">තවත් එක් කිරීමට සංක්‍රාන්ති පැකේජයක් ස්ථාපනය කරන්න.</translation>
+        <translation>තවත් එක් කිරීමට සංක්‍රාන්ති පැකේජයක් ස්ථාපනය කරන්න.</translation>
     </message>
     <message>
         <source>Get extras</source>
-        <translation type="unfinished">අමතර අංග ලබාගන්න</translation>
+        <translation>අමතර අංග ලබාගන්න</translation>
     </message>
     <message>
         <source>No transitions match “%1”</source>
-        <translation type="unfinished">“%1” ට ගැලපෙන සංක්‍රාන්ති නැත</translation>
+        <translation>“%1” ට ගැලපෙන සංක්‍රාන්ති නැත</translation>
     </message>
     <message>
         <source>No favorites yet</source>
-        <translation type="unfinished">තවමත් ප්‍රියතමයන් නැත</translation>
+        <translation>තවමත් ප්‍රියතමයන් නැත</translation>
     </message>
     <message>
         <source>Nothing in this category</source>
-        <translation type="unfinished">මෙම ප්‍රවර්ගයේ කිසිවක් නැත</translation>
+        <translation>මෙම ප්‍රවර්ගයේ කිසිවක් නැත</translation>
     </message>
     <message>
         <source>Try a different name.</source>
-        <translation type="unfinished">වෙනත් නමක් උත්සාහ කරන්න.</translation>
+        <translation>වෙනත් නමක් උත්සාහ කරන්න.</translation>
     </message>
     <message>
         <source>Star transitions to save them here.</source>
-        <translation type="unfinished">මෙහි සුරැකීමට සංක්‍රාන්ති තරු ලකුණු කරන්න.</translation>
+        <translation>මෙහි සුරැකීමට සංක්‍රාන්ති තරු ලකුණු කරන්න.</translation>
     </message>
     <message>
         <source>Pick another category.</source>
-        <translation type="unfinished">වෙනත් ප්‍රවර්ගයක් තෝරන්න.</translation>
+        <translation>වෙනත් ප්‍රවර්ගයක් තෝරන්න.</translation>
     </message>
     <message>
         <source>%1 — drag onto an overlap between two clips</source>
-        <translation type="unfinished">%1 — ක්ලිප් දෙකක් අතර අතිච්ඡාදනය වන තැනට අදින්න</translation>
+        <translation>%1 — ක්ලිප් දෙකක් අතර අතිච්ඡාදනය වන තැනට අදින්න</translation>
     </message>
 </context>
 <context>
@@ -14560,13 +14560,15 @@ The video preview cannot render, and Drift may not start at all. Update your gra
     </message>
     <message>
         <source>Drift is not drawing its window</source>
-        <translation type="unfinished"></translation>
+        <translation>Drift එහි කවුළුව අඳින්නේ නැත</translation>
     </message>
     <message>
         <source>Drift has been running for %1 seconds but its window has not drawn anything yet.
 
 If the window is blank or black, your graphics driver is most likely outdated or faulty. Update it from your GPU vendor&apos;s website (AMD, NVIDIA or Intel) and start Drift again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Drift තත්පර %1ක් තිස්සේ ධාවනය වෙමින් පවතින නමුත් එහි කවුළුව තවමත් කිසිවක් ඇඳ නැත.
+
+කවුළුව හිස්ව හෝ කළු පැහැයෙන් දිස්වන්නේ නම්, බොහෝ දුරට ඔබේ ග්‍රැෆික් ධාවකය යල් පැන ගිය එකක් හෝ දෝෂ සහිත එකක් විය හැක. ඔබේ GPU නිෂ්පාදකයාගේ වෙබ් අඩවියෙන් (AMD, NVIDIA හෝ Intel) එය යාවත්කාලීන කර නැවත Drift ආරම්භ කරන්න.</translation>
     </message>
 </context>
 </TS>
