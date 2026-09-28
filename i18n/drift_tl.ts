@@ -28,7 +28,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation>Isara</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remove this pack?</source>
@@ -40,7 +40,7 @@
     </message>
     <message>
         <source>“%1” and its downloaded data will be deleted. You can install it again later.</source>
-        <translation>Matatanggal ang “%1” at ang na-download nitong data. Maaari mo itong i-install muli mamaya.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All</source>
@@ -60,189 +60,189 @@
     </message>
     <message>
         <source>Fonts</source>
-        <translation>Mga Font</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Stickers</source>
-        <translation>Mga Sticker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>AI tools</source>
-        <translation>Mga tool ng AI</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>AI engine</source>
-        <translation>Engine ng AI</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Checking for extras…</source>
-        <translation>Naghahanap ng mga dagdag…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>How AI runs</source>
-        <translation>Paano gumagana ang AI</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Automatic picks the fastest option you have installed, and uses this computer if the graphics card can&apos;t help.</source>
-        <translation>Pinipili ng Awtomatiko ang pinakamabilis na opsyon na naka-install sa iyo, at ginagamit ang kompyuter na ito kung hindi makakatulong ang sistemang grapiko.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Install an AI Engine below to unlock auto captions, subject cutout, funny face effects, and noise removal.</source>
-        <translation>Mag-install ng AI Engine sa ibaba para magamit ang mga awtomatikong caption, subject cutout, mga nakakatawang epekto sa mukha, at pag-alis ng ingay.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Restart Drift for this to take effect.</source>
-        <translation>I-restart ang Drift para magkabisa ito.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Can&apos;t reach the download store</source>
-        <translation>Hindi maabot ang tindahan ng pag-download</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Nothing in this category</source>
-        <translation>Walang laman sa kategoryang ito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Check your connection and try again.</source>
-        <translation>Suriin ang iyong koneksyon at subukan muli.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pick another category above.</source>
-        <translation>Pumili ng ibang kategorya sa itaas.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation>Subukan muli</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Technical details</source>
-        <translation>Mga teknikal na detalye</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 → %2</source>
-        <translation>%1 → %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1… %2%</source>
-        <translation>%1… %2%</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 download</source>
-        <translation>%1 na pag-download</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation>%1 na aytem</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Kanselahin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>I-update</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Install</source>
-        <translation>I-install</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete this pack&apos;s downloaded data</source>
-        <translation>Burahin ang na-download na data ng paketeng ito</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AddonStartupDialog</name>
     <message>
         <source>Extra packs</source>
-        <translation>Mga dagdag na pakete</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pack updates available</source>
-        <translation>May magagamit na mga update para sa pakete</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Recommended packs</source>
-        <translation>Mga inirerekomendang pakete</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Install the essential packs for effects, transitions, and audio. You can keep using Drift without them — installing unlocks updates when they improve.</source>
-        <translation>I-install ang mga mahahalagang pakete para sa mga epekto, pagbabagong-kalagayan, at audyo. Maaari mo pa ring gamitin ang Drift nang wala ang mga ito — nagbibigay-daan ang pag-i-install sa mga update kapag gumanda ang mga ito.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1… %2%</source>
-        <translation>%1… %2%</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Don&apos;t remind me of essential addons</source>
-        <translation>Huwag akong paalalahanan tungkol sa mga mahahalagang dagdag</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Updates are available for packs you already have installed.</source>
-        <translation>May magagamit na mga update para sa mga paketeng naka-install na sa iyo.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 → %2</source>
-        <translation>%1 → %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Don&apos;t remind me of future addon updates</source>
-        <translation>Huwag akong paalalahanan tungkol sa mga update ng dagdag sa hinaharap</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Hide</source>
-        <translation>Itago</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Later</source>
-        <translation>Mamaya</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Installing…</source>
-        <translation>Nag-i-install…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Install &amp; update</source>
-        <translation>I-install at i-update</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>I-update</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Update all</source>
-        <translation>I-update lahat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Install</source>
-        <translation>I-install</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Install all</source>
-        <translation>I-install lahat</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AgentAccessControls</name>
     <message>
         <source>Allow for this session</source>
-        <translation>Payagan para sa sesyong ito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Let an assistant on this device edit this project until you turn it off or quit.</source>
-        <translation>Hayaang baguhin ng isang assistant sa device na ito ang proyektong ito hanggang sa i-off mo ito o lumabas ka.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Turn this on, then copy the setup for Cursor or Claude and paste it into that app.</source>
-        <translation>I-on ito, pagkatapos ay kopyahin ang setup para sa Cursor o Claude at i-paste ito sa app na iyon.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Access is on</source>
-        <translation>Naka-on ang access</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Listening on %1</source>
-        <translation>Nakikinig sa %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>New key</source>
@@ -258,67 +258,67 @@
     </message>
     <message>
         <source>Copy the setup for the assistant you use. You only need one.</source>
-        <translation>Kopyahin ang setup para sa assistant na ginagamit mo. Isa lang ang kailangan mo.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy for Cursor</source>
-        <translation>Kopyahin para sa Cursor</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy a setup snippet to paste into Cursor</source>
-        <translation>Kopyahin ang snippet ng setup para i-paste sa Cursor</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copied for Cursor</source>
-        <translation>Nakopya para sa Cursor</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy for Claude</source>
-        <translation>Kopyahin para sa Claude</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy a command to paste into Claude Code</source>
-        <translation>Kopyahin ang command para i-paste sa Claude Code</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copied for Claude</source>
-        <translation>Nakopya para sa Claude</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Paste that into the assistant. To help it use this editor, copy the how-to next and paste it into the chat.</source>
-        <translation>I-paste iyon sa assistant. Para matulungan itong gamitin ang editor na ito, kopyahin ang gabay kasunod nito at i-paste sa chat.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy a how-to for the agent</source>
-        <translation>Kopyahin ang gabay para sa agent</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>A short list of what the agent can do here — paste it into the chat</source>
-        <translation>Isang maikling listahan ng magagawa ng agent dito — i-paste ito sa chat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copied how-to</source>
-        <translation>Nakopya ang gabay</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>More options</source>
-        <translation>Higit pang mga opsyon</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>For a different assistant, copy a one-time setup. The address and key are already in the Cursor and Claude copies above.</source>
-        <translation>Para sa ibang assistant, kopyahin ang isang beses na setup. Ang address at key ay nasa mga kinopyang Cursor at Claude na sa itaas.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy one-time setup</source>
-        <translation>Kopyahin ang isang beses na setup</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add this once to the assistant’s config. Access still has to be turned on here.</source>
-        <translation>Idagdag ito nang isang beses sa config ng assistant. Kailangan pa ring i-on ang access dito.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copied one-time setup</source>
-        <translation>Nakopya ang isang beses na setup</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Start agent on startup</source>
@@ -337,90 +337,90 @@
     <name>AgentAccessDialog</name>
     <message>
         <source>Agent access</source>
-        <translation>Access ng agent</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Isara</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidAddMenu</name>
     <message>
         <source>Add to timeline</source>
-        <translation>Idagdag sa timeline</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Media</source>
-        <translation>Media</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Video, photos and audio from this device</source>
-        <translation>Video, mga larawan at audyo mula sa device na ito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Market</source>
-        <translation>Pamilihan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Stock photos, video and audio</source>
-        <translation>Mga stock na larawan, video at audyo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Text</source>
-        <translation>Teksto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>A title or caption you type</source>
-        <translation>Isang pamagat o caption na ita-type mo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation>Mga Subtitle</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Captions, generated or imported</source>
-        <translation>Mga caption, binuo o naangkat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Stickers</source>
-        <translation>Mga Sticker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Emoji and sticker graphics</source>
-        <translation>Mga emoji at sticker na grapiko</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Shapes</source>
-        <translation>Mga Hugis</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Boxes, circles and lines</source>
-        <translation>Mga kahon, bilog at linya</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Effect templates</source>
-        <translation>Mga template ng epekto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Saved stacks of effects to drop on a clip</source>
-        <translation>Mga naka-save na stack ng epekto na ilalagay sa clip</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Scenes</source>
-        <translation>Mga Eksena</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Jump between the sections of this edit</source>
-        <translation>Lumipat sa pagitan ng mga seksyon ng pagbabagong ito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Masks</source>
-        <translation>Mga Maskara</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cut a shape or a subject out of the selected clip</source>
-        <translation>Mag-cut ng hugis o paksa mula sa napiling clip</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Transform layer</source>
@@ -447,49 +447,49 @@
     </message>
     <message>
         <source>Transitions</source>
-        <translation>Pagbabagong-kalagayan</translation>
+        <translation type="unfinished">Pagbabagong-kalagayan</translation>
     </message>
     <message>
         <source>Tap a clip to edit it</source>
-        <translation>I-tap ang isang clip para baguhin ito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add to timeline</source>
-        <translation>Idagdag sa timeline</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidBottomSheet</name>
     <message>
         <source>Sheet</source>
-        <translation>Panel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Isara</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidClipToolbar</name>
     <message>
         <source>Duration</source>
-        <translation>Tagal</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation>Kurba</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation>Palitan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Burahin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Split</source>
-        <translation>Hatiin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Transform</source>
@@ -509,15 +509,15 @@
     </message>
     <message>
         <source>Duplicate</source>
-        <translation>Doblehin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>More</source>
-        <translation>Higit pa</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Fit</source>
-        <translation>Iakma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Move the playhead over the clip to split it</source>
@@ -525,88 +525,88 @@
     </message>
     <message>
         <source>Tap a clip to edit</source>
-        <translation>I-tap ang isang clip para baguhin</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidCropOverlay</name>
     <message>
         <source>Drag the edges to reframe · pinch to zoom</source>
-        <translation>I-drag ang mga gilid para i-reframe · kurutin para mag-zoom</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>I-reset</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Kanselahin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation>Gamitin</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidDownloadsSheet</name>
     <message>
         <source>Downloads</source>
-        <translation>Mga Pag-download</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Nothing downloading right now.</source>
-        <translation>Walang dina-download sa ngayon.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel download</source>
-        <translation>Kanselahin ang pag-download</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Try again</source>
-        <translation>Subukan muli</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clear finished</source>
-        <translation>Alisin ang mga natapos</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidEditor</name>
     <message>
         <source>Drift project (*.drift)</source>
-        <translation>Proyekto ng Drift (*.drift)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save Project</source>
-        <translation>I-save ang Proyekto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save Project As</source>
-        <translation>I-save ang Proyekto Bilang</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 copy</source>
-        <translation>Kopya ng %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save Shareable Copy</source>
-        <translation>I-save ang Maibabahaging Kopya</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Project</source>
-        <translation>Buksan ang Proyekto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your timeline is empty</source>
-        <translation>Walang laman ang iyong timeline</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Import media or open the Media library to start editing.</source>
-        <translation>Mag-angkat ng media o buksan ang library ng Media para simulan ang pagbabago.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Media</source>
-        <translation>Buksan ang Media</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Edit</source>
@@ -614,7 +614,7 @@
     </message>
     <message>
         <source>Done</source>
-        <translation>Tapos na</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -664,256 +664,256 @@
     <name>AndroidHomeNav</name>
     <message>
         <source>Projects</source>
-        <translation>Mga Proyekto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Market</source>
-        <translation>Pamilihan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Me</source>
-        <translation>Ako</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidLayoutSheet</name>
     <message>
         <source>Canvas &amp; layout</source>
-        <translation>Canvas at layout</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation>Pinasadya</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Template</source>
-        <translation>Template</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Width</source>
-        <translation>Lapad</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Height</source>
-        <translation>Taas</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Quality</source>
-        <translation>Kalidad</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Frames per second</source>
-        <translation>Mga larawan bawat segundo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1×%2 · %3 · %4 fps</source>
-        <translation>%1×%2 · %3 · %4 fps</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Done</source>
-        <translation>Tapos na</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidLinkImport</name>
     <message>
         <source>Open link</source>
-        <translation>Buksan ang link</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Couldn’t reach the marketplace.</source>
-        <translation>Hindi maabot ang marketplace.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>“%1” is ready.</source>
-        <translation>Handa na ang “%1”.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Downloading…</source>
-        <translation>Nagda-download…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No source in the marketplace can open links.</source>
-        <translation>Walang pinagmulan sa marketplace ang makapagbubukas ng mga link.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>That source didn’t recognise this link.</source>
-        <translation>Hindi kinilala ng pinagmulang iyon ang link na ito.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Which source should open this link?</source>
-        <translation>Aling pinagmulan ang dapat magbukas ng link na ito?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Loading sources…</source>
-        <translation>Ikinakarga ang mga pinagmulan…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Asking that source…</source>
-        <translation>Nagtatanong sa pinagmulang iyon…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Try again</source>
-        <translation>Subukang muli</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pick another source</source>
-        <translation>Pumili ng ibang pinagmulan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation>Buksan sa browser</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add to timeline</source>
-        <translation>Idagdag sa timeline</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Keep browsing</source>
-        <translation>Magpatuloy sa pag-browse</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidMain</name>
     <message>
         <source>Drift project (*.drift)</source>
-        <translation>Proyektong Drift (*.drift)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save Project</source>
-        <translation>I-save ang Proyekto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Canvas set to %1×%2 at %3 fps from your first clip.</source>
-        <translation>Naitakda ang canvas sa %1×%2 sa %3 fps mula sa iyong unang clip.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>That share had no link in it.</source>
-        <translation>Walang link ang ibinahaging iyon.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Links can’t be opened in this build.</source>
-        <translation>Hindi mabubuksan ang mga link sa build na ito.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>That download is no longer in your media.</source>
-        <translation>Wala na sa iyong media ang na-download na iyon.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Project</source>
-        <translation>Buksan ang Proyekto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Import in progress…</source>
-        <translation>Kasalukuyang nag-aangkat…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Saved to %1</source>
-        <translation>Nai-save sa %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export finished.</source>
-        <translation>Tapos na ang pagluwas.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export cancelled.</source>
-        <translation>Kinansela ang pagluwas.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export failed. Check the save location and free space.</source>
-        <translation>Nabigo ang pagluwas. Suriin ang lokasyon ng pag-save at ang bakanteng espasyo.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Couldn&apos;t create the shareable copy: %1</source>
-        <translation>Hindi malikha ang maibabahaging kopya: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Captions created.</source>
-        <translation>Nalikha ang mga caption.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Couldn’t create captions: %1</source>
-        <translation>Hindi malikha ang mga caption: %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Couldn’t create captions.</source>
-        <translation>Hindi malikha ang mga caption.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Couldn’t install “%1”: %2</source>
-        <translation>Hindi mai-install ang “%1”: %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Imported “%1”.</source>
-        <translation>Naangkat ang “%1”.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Imported from the marketplace.</source>
-        <translation>Naangkat mula sa marketplace.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidMarket</name>
     <message>
         <source>Market</source>
-        <translation>Pamilihan</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Downloads</source>
-        <translation>Mga Download</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidMePage</name>
     <message>
         <source>Me</source>
-        <translation>Ako</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <source>%n coin(s)</source>
-        <translation>
-            <numerusform>%n barya</numerusform>
-            <numerusform>%n mga barya</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
         <source>Light mode</source>
-        <translation>Maliwanag na mode</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Dark mode</source>
-        <translation>Madilim na mode</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Mga Setting</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation>Dagdag</translation>
+        <translation type="unfinished">Dagdag</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation>May available na update</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Debug info</source>
-        <translation>Impormasyon sa pag-debug</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidMediaPreview</name>
     <message>
         <source>Back</source>
-        <translation>Bumalik</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>I-save</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Audio only — trim it below</source>
-        <translation>Audyo lang — i-trim ito sa ibaba</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unlock source frame ratio</source>
@@ -925,43 +925,43 @@
     </message>
     <message>
         <source>Trim</source>
-        <translation>I-trim</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Crop</source>
-        <translation>I-crop</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Keeping %1 to %2  ·  %3s</source>
-        <translation>Pinapanatili ang %1 hanggang %2  ·  %3s</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Start here</source>
-        <translation>Magsimula rito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>End here</source>
-        <translation>Magtapos dito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo trim</source>
-        <translation>I-undo ang pag-trim</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Drag inside the box to move it, corners to resize</source>
-        <translation>I-drag sa loob ng kahon para ilipat ito, mga sulok para baguhin ang laki</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo crop</source>
-        <translation>I-undo ang pag-crop</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Saving…</source>
-        <translation>Sine-save…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save keeps your changes as a new file in this project.</source>
-        <translation>Pinapanatili ng pag-save ang iyong mga pagbabago bilang bagong file sa proyektong ito.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save keeps the original video and stores this framing.</source>
@@ -969,22 +969,22 @@
     </message>
     <message>
         <source>Nothing changed yet. Trim or crop above, or go back and drag this onto the timeline.</source>
-        <translation>Wala pang nabago. Mag-trim o mag-crop sa itaas, o bumalik at i-drag ito papunta sa timeline.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Kanselahin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Rotate</source>
-        <translation>Paikutin</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AndroidMoreToolsSheet</name>
     <message>
         <source>More tools</source>
-        <translation>Higit pang mga tool</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clip</source>
@@ -1188,7 +1188,7 @@
     </message>
     <message>
         <source>Trim &amp; timing</source>
-        <translation>Pag-trim at tiyempo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Split all tracks</source>
@@ -1200,143 +1200,143 @@
     </message>
     <message>
         <source>Trim start</source>
-        <translation>I-trim ang simula</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Drop everything before the playhead</source>
-        <translation>Alisin ang lahat bago ang playhead</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Trim end</source>
-        <translation>I-trim ang dulo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Drop everything after the playhead</source>
-        <translation>Alisin ang lahat pagkatapos ng playhead</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation>Bilis</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change how fast this clip plays</source>
-        <translation>Baguhin kung gaano kabilis mag-play ang clip na ito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Freeze frame</source>
-        <translation>I-freeze ang frame</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Freeze frame at current time</source>
-        <translation>I-freeze ang frame sa kasalukuyang oras</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation>Pagsamahin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Merge adjacent clips</source>
-        <translation>Pagsamahin ang mga magkatabing clip</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close gap</source>
-        <translation>Isara ang puwang</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close gap after clip</source>
-        <translation>Isara ang puwang pagkatapos ng clip</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation>Audyo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Separate audio</source>
-        <translation>Ihiwalay ang audyo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Separate audio from video</source>
-        <translation>Ihiwalay ang audyo mula sa video</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Timeline</source>
-        <translation>Timeline</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Snapping</source>
-        <translation>Pag-snap</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Line clip edges up with cuts and markers</source>
-        <translation>Ihanay ang mga dulo ng clip sa mga hiwa at marker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ripple</source>
-        <translation>Ripple</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close gaps when trimming</source>
-        <translation>Isara ang mga puwang kapag nagti-trim</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Overlap</source>
-        <translation>Pagpapatong</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Allow clip overlap</source>
-        <translation>Payagan ang pagpapatong ng mga clip</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Beat markers</source>
-        <translation>Mga marker ng beat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Find the beat and show markers</source>
-        <translation>Hanapin ang beat at ipakita ang mga marker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Markers &amp; view</source>
-        <translation>Mga marker at view</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation>I-paste</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Paste at current time</source>
-        <translation>I-paste sa kasalukuyang oras</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation>Bookmark</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add or remove a bookmark here</source>
-        <translation>Magdagdag o mag-alis ng bookmark dito</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Work area in</source>
-        <translation>Simula ng work area</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mark work area in at current time</source>
-        <translation>Markahan ang simula ng work area sa kasalukuyang oras</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Work area out</source>
-        <translation>Dulo ng work area</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mark work area out at current time</source>
-        <translation>Markahan ang dulo ng work area sa kasalukuyang oras</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clear work area</source>
-        <translation>Alisin ang work area</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Shorter layers</source>
-        <translation>Mas maiikling layer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Taller layers</source>
@@ -1682,7 +1682,7 @@
     </message>
     <message>
         <source>All</source>
-        <translation>Lahat</translation>
+        <translation type="unfinished">Lahat</translation>
     </message>
     <message>
         <source>None</source>
@@ -4523,7 +4523,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>Tanggal</translation>
+        <translation type="unfinished">Tanggal</translation>
     </message>
     <message>
         <source>“%1” will be removed from this project. The file on disk is not deleted.</source>
@@ -4675,7 +4675,7 @@
     </message>
     <message>
         <source>Effects</source>
-        <translation>Epekto</translation>
+        <translation type="unfinished">Epekto</translation>
     </message>
     <message>
         <source>Templates</source>
@@ -4683,11 +4683,11 @@
     </message>
     <message>
         <source>Transitions</source>
-        <translation>Pagbabagong-kalagayan</translation>
+        <translation type="unfinished">Pagbabagong-kalagayan</translation>
     </message>
     <message>
         <source>Audio FX</source>
-        <translation>Epektong audyo</translation>
+        <translation type="unfinished">Epektong audyo</translation>
     </message>
     <message>
         <source>Shortcuts</source>
@@ -6037,7 +6037,7 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation>Dagdag</translation>
+        <translation type="unfinished">Dagdag</translation>
     </message>
     <message>
         <source>Update</source>
@@ -6661,7 +6661,7 @@
     </message>
     <message>
         <source>Frame rate</source>
-        <translation>Mga larawan bawat segundo</translation>
+        <translation type="unfinished">Mga larawan bawat segundo</translation>
     </message>
     <message>
         <source>fps</source>
@@ -8990,7 +8990,7 @@
     </message>
     <message>
         <source>Effect</source>
-        <translation>Epekto</translation>
+        <translation type="unfinished">Epekto</translation>
     </message>
     <message>
         <source>Colour</source>
@@ -9126,7 +9126,7 @@
     </message>
     <message>
         <source>Transitions</source>
-        <translation>Pagbabagong-kalagayan</translation>
+        <translation type="unfinished">Pagbabagong-kalagayan</translation>
     </message>
     <message numerus="yes">
         <source>Transitions (%n transition(s))</source>
@@ -9702,11 +9702,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Effects</source>
-        <translation>Epekto</translation>
+        <translation type="unfinished">Epekto</translation>
     </message>
     <message>
         <source>Audio FX</source>
-        <translation>Epektong audyo</translation>
+        <translation type="unfinished">Epektong audyo</translation>
     </message>
     <message>
         <source>Transition</source>
@@ -10743,7 +10743,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Effect</source>
-        <translation>Epekto</translation>
+        <translation type="unfinished">Epekto</translation>
     </message>
     <message>
         <source>Normal</source>
@@ -11466,7 +11466,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Tanggal</translation>
+        <translation type="unfinished">Tanggal</translation>
     </message>
     <message>
         <source>Stabilizing…</source>
@@ -12402,7 +12402,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Effect</source>
-        <translation>Epekto</translation>
+        <translation type="unfinished">Epekto</translation>
     </message>
     <message>
         <source>Shadow, outline, neon and friends — a recipe that builds the layers below</source>
@@ -12534,7 +12534,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>All</source>
-        <translation>Lahat</translation>
+        <translation type="unfinished">Lahat</translation>
     </message>
     <message>
         <source>Preview this animation</source>
