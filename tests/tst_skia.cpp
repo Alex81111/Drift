@@ -1470,16 +1470,25 @@ void SkiaTest::arabicTextShapesRightToLeft()
             const QList<text::StyledWord> chars =
                 text::layoutStyledText(verse, style, font, font, width, 200.0, -1, text::WordSplit::Characters);
             QVERIFY(chars.size() > words.size());
+            // Drawing elements only: QPainterPath::addPath drops a glyph outline's trailing MoveTo
+            // (Arial Unicode MS on macOS ends its glyphs with one), so a whole word counts fewer
+            // MoveTos than its pieces do.
+            const auto drawnElements = [](const QPainterPath &path) {
+                int n = 0;
+                for (int e = 0; e < path.elementCount(); ++e)
+                    n += path.elementAt(e).type != QPainterPath::MoveToElement;
+                return n;
+            };
             int wholeElements = 0;
             QRectF wholeInk;
             for (const text::StyledWord &w : words) {
-                wholeElements += w.path.elementCount();
+                wholeElements += drawnElements(w.path);
                 wholeInk = wholeInk.united(w.inkRect);
             }
             int charElements = 0;
             QRectF charInk;
             for (const text::StyledWord &w : chars) {
-                charElements += w.path.elementCount();
+                charElements += drawnElements(w.path);
                 charInk = charInk.united(w.inkRect);
             }
             QVERIFY2(charElements == wholeElements,
