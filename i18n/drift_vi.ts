@@ -501,11 +501,11 @@
     </message>
     <message>
         <source>Fade</source>
-        <translation type="unfinished">Mờ</translation>
+        <translation>Mờ</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Tốc độ</translation>
+        <translation>Tốc độ</translation>
     </message>
     <message>
         <source>Duplicate</source>
@@ -621,7 +621,7 @@
     <name>AndroidFadeSheet</name>
     <message>
         <source>Fade</source>
-        <translation type="unfinished">Mờ</translation>
+        <translation>Mờ</translation>
     </message>
     <message>
         <source>Done</source>
@@ -629,19 +629,19 @@
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Tuyến tính</translation>
+        <translation>Tuyến tính</translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation>Mượt</translation>
     </message>
     <message>
         <source>Natural</source>
-        <translation type="unfinished">Tự nhiên</translation>
+        <translation>Tự nhiên</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>%1 s</source>
@@ -657,7 +657,7 @@
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Đường cong</translation>
+        <translation>Đường cong</translation>
     </message>
 </context>
 <context>
@@ -987,7 +987,7 @@
     </message>
     <message>
         <source>Clip</source>
-        <translation type="unfinished">Clip</translation>
+        <translation>Clip</translation>
     </message>
     <message>
         <source>Select multiple</source>
@@ -1015,7 +1015,7 @@
     </message>
     <message>
         <source>Paste attributes…</source>
-        <translation type="unfinished">Dán thuộc tính…</translation>
+        <translation>Dán thuộc tính…</translation>
     </message>
     <message>
         <source>Apply what you copied from another clip</source>
@@ -1023,7 +1023,7 @@
     </message>
     <message>
         <source>Rename…</source>
-        <translation type="unfinished">Đổi tên…</translation>
+        <translation>Đổi tên…</translation>
     </message>
     <message>
         <source>Change the clip&apos;s name</source>
@@ -1095,7 +1095,7 @@
     </message>
     <message>
         <source>Separate all audio tracks</source>
-        <translation type="unfinished">Tách tất cả các track âm thanh</translation>
+        <translation>Tách tất cả các track âm thanh</translation>
     </message>
     <message>
         <source>One audio clip per audio track in the file</source>
@@ -1151,7 +1151,7 @@
     </message>
     <message>
         <source>Move to its own track</source>
-        <translation type="unfinished">Di chuyển đến track riêng của nó</translation>
+        <translation>Di chuyển đến track riêng của nó</translation>
     </message>
     <message>
         <source>Take the adjustment out of this lane</source>
@@ -1159,7 +1159,7 @@
     </message>
     <message>
         <source>Effects</source>
-        <translation type="unfinished">Hiệu ứng</translation>
+        <translation>Hiệu ứng</translation>
     </message>
     <message>
         <source>Copy effects</source>
@@ -1171,7 +1171,7 @@
     </message>
     <message>
         <source>Paste effects</source>
-        <translation type="unfinished">Dán hiệu ứng</translation>
+        <translation>Dán hiệu ứng</translation>
     </message>
     <message>
         <source>Add the copied effects to this clip</source>
@@ -3498,7 +3498,7 @@
     </message>
     <message>
         <source>%1 copy</source>
-        <translation type="unfinished">%1 sao chép</translation>
+        <translation>%1 sao chép</translation>
     </message>
     <message>
         <source>This build of Drift has no video stabilization support</source>
@@ -3522,11 +3522,11 @@
     </message>
     <message>
         <source>Audio adjustment</source>
-        <translation type="unfinished">Điều chỉnh âm thanh</translation>
+        <translation>Điều chỉnh âm thanh</translation>
     </message>
     <message>
         <source>Drop a transition where two clips meet.</source>
-        <translation type="unfinished">Thả phần chuyển tiếp nơi hai clip gặp nhau.</translation>
+        <translation>Thả phần chuyển tiếp nơi hai clip gặp nhau.</translation>
     </message>
     <message>
         <source>Transform layers take no effects or masks.</source>
@@ -3542,7 +3542,7 @@
     </message>
     <message>
         <source>Drop that onto a clip to apply it.</source>
-        <translation type="unfinished">Thả nó vào một clip để áp dụng nó.</translation>
+        <translation>Thả nó vào một clip để áp dụng nó.</translation>
     </message>
     <message>
         <source>Add to new track</source>
@@ -4518,15 +4518,15 @@
     </message>
     <message>
         <source>Rename media</source>
-        <translation type="unfinished">Đổi tên phương tiện</translation>
+        <translation>Đổi tên phương tiện</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Đổi tên</translation>
+        <translation>Đổi tên</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Tên</translation>
+        <translation>Tên</translation>
     </message>
     <message>
         <source>Media name</source>
@@ -4630,31 +4630,31 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Văn bản</translation>
+        <translation>Văn bản</translation>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message>
         <source>Stickers</source>
-        <translation type="unfinished">Nhãn dán</translation>
+        <translation>Nhãn dán</translation>
     </message>
     <message>
         <source>Shapes</source>
-        <translation type="unfinished">Hình khối</translation>
+        <translation>Hình khối</translation>
     </message>
     <message>
         <source>Scenes</source>
-        <translation type="unfinished">Phân cảnh</translation>
+        <translation>Phân cảnh</translation>
     </message>
     <message>
         <source>Masks</source>
-        <translation type="unfinished">Mặt nạ</translation>
+        <translation>Mặt nạ</translation>
     </message>
     <message>
         <source>Effects</source>
-        <translation type="unfinished">Hiệu ứng</translation>
+        <translation>Hiệu ứng</translation>
     </message>
     <message>
         <source>Templates</source>
@@ -4662,11 +4662,11 @@
     </message>
     <message>
         <source>Transitions</source>
-        <translation type="unfinished">Hiệu ứng chuyển cảnh</translation>
+        <translation>Hiệu ứng chuyển cảnh</translation>
     </message>
     <message>
         <source>Audio FX</source>
-        <translation type="unfinished">Hiệu ứng âm thanh</translation>
+        <translation>Hiệu ứng âm thanh</translation>
     </message>
     <message>
         <source>Shortcuts</source>
@@ -4843,7 +4843,7 @@
     </message>
     <message>
         <source>Install audio effects</source>
-        <translation type="unfinished">Cài đặt hiệu ứng âm thanh</translation>
+        <translation>Cài đặt hiệu ứng âm thanh</translation>
     </message>
     <message>
         <source>No audio effects yet</source>
@@ -4871,11 +4871,11 @@
     </message>
     <message>
         <source>Disable audio effect</source>
-        <translation type="unfinished">Tắt hiệu ứng âm thanh</translation>
+        <translation>Tắt hiệu ứng âm thanh</translation>
     </message>
     <message>
         <source>Enable audio effect</source>
-        <translation type="unfinished">Bật hiệu ứng âm thanh</translation>
+        <translation>Bật hiệu ứng âm thanh</translation>
     </message>
     <message>
         <source>Copy this audio effect</source>
@@ -4883,7 +4883,7 @@
     </message>
     <message>
         <source>Remove audio effect</source>
-        <translation type="unfinished">Xóa hiệu ứng âm thanh</translation>
+        <translation>Xóa hiệu ứng âm thanh</translation>
     </message>
     <message>
         <source>On</source>
@@ -4895,7 +4895,7 @@
     </message>
     <message>
         <source>Edit audio effect</source>
-        <translation type="unfinished">Chỉnh sửa hiệu ứng âm thanh</translation>
+        <translation>Chỉnh sửa hiệu ứng âm thanh</translation>
     </message>
 </context>
 <context>
@@ -4918,7 +4918,7 @@
     </message>
     <message>
         <source>No audio</source>
-        <translation type="unfinished">Không có âm thanh</translation>
+        <translation>Không có âm thanh</translation>
     </message>
     <message>
         <source>This clip has no audio track.</source>
@@ -4942,7 +4942,7 @@
     </message>
     <message>
         <source>Pan changed</source>
-        <translation type="unfinished">Pan đã thay đổi</translation>
+        <translation>Pan đã thay đổi</translation>
     </message>
     <message>
         <source>Centre</source>
@@ -5256,7 +5256,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Move</source>
@@ -5317,7 +5317,7 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Đặt lại</translation>
+        <translation>Đặt lại</translation>
     </message>
     <message>
         <source>Reset crop to the full video size</source>
@@ -5325,14 +5325,14 @@
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Áp dụng</translation>
+        <translation>Áp dụng</translation>
     </message>
 </context>
 <context>
     <name>DebugInfoDialog</name>
     <message>
         <source>Debug info</source>
-        <translation type="unfinished">Thông tin gỡ lỗi</translation>
+        <translation>Thông tin gỡ lỗi</translation>
     </message>
     <message>
         <source>Copy report</source>
@@ -5340,7 +5340,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Đóng</translation>
+        <translation>Đóng</translation>
     </message>
     <message>
         <source>Copied to clipboard</source>
@@ -5515,7 +5515,7 @@
     <name>DenoiseWindow</name>
     <message>
         <source>Remove noise</source>
-        <translation type="unfinished">Khử tiếng ồn</translation>
+        <translation>Khử tiếng ồn</translation>
     </message>
     <message>
         <source>A short section of the clip is previewed here. Confirming runs the whole clip and adds the result as a new audio track above this one — the original is left untouched.</source>
@@ -5527,7 +5527,7 @@
     </message>
     <message>
         <source>Noise removed</source>
-        <translation type="unfinished">Đã khử tiếng ồn</translation>
+        <translation>Đã khử tiếng ồn</translation>
     </message>
     <message>
         <source>· playing</source>
@@ -5539,7 +5539,7 @@
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>Preview from</source>
@@ -5551,7 +5551,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
 </context>
 <context>
@@ -5636,7 +5636,7 @@
     <name>DownloadsWindow</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Tải xuống</translation>
+        <translation>Tải xuống</translation>
     </message>
     <message numerus="yes">
         <source>%n active</source>
@@ -5654,7 +5654,7 @@
     </message>
     <message>
         <source>Clear finished</source>
-        <translation type="unfinished">Đã xóa xong</translation>
+        <translation>Đã xóa xong</translation>
     </message>
     <message>
         <source>Nothing downloaded yet</source>
@@ -5666,11 +5666,11 @@
     </message>
     <message>
         <source>Try again</source>
-        <translation type="unfinished">Thử lại</translation>
+        <translation>Thử lại</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
 </context>
 <context>
@@ -5699,7 +5699,7 @@
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">Thử lại</translation>
+        <translation>Thử lại</translation>
     </message>
     <message>
         <source>Downloaded, works offline</source>
@@ -5722,7 +5722,7 @@
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished">Quay lại</translation>
+        <translation>Quay lại</translation>
     </message>
     <message>
         <source>Colours</source>
@@ -5730,7 +5730,7 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Đặt lại</translation>
+        <translation>Đặt lại</translation>
     </message>
     <message>
         <source>%1 s</source>
@@ -5758,7 +5758,7 @@
     </message>
     <message>
         <source>Apply to selected clip</source>
-        <translation type="unfinished">Áp dụng cho clip đã chọn</translation>
+        <translation>Áp dụng cho clip đã chọn</translation>
     </message>
     <message>
         <source>Add at playhead</source>
@@ -5824,7 +5824,7 @@
     <name>DriftAssetsHome</name>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Áp dụng</translation>
+        <translation>Áp dụng</translation>
     </message>
     <message>
         <source>Add</source>
@@ -5848,7 +5848,7 @@
     </message>
     <message>
         <source>Try again</source>
-        <translation type="unfinished">Thử lại</translation>
+        <translation>Thử lại</translation>
     </message>
     <message>
         <source>No assets here yet</source>
@@ -5883,11 +5883,11 @@
     <name>EditorHeader</name>
     <message>
         <source>Drift project (*.drift)</source>
-        <translation type="unfinished">Dự án Drift (*.drift)</translation>
+        <translation>Dự án Drift (*.drift)</translation>
     </message>
     <message>
         <source>Save Project</source>
-        <translation type="unfinished">Lưu dự án</translation>
+        <translation>Lưu dự án</translation>
     </message>
     <message>
         <source>Save Project JSON</source>
@@ -5903,15 +5903,15 @@
     </message>
     <message>
         <source>All Files (*)</source>
-        <translation type="unfinished">Tất cả tệp (*)</translation>
+        <translation>Tất cả tệp (*)</translation>
     </message>
     <message>
         <source>Save Shareable Copy</source>
-        <translation type="unfinished">Lưu bản sao có thể chia sẻ</translation>
+        <translation>Lưu bản sao có thể chia sẻ</translation>
     </message>
     <message>
         <source>Projects</source>
-        <translation type="unfinished">Dự án</translation>
+        <translation>Dự án</translation>
     </message>
     <message>
         <source>All changes saved</source>
@@ -5931,7 +5931,7 @@
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Lưu</translation>
+        <translation>Lưu</translation>
     </message>
     <message>
         <source>Save project (%1)</source>
@@ -5939,7 +5939,7 @@
     </message>
     <message>
         <source>Save project</source>
-        <translation type="unfinished">Lưu dự án</translation>
+        <translation>Lưu dự án</translation>
     </message>
     <message numerus="yes">
         <source>Downloads — %n running</source>
@@ -5949,11 +5949,11 @@
     </message>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Tải xuống</translation>
+        <translation>Tải xuống</translation>
     </message>
     <message>
         <source>Video</source>
-        <translation type="unfinished">Video</translation>
+        <translation>Video</translation>
     </message>
     <message>
         <source>Video size and layout</source>
@@ -5961,7 +5961,7 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Cài đặt</translation>
+        <translation>Cài đặt</translation>
     </message>
     <message>
         <source>Workspace, theme, language and more</source>
@@ -5969,7 +5969,7 @@
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished">Sáng</translation>
+        <translation>Sáng</translation>
     </message>
     <message>
         <source>Dark</source>
@@ -6001,19 +6001,19 @@
     </message>
     <message>
         <source>Save Project As</source>
-        <translation type="unfinished">Lưu dự án thành</translation>
+        <translation>Lưu dự án thành</translation>
     </message>
     <message>
         <source>%1 copy</source>
-        <translation type="unfinished">%1 sao chép</translation>
+        <translation>%1 sao chép</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished">Bổ sung</translation>
+        <translation>Bổ sung</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished">Cập nhật</translation>
+        <translation>Cập nhật</translation>
     </message>
     <message>
         <source>Drift %1 is available</source>
@@ -6021,7 +6021,7 @@
     </message>
     <message>
         <source>Agent access</source>
-        <translation type="unfinished">Quyền truy cập của trợ lý</translation>
+        <translation>Quyền truy cập của trợ lý</translation>
     </message>
     <message>
         <source>Export in progress (%1%) — click to view</source>
@@ -6033,15 +6033,15 @@
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Xuất</translation>
+        <translation>Xuất</translation>
     </message>
     <message>
         <source>Export already in progress</source>
-        <translation type="unfinished">Đang trong tiến trình xuất</translation>
+        <translation>Đang trong tiến trình xuất</translation>
     </message>
     <message>
         <source>Multicam</source>
-        <translation type="unfinished">Đa góc quay</translation>
+        <translation>Đa góc quay</translation>
     </message>
     <message>
         <source>Workspace</source>
@@ -6080,7 +6080,7 @@
     </message>
     <message>
         <source>Drag a preset onto a clip, or click to apply to the selection</source>
-        <translation type="unfinished">Kéo một mẫu vào một đoạn video hoặc nhấp chuột để áp dụng cho vùng chọn</translation>
+        <translation>Kéo một mẫu vào một đoạn video hoặc nhấp chuột để áp dụng cho vùng chọn</translation>
     </message>
     <message>
         <source>Click to add as adjustment layer, or drag onto a clip</source>
@@ -6092,7 +6092,7 @@
     </message>
     <message>
         <source>Add adjustment layer</source>
-        <translation type="unfinished">Thêm lớp điều chỉnh</translation>
+        <translation>Thêm lớp điều chỉnh</translation>
     </message>
     <message>
         <source>Add an adjustment layer to apply effects across all clips underneath, or drag it to where it should go</source>
@@ -6112,11 +6112,11 @@
     </message>
     <message>
         <source>Nothing in this category.</source>
-        <translation type="unfinished">Không có gì trong danh mục này.</translation>
+        <translation>Không có gì trong danh mục này.</translation>
     </message>
     <message>
         <source>Apply to selected clip</source>
-        <translation type="unfinished">Áp dụng cho clip đã chọn</translation>
+        <translation>Áp dụng cho clip đã chọn</translation>
     </message>
     <message>
         <source>Built-in</source>
@@ -6171,7 +6171,7 @@
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Khác</translation>
+        <translation>Khác</translation>
     </message>
 </context>
 <context>
@@ -6210,7 +6210,7 @@
     </message>
     <message>
         <source>Rename…</source>
-        <translation type="unfinished">Đổi tên…</translation>
+        <translation>Đổi tên…</translation>
     </message>
     <message>
         <source>Export…</source>
@@ -6218,7 +6218,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Rename effect preset</source>
@@ -6269,7 +6269,7 @@
     </message>
     <message>
         <source>Nothing in this category.</source>
-        <translation type="unfinished">Không có gì trong danh mục này.</translation>
+        <translation>Không có gì trong danh mục này.</translation>
     </message>
     <message>
         <source>Needs cutout</source>
@@ -6277,7 +6277,7 @@
     </message>
     <message>
         <source>Apply to selected clip</source>
-        <translation type="unfinished">Áp dụng cho clip đã chọn</translation>
+        <translation>Áp dụng cho clip đã chọn</translation>
     </message>
 </context>
 <context>
@@ -6320,7 +6320,7 @@
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Khác</translation>
+        <translation>Khác</translation>
     </message>
 </context>
 <context>
@@ -6363,7 +6363,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Download face detection (about 5 MB)</source>
@@ -6447,15 +6447,15 @@
     </message>
     <message>
         <source>Disable effect</source>
-        <translation type="unfinished">Tắt hiệu ứng</translation>
+        <translation>Tắt hiệu ứng</translation>
     </message>
     <message>
         <source>Enable effect</source>
-        <translation type="unfinished">Bật hiệu ứng</translation>
+        <translation>Bật hiệu ứng</translation>
     </message>
     <message>
         <source>Remove effect</source>
-        <translation type="unfinished">Xóa hiệu ứng</translation>
+        <translation>Xóa hiệu ứng</translation>
     </message>
     <message>
         <source>On</source>
@@ -6483,7 +6483,7 @@
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Pick %1</source>
@@ -6511,7 +6511,7 @@
     </message>
     <message>
         <source>Paste effects</source>
-        <translation type="unfinished">Dán hiệu ứng</translation>
+        <translation>Dán hiệu ứng</translation>
     </message>
 </context>
 <context>
@@ -6541,7 +6541,7 @@
     <name>ExportDialog</name>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Xuất</translation>
+        <translation>Xuất</translation>
     </message>
     <message>
         <source>96 kbps</source>
@@ -6569,7 +6569,7 @@
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -6593,15 +6593,15 @@
     </message>
     <message>
         <source>Export cancelled.</source>
-        <translation type="unfinished">Xuất bị hủy bỏ.</translation>
+        <translation>Xuất bị hủy bỏ.</translation>
     </message>
     <message>
         <source>Video</source>
-        <translation type="unfinished">Video</translation>
+        <translation>Video</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished">Âm thanh</translation>
+        <translation>Âm thanh</translation>
     </message>
     <message>
         <source>GIF</source>
@@ -6633,7 +6633,7 @@
     </message>
     <message>
         <source>Frame rate</source>
-        <translation type="unfinished">Tốc độ khung hình</translation>
+        <translation>Tốc độ khung hình</translation>
     </message>
     <message>
         <source>fps</source>
@@ -6736,7 +6736,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Xuất</translation>
+        <translation>Xuất</translation>
     </message>
     <message>
         <source>Cancel export</source>
@@ -6744,7 +6744,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Đóng</translation>
+        <translation>Đóng</translation>
     </message>
     <message>
         <source>Rendering your video. Close to keep editing, or cancel to stop.</source>
@@ -6752,11 +6752,11 @@
     </message>
     <message>
         <source>Export finished.</source>
-        <translation type="unfinished">Đã xuất xong.</translation>
+        <translation>Đã xuất xong.</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>Share</source>
@@ -6858,7 +6858,7 @@
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">Nhập</translation>
+        <translation>Nhập</translation>
     </message>
     <message>
         <source>Import face props from a .zip</source>
@@ -6902,7 +6902,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>“%1” will be removed from your face props. Effects using it will show it as missing until it is imported again.</source>
@@ -6937,15 +6937,15 @@
     </message>
     <message>
         <source>Bezier</source>
-        <translation type="unfinished">Bezier</translation>
+        <translation>Bezier</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Tuyến tính</translation>
+        <translation>Tuyến tính</translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation>Mượt</translation>
     </message>
     <message>
         <source>Ease</source>
@@ -6953,7 +6953,7 @@
     </message>
     <message>
         <source>Natural</source>
-        <translation type="unfinished">Tự nhiên</translation>
+        <translation>Tự nhiên</translation>
     </message>
     <message>
         <source>Ease In</source>
@@ -6973,22 +6973,22 @@
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Áp dụng</translation>
+        <translation>Áp dụng</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
 </context>
 <context>
     <name>FileDialogs</name>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished">Không có tiêu đề</translation>
+        <translation>Không có tiêu đề</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>Share</source>
@@ -7025,11 +7025,11 @@
     <name>GeneralInspector</name>
     <message>
         <source>Video</source>
-        <translation type="unfinished">Video</translation>
+        <translation>Video</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished">Âm thanh</translation>
+        <translation>Âm thanh</translation>
     </message>
     <message>
         <source>Image</source>
@@ -7037,11 +7037,11 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Văn bản</translation>
+        <translation>Văn bản</translation>
     </message>
     <message>
         <source>Subtitle</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message>
         <source>Shape</source>
@@ -7053,11 +7053,11 @@
     </message>
     <message>
         <source>Adjustment</source>
-        <translation type="unfinished">Điều chỉnh</translation>
+        <translation>Điều chỉnh</translation>
     </message>
     <message>
         <source>Clip name</source>
-        <translation type="unfinished">Tên clip</translation>
+        <translation>Tên clip</translation>
     </message>
     <message>
         <source>Untitled clip</source>
@@ -7065,7 +7065,7 @@
     </message>
     <message>
         <source>Rename clip</source>
-        <translation type="unfinished">Đổi tên clip</translation>
+        <translation>Đổi tên clip</translation>
     </message>
     <message>
         <source>Type</source>
@@ -7093,11 +7093,11 @@
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">Chiều cao</translation>
+        <translation>Chiều cao</translation>
     </message>
     <message>
         <source>Edit source frame…</source>
@@ -7109,7 +7109,7 @@
     </message>
     <message>
         <source>Duration</source>
-        <translation type="unfinished">Thời lượng</translation>
+        <translation>Thời lượng</translation>
     </message>
     <message>
         <source>From</source>
@@ -7121,11 +7121,11 @@
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Đổi tên</translation>
+        <translation>Đổi tên</translation>
     </message>
     <message>
         <source>Trim</source>
-        <translation type="unfinished">Cắt ngắn</translation>
+        <translation>Cắt ngắn</translation>
     </message>
     <message>
         <source>Which part of the original file this clip plays</source>
@@ -7168,7 +7168,7 @@
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Tuyến tính</translation>
+        <translation>Tuyến tính</translation>
     </message>
     <message>
         <source>Radial</source>
@@ -7216,7 +7216,7 @@
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Tốc độ</translation>
+        <translation>Tốc độ</translation>
     </message>
     <message>
         <source>Slides the gradient along its axis, in cycles per second</source>
@@ -7263,7 +7263,7 @@
     </message>
     <message>
         <source>Done</source>
-        <translation type="unfinished">Đã xong</translation>
+        <translation>Đã xong</translation>
     </message>
 </context>
 <context>
@@ -7443,11 +7443,11 @@
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">Chiều cao</translation>
+        <translation>Chiều cao</translation>
     </message>
     <message>
         <source>Rotation</source>
@@ -7507,7 +7507,7 @@
     </message>
     <message>
         <source>Analyzing…</source>
-        <translation type="unfinished">Đang phân tích…</translation>
+        <translation>Đang phân tích…</translation>
     </message>
     <message>
         <source>Hide the beat markers</source>
@@ -7515,7 +7515,7 @@
     </message>
     <message>
         <source>Find the beat and show markers</source>
-        <translation type="unfinished">Tìm nhịp và hiển thị điểm đánh dấu</translation>
+        <translation>Tìm nhịp và hiển thị điểm đánh dấu</translation>
     </message>
     <message>
         <source>Hide hits</source>
@@ -7557,7 +7557,7 @@
     </message>
     <message>
         <source>Move keyframe</source>
-        <translation type="unfinished">Di chuyển keyframe</translation>
+        <translation>Di chuyển keyframe</translation>
     </message>
     <message>
         <source>Edit keyframe curve</source>
@@ -7580,7 +7580,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Đóng</translation>
+        <translation>Đóng</translation>
     </message>
     <message>
         <source>Language for menus and labels. Takes effect immediately.</source>
@@ -7603,7 +7603,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Decide later</source>
@@ -7619,11 +7619,11 @@
     </message>
     <message>
         <source>Template</source>
-        <translation type="unfinished">Mẫu</translation>
+        <translation>Mẫu</translation>
     </message>
     <message>
         <source>Quality</source>
-        <translation type="unfinished">Chất lượng</translation>
+        <translation>Chất lượng</translation>
     </message>
     <message>
         <source>%1×%2 · %3</source>
@@ -7722,7 +7722,7 @@
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>Any size</source>
@@ -7753,7 +7753,7 @@
     </message>
     <message>
         <source>Open Project</source>
-        <translation type="unfinished">Mở dự án</translation>
+        <translation>Mở dự án</translation>
     </message>
     <message>
         <source>Project closed</source>
@@ -7761,11 +7761,11 @@
     </message>
     <message>
         <source>Export finished.</source>
-        <translation type="unfinished">Đã xuất xong.</translation>
+        <translation>Đã xuất xong.</translation>
     </message>
     <message>
         <source>Export cancelled.</source>
-        <translation type="unfinished">Xuất bị hủy bỏ.</translation>
+        <translation>Xuất bị hủy bỏ.</translation>
     </message>
     <message>
         <source>Export failed. Check the save location and free space on your disk.</source>
@@ -7773,31 +7773,31 @@
     </message>
     <message>
         <source>Couldn&apos;t create the shareable copy: %1</source>
-        <translation type="unfinished">Không thể tạo bản sao có thể chia sẻ: %1</translation>
+        <translation>Không thể tạo bản sao có thể chia sẻ: %1</translation>
     </message>
     <message>
         <source>Captions created.</source>
-        <translation type="unfinished">Đã tạo phụ đề.</translation>
+        <translation>Đã tạo phụ đề.</translation>
     </message>
     <message>
         <source>Couldn’t create captions: %1</source>
-        <translation type="unfinished">Không thể tạo phụ đề: %1</translation>
+        <translation>Không thể tạo phụ đề: %1</translation>
     </message>
     <message>
         <source>Couldn’t create captions.</source>
-        <translation type="unfinished">Không thể tạo phụ đề.</translation>
+        <translation>Không thể tạo phụ đề.</translation>
     </message>
     <message>
         <source>Couldn’t install “%1”: %2</source>
-        <translation type="unfinished">Không thể cài đặt “%1”: %2</translation>
+        <translation>Không thể cài đặt “%1”: %2</translation>
     </message>
     <message>
         <source>Imported “%1”.</source>
-        <translation type="unfinished">Đã nhập “%1”.</translation>
+        <translation>Đã nhập “%1”.</translation>
     </message>
     <message>
         <source>Imported from the marketplace.</source>
-        <translation type="unfinished">Được nhập từ chợ ứng dụng.</translation>
+        <translation>Được nhập từ chợ ứng dụng.</translation>
     </message>
 </context>
 <context>
@@ -7812,7 +7812,7 @@
     </message>
     <message>
         <source>Starting…</source>
-        <translation type="unfinished">Đang khởi động…</translation>
+        <translation>Đang khởi động…</translation>
     </message>
     <message>
         <source>Preparing…</source>
@@ -7832,7 +7832,7 @@
     </message>
     <message>
         <source>Downloading…</source>
-        <translation type="unfinished">Đang tải xuống…</translation>
+        <translation>Đang tải xuống…</translation>
     </message>
     <message>
         <source>Could not save that file.</source>
@@ -7844,7 +7844,7 @@
     </message>
     <message>
         <source>Importing…</source>
-        <translation type="unfinished">Đang nhập…</translation>
+        <translation>Đang nhập…</translation>
     </message>
     <message>
         <source>Could not import that file.</source>
@@ -7938,11 +7938,11 @@
     <name>MarketSearchField</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
 </context>
 <context>
@@ -7977,7 +7977,7 @@
     </message>
     <message>
         <source>Loading sources…</source>
-        <translation type="unfinished">Đang tải nguồn…</translation>
+        <translation>Đang tải nguồn…</translation>
     </message>
     <message>
         <source>Couldn’t reach the marketplace</source>
@@ -7985,7 +7985,7 @@
     </message>
     <message>
         <source>Try again</source>
-        <translation type="unfinished">Thử lại</translation>
+        <translation>Thử lại</translation>
     </message>
     <message>
         <source>Search</source>
@@ -7996,7 +7996,7 @@
     <name>MaskOverlay</name>
     <message>
         <source>Mask changed</source>
-        <translation type="unfinished">Mặt nạ đã thay đổi</translation>
+        <translation>Mặt nạ đã thay đổi</translation>
     </message>
     <message>
         <source>Drag a mask from the Masks tab onto a clip to edit it here</source>
@@ -8011,7 +8011,7 @@
     <name>MasksInspector</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Không</translation>
+        <translation>Không</translation>
     </message>
     <message>
         <source>Shape</source>
@@ -8019,27 +8019,27 @@
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Hình chữ nhật</translation>
+        <translation>Hình chữ nhật</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Hình ê-líp</translation>
+        <translation>Hình ê-líp</translation>
     </message>
     <message>
         <source>Star</source>
-        <translation type="unfinished">Ngôi sao</translation>
+        <translation>Ngôi sao</translation>
     </message>
     <message>
         <source>Heart</source>
-        <translation type="unfinished">Trái tim</translation>
+        <translation>Trái tim</translation>
     </message>
     <message>
         <source>Bars</source>
-        <translation type="unfinished">Thanh</translation>
+        <translation>Thanh</translation>
     </message>
     <message>
         <source>Freeform</source>
-        <translation type="unfinished">Dạng tự do</translation>
+        <translation>Dạng tự do</translation>
     </message>
     <message>
         <source>Combine</source>
@@ -8075,11 +8075,11 @@
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">Chiều cao</translation>
+        <translation>Chiều cao</translation>
     </message>
     <message>
         <source>Rotation</source>
@@ -8189,11 +8189,11 @@
     </message>
     <message>
         <source>Video</source>
-        <translation type="unfinished">Video</translation>
+        <translation>Video</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished">Âm thanh</translation>
+        <translation>Âm thanh</translation>
     </message>
     <message>
         <source>Images</source>
@@ -8269,7 +8269,7 @@
     </message>
     <message>
         <source>Rename…</source>
-        <translation type="unfinished">Đổi tên…</translation>
+        <translation>Đổi tên…</translation>
     </message>
     <message>
         <source>%1 — drag to the timeline, right-click to preview</source>
@@ -8349,11 +8349,11 @@
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished">Mở</translation>
+        <translation>Mở</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message numerus="yes">
         <source>Add %n items to timeline</source>
@@ -8363,7 +8363,7 @@
     </message>
     <message>
         <source>Add to timeline</source>
-        <translation type="unfinished">Thêm vào dòng thời gian</translation>
+        <translation>Thêm vào dòng thời gian</translation>
     </message>
     <message numerus="yes">
         <source>Move %n items to folder…</source>
@@ -8390,7 +8390,7 @@
     </message>
     <message>
         <source>Import Media</source>
-        <translation type="unfinished">Nhập phương tiện</translation>
+        <translation>Nhập phương tiện</translation>
     </message>
     <message>
         <source>Could not open that file. This package cannot read files dropped from other apps — use Import to pick them instead.</source>
@@ -8485,11 +8485,11 @@
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished">Tạm dừng</translation>
+        <translation>Tạm dừng</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>Set In</source>
@@ -8501,7 +8501,7 @@
     </message>
     <message>
         <source>Rotate</source>
-        <translation type="unfinished">Xoay</translation>
+        <translation>Xoay</translation>
     </message>
     <message>
         <source>Original: %1×%2 • Frame: %3×%4</source>
@@ -8517,11 +8517,11 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Đặt lại</translation>
+        <translation>Đặt lại</translation>
     </message>
     <message>
         <source>Saving…</source>
-        <translation type="unfinished">Đang lưu…</translation>
+        <translation>Đang lưu…</translation>
     </message>
     <message>
         <source>Save writes a new file over this item in the bin.</source>
@@ -8541,15 +8541,15 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Đóng</translation>
+        <translation>Đóng</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Lưu</translation>
+        <translation>Lưu</translation>
     </message>
 </context>
 <context>
@@ -8560,7 +8560,7 @@
     </message>
     <message>
         <source>Install all</source>
-        <translation type="unfinished">Cài đặt tất cả</translation>
+        <translation>Cài đặt tất cả</translation>
     </message>
     <message>
         <source>Skip</source>
@@ -8572,7 +8572,7 @@
     </message>
     <message>
         <source>%1… %2%</source>
-        <translation type="unfinished">%1… %2%</translation>
+        <translation>%1… %2%</translation>
     </message>
     <message>
         <source>used version %1</source>
@@ -8580,7 +8580,7 @@
     </message>
     <message>
         <source>Install</source>
-        <translation type="unfinished">Cài đặt</translation>
+        <translation>Cài đặt</translation>
     </message>
     <message>
         <source>Reopen the project once they finish installing.</source>
@@ -8629,7 +8629,7 @@
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished">Hoạt ảnh</translation>
+        <translation>Hoạt ảnh</translation>
     </message>
     <message>
         <source>Animation %1</source>
@@ -8657,7 +8657,7 @@
     </message>
     <message>
         <source>Hide</source>
-        <translation type="unfinished">Ẩn</translation>
+        <translation>Ẩn</translation>
     </message>
     <message>
         <source>What plays once the animation has run its length</source>
@@ -8775,7 +8775,7 @@
     <name>MulticamWindow</name>
     <message>
         <source>Multicam</source>
-        <translation type="unfinished">Đa góc quay</translation>
+        <translation>Đa góc quay</translation>
     </message>
     <message>
         <source>Pick the camera. Cuts stay staged until you save.</source>
@@ -8811,7 +8811,7 @@
     </message>
     <message>
         <source>No clip at the current time</source>
-        <translation type="unfinished">Hiện tại chưa có clip</translation>
+        <translation>Hiện tại chưa có clip</translation>
     </message>
     <message>
         <source>GPU preview unavailable — see Help → Debug info</source>
@@ -8823,27 +8823,27 @@
     </message>
     <message>
         <source>Previous frame</source>
-        <translation type="unfinished">Khung hình trước</translation>
+        <translation>Khung hình trước</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished">Tạm dừng</translation>
+        <translation>Tạm dừng</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>Next frame</source>
-        <translation type="unfinished">Khung hình kế</translation>
+        <translation>Khung hình kế</translation>
     </message>
     <message>
         <source>Seek</source>
-        <translation type="unfinished">Tua</translation>
+        <translation>Tua</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Save as separate tracks</source>
@@ -8858,11 +8858,11 @@
     <name>NameDialog</name>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Lưu</translation>
+        <translation>Lưu</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Tên</translation>
+        <translation>Tên</translation>
     </message>
     <message>
         <source>My style</source>
@@ -8916,7 +8916,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Copying your media into one file so it opens on any computer.</source>
@@ -8947,7 +8947,7 @@
     </message>
     <message>
         <source>Texture</source>
-        <translation type="unfinished">Kết cấu</translation>
+        <translation>Kết cấu</translation>
     </message>
     <message>
         <source>Effect</source>
@@ -8955,7 +8955,7 @@
     </message>
     <message>
         <source>Colour</source>
-        <translation type="unfinished">Màu</translation>
+        <translation>Màu</translation>
     </message>
     <message>
         <source>Choose the paint colour</source>
@@ -8975,7 +8975,7 @@
     </message>
     <message>
         <source>Fit</source>
-        <translation type="unfinished">Vừa</translation>
+        <translation>Vừa</translation>
     </message>
     <message>
         <source>Tile</source>
@@ -9014,15 +9014,15 @@
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished">Dán</translation>
+        <translation>Dán</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Clip</source>
-        <translation type="unfinished">Clip</translation>
+        <translation>Clip</translation>
     </message>
     <message numerus="yes">
         <source>Pasting from “%1” onto %n selected clip(s):</source>
@@ -9084,7 +9084,7 @@
     </message>
     <message>
         <source>Transitions</source>
-        <translation type="unfinished">Hiệu ứng chuyển cảnh</translation>
+        <translation>Hiệu ứng chuyển cảnh</translation>
     </message>
     <message numerus="yes">
         <source>Transitions (%n transition(s))</source>
@@ -9117,7 +9117,7 @@
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished">Tự động</translation>
+        <translation>Tự động</translation>
     </message>
     <message>
         <source>Software</source>
@@ -9215,7 +9215,7 @@
     </message>
     <message>
         <source>GPU preview unavailable</source>
-        <translation type="unfinished">Xem trước GPU không có sẵn</translation>
+        <translation>Xem trước GPU không có sẵn</translation>
     </message>
     <message>
         <source>Your graphics driver only provides %1. Drift&apos;s preview needs OpenGL 3.3.</source>
@@ -9227,19 +9227,19 @@
     </message>
     <message>
         <source>Debug info</source>
-        <translation type="unfinished">Thông tin gỡ lỗi</translation>
+        <translation>Thông tin gỡ lỗi</translation>
     </message>
     <message>
         <source>Audio only</source>
-        <translation type="unfinished">Chỉ âm thanh</translation>
+        <translation>Chỉ âm thanh</translation>
     </message>
     <message>
         <source>No clip at the current time</source>
-        <translation type="unfinished">Hiện tại chưa có clip</translation>
+        <translation>Hiện tại chưa có clip</translation>
     </message>
     <message>
         <source>Seek</source>
-        <translation type="unfinished">Tua</translation>
+        <translation>Tua</translation>
     </message>
 </context>
 <context>
@@ -9258,19 +9258,19 @@
     </message>
     <message>
         <source>Previous frame</source>
-        <translation type="unfinished">Khung hình trước</translation>
+        <translation>Khung hình trước</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished">Tạm dừng</translation>
+        <translation>Tạm dừng</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>Next frame</source>
-        <translation type="unfinished">Khung hình kế</translation>
+        <translation>Khung hình kế</translation>
     </message>
     <message>
         <source>Loop work area on — click to turn off</source>
@@ -9290,19 +9290,19 @@
     </message>
     <message>
         <source>Full</source>
-        <translation type="unfinished">Toàn màn hình</translation>
+        <translation>Toàn màn hình</translation>
     </message>
     <message>
         <source>Half</source>
-        <translation type="unfinished">Phân nửa</translation>
+        <translation>Phân nửa</translation>
     </message>
     <message>
         <source>Quarter</source>
-        <translation type="unfinished">Một phần tư</translation>
+        <translation>Một phần tư</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished">Tự động</translation>
+        <translation>Tự động</translation>
     </message>
     <message>
         <source>Preview quality — lower is smoother while editing.
@@ -9324,7 +9324,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Toggle guides</source>
-        <translation type="unfinished">Chuyển đổi hướng dẫn</translation>
+        <translation>Chuyển đổi hướng dẫn</translation>
     </message>
     <message>
         <source>Guide sets</source>
@@ -9340,7 +9340,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Fullscreen preview</source>
-        <translation type="unfinished">Xem trước toàn màn hình</translation>
+        <translation>Xem trước toàn màn hình</translation>
     </message>
     <message>
         <source>Decoding on a different graphics card</source>
@@ -9352,7 +9352,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Launching Drift with prime-run (or DRI_PRIME=1) puts OpenGL on the same card as the decoder.</source>
@@ -9509,11 +9509,11 @@ If playback stutters, try another.</source>
     <name>ProjectPropertiesDialog</name>
     <message>
         <source>Project properties</source>
-        <translation type="unfinished">Thuộc tính dự án</translation>
+        <translation>Thuộc tính dự án</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Lưu</translation>
+        <translation>Lưu</translation>
     </message>
     <message>
         <source>Title</source>
@@ -9556,7 +9556,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Tạo</translation>
+        <translation>Tạo</translation>
     </message>
     <message>
         <source>First clip “%1”. Choose the video size before it is placed.</source>
@@ -9576,19 +9576,19 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">Chiều cao</translation>
+        <translation>Chiều cao</translation>
     </message>
     <message>
         <source>Frames per second</source>
-        <translation type="unfinished">Số khung hình trên giây</translation>
+        <translation>Số khung hình trên giây</translation>
     </message>
     <message>
         <source>Video: %1×%2, %3 frames per second</source>
@@ -9596,7 +9596,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Đặt lại</translation>
+        <translation>Đặt lại</translation>
     </message>
     <message>
         <source>Restore the size suggested by your first clip</source>
@@ -9611,7 +9611,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Văn bản</translation>
+        <translation>Văn bản</translation>
     </message>
     <message>
         <source>Shape</source>
@@ -9627,7 +9627,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message>
         <source>Transform</source>
@@ -9639,15 +9639,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished">Hoạt ảnh</translation>
+        <translation>Hoạt ảnh</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished">Âm thanh</translation>
+        <translation>Âm thanh</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Tốc độ</translation>
+        <translation>Tốc độ</translation>
     </message>
     <message>
         <source>Blending</source>
@@ -9655,15 +9655,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Masks</source>
-        <translation type="unfinished">Mặt nạ</translation>
+        <translation>Mặt nạ</translation>
     </message>
     <message>
         <source>Effects</source>
-        <translation type="unfinished">Hiệu ứng</translation>
+        <translation>Hiệu ứng</translation>
     </message>
     <message>
         <source>Audio FX</source>
-        <translation type="unfinished">Hiệu ứng âm thanh</translation>
+        <translation>Hiệu ứng âm thanh</translation>
     </message>
     <message>
         <source>Transition</source>
@@ -9683,7 +9683,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Save effect preset</source>
-        <translation type="unfinished">Lưu cài đặt trước hiệu ứng</translation>
+        <translation>Lưu cài đặt trước hiệu ứng</translation>
     </message>
     <message>
         <source>Save effect as preset</source>
@@ -9691,7 +9691,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>My look</source>
-        <translation type="unfinished">Phong cách của tôi</translation>
+        <translation>Phong cách của tôi</translation>
     </message>
 </context>
 <context>
@@ -9896,7 +9896,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Could not open the media file</source>
-        <translation type="unfinished">Không thể mở tệp phương tiện</translation>
+        <translation>Không thể mở tệp phương tiện</translation>
     </message>
     <message>
         <source>This file has no video to scan</source>
@@ -9912,7 +9912,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Could not decode frame %1</source>
-        <translation type="unfinished">Không thể giải mã khung %1</translation>
+        <translation>Không thể giải mã khung %1</translation>
     </message>
     <message>
         <source>Estimating depth, frame %1 of %2…</source>
@@ -9920,11 +9920,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Scanning frame %1 of %2…</source>
-        <translation type="unfinished">Đang quét khung %1 của %2…</translation>
+        <translation>Đang quét khung %1 của %2…</translation>
     </message>
     <message>
         <source>Clip</source>
-        <translation type="unfinished">Clip</translation>
+        <translation>Clip</translation>
     </message>
     <message>
         <source>Cannot open file: %1</source>
@@ -10011,7 +10011,7 @@ If playback stutters, try another.</source>
     <name>RecentProjectsPopup</name>
     <message>
         <source>Remove from recents</source>
-        <translation type="unfinished">Xóa khỏi gần đây</translation>
+        <translation>Xóa khỏi gần đây</translation>
     </message>
     <message>
         <source>All changes saved</source>
@@ -10134,7 +10134,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Reverse</source>
@@ -10180,7 +10180,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Identify objects</source>
@@ -10204,7 +10204,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Most active first</source>
@@ -10255,7 +10255,7 @@ If playback stutters, try another.</source>
     <name>SegmentationWindow</name>
     <message>
         <source>Cut out subject</source>
-        <translation type="unfinished">Cắt bỏ chủ đề</translation>
+        <translation>Cắt bỏ chủ đề</translation>
     </message>
     <message>
         <source>Anything (click to pick)</source>
@@ -10271,7 +10271,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Fast</source>
-        <translation type="unfinished">Nhanh</translation>
+        <translation>Nhanh</translation>
     </message>
     <message>
         <source>Looking at this moment…</source>
@@ -10299,7 +10299,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Quality</source>
-        <translation type="unfinished">Chất lượng</translation>
+        <translation>Chất lượng</translation>
     </message>
     <message>
         <source>AI: %1</source>
@@ -10335,7 +10335,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Each moment is processed, so longer clips take longer.</source>
@@ -10346,7 +10346,7 @@ If playback stutters, try another.</source>
     <name>SettingsDialog</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Cài đặt</translation>
+        <translation>Cài đặt</translation>
     </message>
     <message>
         <source>Done</source>
@@ -10557,7 +10557,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Extra packs</source>
-        <translation type="unfinished">Gói bổ sung</translation>
+        <translation>Gói bổ sung</translation>
     </message>
     <message>
         <source>Remind about essential packs</source>
@@ -10577,7 +10577,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Agent access</source>
-        <translation type="unfinished">Quyền truy cập của trợ lý</translation>
+        <translation>Quyền truy cập của trợ lý</translation>
     </message>
     <message>
         <source>Cloud providers</source>
@@ -10613,7 +10613,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Lưu</translation>
+        <translation>Lưu</translation>
     </message>
     <message>
         <source>Test</source>
@@ -10621,7 +10621,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Allow sending audio and text to %1</source>
@@ -10668,7 +10668,7 @@ If playback stutters, try another.</source>
     <name>ShadingLayerRow</name>
     <message>
         <source>Fill</source>
-        <translation type="unfinished">Đầy</translation>
+        <translation>Đầy</translation>
     </message>
     <message>
         <source>Stroke</source>
@@ -10696,7 +10696,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Texture</source>
-        <translation type="unfinished">Kết cấu</translation>
+        <translation>Kết cấu</translation>
     </message>
     <message>
         <source>Effect</source>
@@ -10780,11 +10780,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Duplicate layer</source>
-        <translation type="unfinished">Nhân đôi lớp</translation>
+        <translation>Nhân đôi lớp</translation>
     </message>
     <message>
         <source>Remove layer</source>
-        <translation type="unfinished">Xóa lớp</translation>
+        <translation>Xóa lớp</translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -10796,7 +10796,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Placement</source>
@@ -10816,11 +10816,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Trim start</source>
-        <translation type="unfinished">Cắt ngắn phần đầu</translation>
+        <translation>Cắt ngắn phần đầu</translation>
     </message>
     <message>
         <source>Trim end</source>
-        <translation type="unfinished">Cắt ngắn phần cuối</translation>
+        <translation>Cắt ngắn phần cuối</translation>
     </message>
     <message>
         <source>Sketchy</source>
@@ -10840,7 +10840,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Colour</source>
-        <translation type="unfinished">Màu</translation>
+        <translation>Màu</translation>
     </message>
     <message>
         <source>Choose the layer colour</source>
@@ -10895,7 +10895,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished">Đầy</translation>
+        <translation>Đầy</translation>
     </message>
     <message>
         <source>Stroke</source>
@@ -10911,7 +10911,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add layer</source>
-        <translation type="unfinished">Thêm lớp</translation>
+        <translation>Thêm lớp</translation>
     </message>
     <message>
         <source>Add a fill, stroke, shadow, glow or extrude layer</source>
@@ -10970,7 +10970,7 @@ If playback stutters, try another.</source>
     <name>ShapeStyle</name>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Hình chữ nhật</translation>
+        <translation>Hình chữ nhật</translation>
     </message>
     <message>
         <source>Rounded rectangle</source>
@@ -10982,7 +10982,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Hình ê-líp</translation>
+        <translation>Hình ê-líp</translation>
     </message>
     <message>
         <source>Circle</source>
@@ -11058,7 +11058,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Star</source>
-        <translation type="unfinished">Ngôi sao</translation>
+        <translation>Ngôi sao</translation>
     </message>
     <message>
         <source>Burst</source>
@@ -11074,7 +11074,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Heart</source>
-        <translation type="unfinished">Trái tim</translation>
+        <translation>Trái tim</translation>
     </message>
     <message>
         <source>Cross</source>
@@ -11086,7 +11086,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Basic</source>
-        <translation type="unfinished">Cơ bản</translation>
+        <translation>Cơ bản</translation>
     </message>
     <message>
         <source>Arrows</source>
@@ -11145,7 +11145,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Nothing in this category.</source>
-        <translation type="unfinished">Không có gì trong danh mục này.</translation>
+        <translation>Không có gì trong danh mục này.</translation>
     </message>
     <message>
         <source>%1 — click to add, or drag to the timeline or preview</source>
@@ -11214,15 +11214,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Audio only</source>
-        <translation type="unfinished">Chỉ âm thanh</translation>
+        <translation>Chỉ âm thanh</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished">Tạm dừng</translation>
+        <translation>Tạm dừng</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>s / </source>
@@ -11246,7 +11246,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation>Mượt</translation>
     </message>
     <message>
         <source>Delete point</source>
@@ -11254,7 +11254,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Đặt lại</translation>
+        <translation>Đặt lại</translation>
     </message>
     <message>
         <source>Applied as a copy on a new track — the original clip is left alone.</source>
@@ -11262,18 +11262,18 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Áp dụng</translation>
+        <translation>Áp dụng</translation>
     </message>
 </context>
 <context>
     <name>SpeedFadeInspector</name>
     <message>
         <source>Not available</source>
-        <translation type="unfinished">Không khả dụng</translation>
+        <translation>Không khả dụng</translation>
     </message>
     <message>
         <source>Speed applies to video and audio clips.</source>
@@ -11293,11 +11293,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Tốc độ</translation>
+        <translation>Tốc độ</translation>
     </message>
     <message>
         <source>Speed changed</source>
-        <translation type="unfinished">Đã thay đổi tốc độ</translation>
+        <translation>Đã thay đổi tốc độ</translation>
     </message>
     <message>
         <source>Custom speed</source>
@@ -11348,7 +11348,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Could not write subtitle file</source>
-        <translation type="unfinished">Không thể ghi tệp phụ đề</translation>
+        <translation>Không thể ghi tệp phụ đề</translation>
     </message>
 </context>
 <context>
@@ -11431,7 +11431,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
 </context>
 <context>
@@ -11447,11 +11447,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Remove from recents</source>
-        <translation type="unfinished">Xóa khỏi gần đây</translation>
+        <translation>Xóa khỏi gần đây</translation>
     </message>
     <message>
         <source>Create polished videos fast</source>
-        <translation type="unfinished">Tạo video ấn tượng nhanh</translation>
+        <translation>Tạo video ấn tượng nhanh</translation>
     </message>
     <message>
         <source>New Project</source>
@@ -11467,7 +11467,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Nothing here yet — projects you save will show up in this list.</source>
-        <translation type="unfinished">Chưa có gì ở đây - các dự án bạn lưu sẽ hiển thị trong danh sách này.</translation>
+        <translation>Chưa có gì ở đây - các dự án bạn lưu sẽ hiển thị trong danh sách này.</translation>
     </message>
 </context>
 <context>
@@ -11498,7 +11498,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Nothing in this category</source>
-        <translation type="unfinished">Không có gì trong danh mục này</translation>
+        <translation>Không có gì trong danh mục này</translation>
     </message>
     <message>
         <source>Try a different name.</source>
@@ -11525,7 +11525,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">Tất cả</translation>
+        <translation>Tất cả</translation>
     </message>
     <message>
         <source>%1 (%2 left)</source>
@@ -11563,7 +11563,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Try again</source>
-        <translation type="unfinished">Thử lại</translation>
+        <translation>Thử lại</translation>
     </message>
     <message>
         <source>No results for “%1”</source>
@@ -11591,7 +11591,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished">Tạm dừng</translation>
+        <translation>Tạm dừng</translation>
     </message>
     <message>
         <source>Play preview</source>
@@ -11610,13 +11610,13 @@ If playback stutters, try another.</source>
     </message>
     <message numerus="yes">
         <source>%n coin(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n xu</numerusform>
         </translation>
     </message>
     <message>
         <source>Downloading…</source>
-        <translation type="unfinished">Đang tải xuống…</translation>
+        <translation>Đang tải xuống…</translation>
     </message>
     <message>
         <source>Download again</source>
@@ -11647,18 +11647,18 @@ If playback stutters, try another.</source>
     <name>StockThumb</name>
     <message>
         <source>Cancel download</source>
-        <translation type="unfinished">Hủy tải xuống</translation>
+        <translation>Hủy tải xuống</translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">Thử lại</translation>
+        <translation>Thử lại</translation>
     </message>
 </context>
 <context>
     <name>SubtitleCue</name>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message>
         <source>Subtitles (%1)</source>
@@ -11669,7 +11669,7 @@ If playback stutters, try another.</source>
     <name>SubtitleCueLane</name>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message numerus="yes">
         <source>%n captions</source>
@@ -11686,7 +11686,7 @@ If playback stutters, try another.</source>
     <name>SubtitleEditor</name>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message>
         <source>%1 captions</source>
@@ -11698,7 +11698,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">Nhập</translation>
+        <translation>Nhập</translation>
     </message>
     <message>
         <source>Replace these captions from a .srt file</source>
@@ -11718,7 +11718,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Xuất</translation>
+        <translation>Xuất</translation>
     </message>
     <message>
         <source>Save captions as a .srt file</source>
@@ -11801,7 +11801,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Working…</source>
@@ -11872,7 +11872,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Stop creating captions</source>
@@ -11907,7 +11907,7 @@ If playback stutters, try another.</source>
     <name>TextAnimPresetTile</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Không</translation>
+        <translation>Không</translation>
     </message>
 </context>
 <context>
@@ -11946,7 +11946,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Rename…</source>
-        <translation type="unfinished">Đổi tên…</translation>
+        <translation>Đổi tên…</translation>
     </message>
     <message>
         <source>Export…</source>
@@ -11954,7 +11954,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Built-in</source>
@@ -12004,7 +12004,7 @@ If playback stutters, try another.</source>
     <name>TextInspector</name>
     <message>
         <source>Style</source>
-        <translation type="unfinished">Kiểu</translation>
+        <translation>Kiểu</translation>
     </message>
     <message>
         <source>Save style…</source>
@@ -12012,7 +12012,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Save text style</source>
-        <translation type="unfinished">Lưu kiểu văn bản</translation>
+        <translation>Lưu kiểu văn bản</translation>
     </message>
     <message>
         <source>My style %1</source>
@@ -12028,7 +12028,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Không</translation>
+        <translation>Không</translation>
     </message>
     <message>
         <source>Whole block</source>
@@ -12064,11 +12064,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Tuyến tính</translation>
+        <translation>Tuyến tính</translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation>Mượt</translation>
     </message>
     <message>
         <source>Snappy</source>
@@ -12076,15 +12076,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished">Quay lại</translation>
+        <translation>Quay lại</translation>
     </message>
     <message>
         <source>Bounce</source>
-        <translation type="unfinished">Nảy</translation>
+        <translation>Nảy</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Văn bản</translation>
+        <translation>Văn bản</translation>
     </message>
     <message>
         <source>Animate</source>
@@ -12096,7 +12096,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Áp dụng</translation>
+        <translation>Áp dụng</translation>
     </message>
     <message>
         <source>Apply the text to this clip</source>
@@ -12168,7 +12168,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Shadow</source>
@@ -12208,7 +12208,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Colour</source>
-        <translation type="unfinished">Màu</translation>
+        <translation>Màu</translation>
     </message>
     <message>
         <source>Choose the gradient&apos;s first colour</source>
@@ -12248,7 +12248,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Preset</source>
-        <translation type="unfinished">Mẫu</translation>
+        <translation>Mẫu</translation>
     </message>
     <message>
         <source>A whole text style — font, colour and effect — applied in one tap</source>
@@ -12292,7 +12292,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Adjust text look</source>
-        <translation type="unfinished">Điều chỉnh giao diện văn bản</translation>
+        <translation>Điều chỉnh giao diện văn bản</translation>
     </message>
     <message>
         <source>Layers</source>
@@ -12300,7 +12300,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add layer</source>
-        <translation type="unfinished">Thêm lớp</translation>
+        <translation>Thêm lớp</translation>
     </message>
     <message>
         <source>Add a fill, stroke, shadow, glow or extrude layer</source>
@@ -12308,7 +12308,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished">Đầy</translation>
+        <translation>Đầy</translation>
     </message>
     <message>
         <source>Stroke</source>
@@ -12472,11 +12472,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>In</source>
-        <translation type="unfinished">Vào</translation>
+        <translation>Vào</translation>
     </message>
     <message>
         <source>Out</source>
-        <translation type="unfinished">Ra</translation>
+        <translation>Ra</translation>
     </message>
     <message>
         <source>Loop</source>
@@ -12488,7 +12488,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">Tất cả</translation>
+        <translation>Tất cả</translation>
     </message>
     <message>
         <source>Preview this animation</source>
@@ -12500,11 +12500,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Duration</source>
-        <translation type="unfinished">Thời lượng</translation>
+        <translation>Thời lượng</translation>
     </message>
     <message>
         <source>Edit text animation</source>
-        <translation type="unfinished">Chỉnh sửa hoạt ảnh văn bản</translation>
+        <translation>Chỉnh sửa hoạt ảnh văn bản</translation>
     </message>
     <message>
         <source>By</source>
@@ -12515,7 +12515,7 @@ If playback stutters, try another.</source>
     <name>TextLookPicker</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>Aa</source>
@@ -12527,14 +12527,14 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Đóng</translation>
+        <translation>Đóng</translation>
     </message>
 </context>
 <context>
     <name>TextParamSlots</name>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Đặt lại</translation>
+        <translation>Đặt lại</translation>
     </message>
     <message>
         <source>Text for this slot</source>
@@ -12577,7 +12577,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Spread</source>
@@ -12585,11 +12585,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Trim start</source>
-        <translation type="unfinished">Cắt ngắn phần đầu</translation>
+        <translation>Cắt ngắn phần đầu</translation>
     </message>
     <message>
         <source>Trim end</source>
-        <translation type="unfinished">Cắt ngắn phần cuối</translation>
+        <translation>Cắt ngắn phần cuối</translation>
     </message>
     <message>
         <source>Dash offset</source>
@@ -12605,19 +12605,19 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Đỏ</translation>
+        <translation>Đỏ</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Xanh lá</translation>
+        <translation>Xanh lá</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Xanh lam</translation>
+        <translation>Xanh lam</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished">Alpha</translation>
+        <translation>Alpha</translation>
     </message>
     <message>
         <source>Gradient angle</source>
@@ -12645,7 +12645,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished">Đầy</translation>
+        <translation>Đầy</translation>
     </message>
     <message>
         <source>Stroke</source>
@@ -12688,7 +12688,7 @@ If playback stutters, try another.</source>
     <name>TextStylePackPicker</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>Text preset</source>
@@ -12696,7 +12696,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Đóng</translation>
+        <translation>Đóng</translation>
     </message>
     <message>
         <source>My styles</source>
@@ -12711,7 +12711,7 @@ If playback stutters, try another.</source>
     <name>TextStylePackThumb</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
 </context>
 <context>
@@ -12741,7 +12741,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
 </context>
 <context>
@@ -12807,11 +12807,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Split at current time</source>
-        <translation type="unfinished">Tách ở điểm hiện tại</translation>
+        <translation>Tách ở điểm hiện tại</translation>
     </message>
     <message>
         <source>Separate audio</source>
-        <translation type="unfinished">Tách âm thanh</translation>
+        <translation>Tách âm thanh</translation>
     </message>
     <message>
         <source>Separate all audio tracks</source>
@@ -12851,15 +12851,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Paste attributes…</source>
-        <translation type="unfinished">Dán thuộc tính…</translation>
+        <translation>Dán thuộc tính…</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished">Nhân bản</translation>
+        <translation>Nhân bản</translation>
     </message>
     <message>
         <source>Rename…</source>
-        <translation type="unfinished">Đổi tên…</translation>
+        <translation>Đổi tên…</translation>
     </message>
     <message>
         <source>Copy effects</source>
@@ -12867,7 +12867,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Paste effects</source>
-        <translation type="unfinished">Dán hiệu ứng</translation>
+        <translation>Dán hiệu ứng</translation>
     </message>
     <message>
         <source>Save effects as preset…</source>
@@ -12883,11 +12883,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Adjust fade</source>
-        <translation type="unfinished">Điều chỉnh độ mờ</translation>
+        <translation>Điều chỉnh độ mờ</translation>
     </message>
     <message>
         <source>Fade in %1s</source>
@@ -12942,7 +12942,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Save effect preset</source>
-        <translation type="unfinished">Lưu cài đặt trước hiệu ứng</translation>
+        <translation>Lưu cài đặt trước hiệu ứng</translation>
     </message>
     <message>
         <source>Add new track</source>
@@ -12954,19 +12954,19 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Go to bookmark</source>
-        <translation type="unfinished">Đi đến dấu trang</translation>
+        <translation>Đi đến dấu trang</translation>
     </message>
     <message>
         <source>Rename…</source>
-        <translation type="unfinished">Đổi tên…</translation>
+        <translation>Đổi tên…</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Xóa</translation>
+        <translation>Xóa</translation>
     </message>
     <message>
         <source>Your timeline is empty</source>
-        <translation type="unfinished">Dòng thời gian của bạn đang trống</translation>
+        <translation>Dòng thời gian của bạn đang trống</translation>
     </message>
     <message>
         <source>Drag media here from the library, or add an empty track to start.</source>
@@ -12978,7 +12978,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Importing…</source>
-        <translation type="unfinished">Đang nhập…</translation>
+        <translation>Đang nhập…</translation>
     </message>
     <message>
         <source>PAUSED </source>
@@ -12990,19 +12990,19 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Rename bookmark</source>
-        <translation type="unfinished">Đổi tên dấu trang</translation>
+        <translation>Đổi tên dấu trang</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Đổi tên</translation>
+        <translation>Đổi tên</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Nhãn</translation>
+        <translation>Nhãn</translation>
     </message>
     <message>
         <source>Bookmark name</source>
-        <translation type="unfinished">Tên dấu trang</translation>
+        <translation>Tên dấu trang</translation>
     </message>
     <message>
         <source>Bookmark</source>
@@ -13022,19 +13022,19 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Rename clip</source>
-        <translation type="unfinished">Đổi tên clip</translation>
+        <translation>Đổi tên clip</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished">Tên</translation>
+        <translation>Tên</translation>
     </message>
     <message>
         <source>Clip name</source>
-        <translation type="unfinished">Tên clip</translation>
+        <translation>Tên clip</translation>
     </message>
     <message>
         <source>My look</source>
-        <translation type="unfinished">Phong cách của tôi</translation>
+        <translation>Phong cách của tôi</translation>
     </message>
     <message>
         <source>Close Gap</source>
@@ -13049,11 +13049,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished">Tạm dừng</translation>
+        <translation>Tạm dừng</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Phát</translation>
+        <translation>Phát</translation>
     </message>
     <message>
         <source>Select — normal editing</source>
@@ -13077,7 +13077,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Trim start</source>
-        <translation type="unfinished">Cắt ngắn phần đầu</translation>
+        <translation>Cắt ngắn phần đầu</translation>
     </message>
     <message>
         <source>Trim start — click a clip to drop everything left of the cut</source>
@@ -13085,7 +13085,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Trim end</source>
-        <translation type="unfinished">Cắt ngắn phần cuối</translation>
+        <translation>Cắt ngắn phần cuối</translation>
     </message>
     <message>
         <source>Trim end — click a clip to drop everything right of the cut</source>
@@ -13093,11 +13093,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished">Hoàn tác</translation>
+        <translation>Hoàn tác</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished">Khôi phục</translation>
+        <translation>Khôi phục</translation>
     </message>
     <message>
         <source>Delete clip</source>
@@ -13105,7 +13105,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Copy selection</source>
-        <translation type="unfinished">Sao chép lựa chọn</translation>
+        <translation>Sao chép lựa chọn</translation>
     </message>
     <message>
         <source>Paste at current time</source>
@@ -13117,7 +13117,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add/remove bookmark at current time</source>
-        <translation type="unfinished">Thêm/xóa dấu trang vào thời điểm hiện tại</translation>
+        <translation>Thêm/xóa dấu trang vào thời điểm hiện tại</translation>
     </message>
     <message>
         <source>Mark work area in</source>
@@ -13173,11 +13173,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Merge adjacent clips</source>
-        <translation type="unfinished">Hợp nhất các clip liền kề</translation>
+        <translation>Hợp nhất các clip liền kề</translation>
     </message>
     <message>
         <source>Freeze frame at current time</source>
-        <translation type="unfinished">Đóng băng khung hình ở thời điểm hiện tại</translation>
+        <translation>Đóng băng khung hình ở thời điểm hiện tại</translation>
     </message>
     <message>
         <source>More edit actions</source>
@@ -13185,7 +13185,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add adjustment layer</source>
-        <translation type="unfinished">Thêm lớp điều chỉnh</translation>
+        <translation>Thêm lớp điều chỉnh</translation>
     </message>
     <message>
         <source>Customize toolbar…</source>
@@ -13197,15 +13197,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Close gaps when trimming</source>
-        <translation type="unfinished">Xóa khoảng trống khi cắt ngắn</translation>
+        <translation>Xóa khoảng trống khi cắt ngắn</translation>
     </message>
     <message>
         <source>Allow clip overlap</source>
-        <translation type="unfinished">Cho phép chồng lớp clip</translation>
+        <translation>Cho phép chồng lớp clip</translation>
     </message>
     <message>
         <source>Zoom out</source>
-        <translation type="unfinished">Thu nhỏ</translation>
+        <translation>Thu nhỏ</translation>
     </message>
     <message>
         <source>Timeline zoom</source>
@@ -13221,7 +13221,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Zoom in</source>
-        <translation type="unfinished">Phóng to</translation>
+        <translation>Phóng to</translation>
     </message>
     <message>
         <source>Fit timeline in view</source>
@@ -13236,7 +13236,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Lưu</translation>
+        <translation>Lưu</translation>
     </message>
     <message>
         <source>Drag items to reorder them. Items above the divider are toolbar buttons; the rest are in the More menu.</source>
@@ -13275,7 +13275,7 @@ If playback stutters, try another.</source>
     <name>TimelineTrackItem</name>
     <message>
         <source>Audio adjustment</source>
-        <translation type="unfinished">Điều chỉnh âm thanh</translation>
+        <translation>Điều chỉnh âm thanh</translation>
     </message>
     <message>
         <source>Mask</source>
@@ -13287,15 +13287,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Adjustment</source>
-        <translation type="unfinished">Điều chỉnh</translation>
+        <translation>Điều chỉnh</translation>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message>
         <source>%1, track %2</source>
-        <translation type="unfinished">%1, track %2</translation>
+        <translation>%1, track %2</translation>
     </message>
 </context>
 <context>
@@ -13538,11 +13538,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">Chiều cao</translation>
+        <translation>Chiều cao</translation>
     </message>
     <message>
         <source>Angle</source>
@@ -13650,7 +13650,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Rotate</source>
-        <translation type="unfinished">Xoay</translation>
+        <translation>Xoay</translation>
     </message>
     <message>
         <source>Rings on the preview turn the clip about each axis</source>
@@ -13717,27 +13717,27 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished">Âm thanh</translation>
+        <translation>Âm thanh</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Văn bản</translation>
+        <translation>Văn bản</translation>
     </message>
     <message>
         <source>Subtitle</source>
-        <translation type="unfinished">Phụ đề</translation>
+        <translation>Phụ đề</translation>
     </message>
     <message>
         <source>Graphic</source>
-        <translation type="unfinished">Đồ họa</translation>
+        <translation>Đồ họa</translation>
     </message>
     <message>
         <source>Adjustment</source>
-        <translation type="unfinished">Điều chỉnh</translation>
+        <translation>Điều chỉnh</translation>
     </message>
     <message>
         <source>Video</source>
-        <translation type="unfinished">Video</translation>
+        <translation>Video</translation>
     </message>
     <message>
         <source>Everything below</source>
@@ -13773,7 +13773,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Clip</source>
-        <translation type="unfinished">Clip</translation>
+        <translation>Clip</translation>
     </message>
     <message numerus="yes">
         <source>+%n more</source>
@@ -13826,7 +13826,7 @@ If playback stutters, try another.</source>
     <name>TransitionCatalog</name>
     <message>
         <source>Basic</source>
-        <translation type="unfinished">Cơ bản</translation>
+        <translation>Cơ bản</translation>
     </message>
     <message>
         <source>Grid &amp; Geometric</source>
@@ -13846,7 +13846,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Khác</translation>
+        <translation>Khác</translation>
     </message>
 </context>
 <context>
@@ -13885,31 +13885,31 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Duration</source>
-        <translation type="unfinished">Thời lượng</translation>
+        <translation>Thời lượng</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Đường cong</translation>
+        <translation>Đường cong</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Tuyến tính</translation>
+        <translation>Tuyến tính</translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation>Mượt</translation>
     </message>
     <message>
         <source>Natural</source>
-        <translation type="unfinished">Tự nhiên</translation>
+        <translation>Tự nhiên</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>Bezier</source>
-        <translation type="unfinished">Bezier</translation>
+        <translation>Bezier</translation>
     </message>
     <message>
         <source>On</source>
@@ -13921,11 +13921,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Edit transition</source>
-        <translation type="unfinished">Chỉnh sửa hiệu ứng chuyển cảnh</translation>
+        <translation>Chỉnh sửa hiệu ứng chuyển cảnh</translation>
     </message>
     <message>
         <source>Remove transition</source>
-        <translation type="unfinished">Xóa hiệu ứng chuyển cảnh</translation>
+        <translation>Xóa hiệu ứng chuyển cảnh</translation>
     </message>
 </context>
 <context>
@@ -13964,7 +13964,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Nothing in this category</source>
-        <translation type="unfinished">Không có gì trong danh mục này</translation>
+        <translation>Không có gì trong danh mục này</translation>
     </message>
     <message>
         <source>Try a different name.</source>
@@ -14003,11 +14003,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Hủy bỏ</translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Lưu</translation>
+        <translation>Lưu</translation>
     </message>
 </context>
 <context>
@@ -14033,7 +14033,7 @@ If playback stutters, try another.</source>
     <name>UpdateDialog</name>
     <message>
         <source>Update available</source>
-        <translation type="unfinished">Đã có bản cập nhật</translation>
+        <translation>Đã có bản cập nhật</translation>
     </message>
     <message>
         <source>Drift %1 is available</source>
@@ -14053,7 +14053,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Later</source>
-        <translation type="unfinished">Để sau</translation>
+        <translation>Để sau</translation>
     </message>
     <message>
         <source>Download</source>
@@ -14132,7 +14132,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Fit</source>
-        <translation type="unfinished">Vừa</translation>
+        <translation>Vừa</translation>
     </message>
     <message>
         <source>Contain</source>
@@ -14168,7 +14168,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Hide</source>
-        <translation type="unfinished">Ẩn</translation>
+        <translation>Ẩn</translation>
     </message>
     <message>
         <source>What plays once the animation has run its length</source>
@@ -14204,7 +14204,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished">Đầy</translation>
+        <translation>Đầy</translation>
     </message>
     <message>
         <source>Stroke</source>
@@ -14259,7 +14259,7 @@ If playback stutters, try another.</source>
     <name>VectorSource</name>
     <message>
         <source>Fill</source>
-        <translation type="unfinished">Đầy</translation>
+        <translation>Đầy</translation>
     </message>
     <message>
         <source>Stroke</source>
@@ -14289,7 +14289,7 @@ If playback stutters, try another.</source>
     <name>VideoSizeControls</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Tùy chỉnh</translation>
+        <translation>Tùy chỉnh</translation>
     </message>
     <message>
         <source>Choose layout…</source>
@@ -14305,15 +14305,15 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished">Chiều rộng</translation>
+        <translation>Chiều rộng</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">Chiều cao</translation>
+        <translation>Chiều cao</translation>
     </message>
     <message>
         <source>Frames per second</source>
-        <translation type="unfinished">Số khung hình trên giây</translation>
+        <translation>Số khung hình trên giây</translation>
     </message>
     <message>
         <source>Cancel crop</source>
@@ -14321,11 +14321,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Crop video size</source>
-        <translation type="unfinished">Cắt kích thước video</translation>
+        <translation>Cắt kích thước video</translation>
     </message>
     <message>
         <source>Drag the preview edges to change what’s included</source>
-        <translation type="unfinished">Kéo các cạnh xem trước để thay đổi những gì được bao gồm</translation>
+        <translation>Kéo các cạnh xem trước để thay đổi những gì được bao gồm</translation>
     </message>
     <message>
         <source>Changing size doesn’t shrink your clips — anything outside the new edges is cut off.</source>
@@ -14340,11 +14340,11 @@ If playback stutters, try another.</source>
     <name>VideoSizeDialog</name>
     <message>
         <source>Video</source>
-        <translation type="unfinished">Video</translation>
+        <translation>Video</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Đóng</translation>
+        <translation>Đóng</translation>
     </message>
 </context>
 <context>
@@ -14438,7 +14438,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished">Đường cong</translation>
+        <translation>Đường cong</translation>
     </message>
     <message>
         <source>Gradient</source>

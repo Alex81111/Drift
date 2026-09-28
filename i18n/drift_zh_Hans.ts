@@ -341,7 +341,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
@@ -610,7 +610,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">编辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <source>Done</source>
@@ -766,7 +766,7 @@
     </message>
     <message>
         <source>Add to timeline</source>
-        <translation type="unfinished">加入进轨道内</translation>
+        <translation>加入进轨道内</translation>
     </message>
     <message>
         <source>Keep browsing</source>
@@ -889,7 +889,7 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished">附加项</translation>
+        <translation>附加项</translation>
     </message>
     <message>
         <source>Update available</source>
@@ -972,7 +972,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Rotate</source>
@@ -1159,7 +1159,7 @@
     </message>
     <message>
         <source>Effects</source>
-        <translation type="unfinished">效果</translation>
+        <translation>效果</translation>
     </message>
     <message>
         <source>Copy effects</source>
@@ -1680,7 +1680,7 @@
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">所有</translation>
+        <translation>所有</translation>
     </message>
     <message>
         <source>None</source>
@@ -2106,7 +2106,7 @@
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">子标题</translation>
+        <translation>子标题</translation>
     </message>
     <message>
         <source>Subtitle clip added</source>
@@ -2166,7 +2166,7 @@
     </message>
     <message>
         <source>Starting…</source>
-        <translation type="unfinished">启动中…</translation>
+        <translation>启动中…</translation>
     </message>
     <message>
         <source>Done</source>
@@ -4506,7 +4506,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">移除</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <source>“%1” will be removed from this project. The file on disk is not deleted.</source>
@@ -4580,7 +4580,7 @@
     </message>
     <message>
         <source>Media</source>
-        <translation type="unfinished">媒体</translation>
+        <translation>媒体</translation>
     </message>
     <message>
         <source>“%1” is used by 1 clip on the timeline. Removing this media will also remove that clip and any transitions connected to it. The file on disk is not deleted.</source>
@@ -4630,11 +4630,11 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">子标题</translation>
+        <translation>子标题</translation>
     </message>
     <message>
         <source>Stickers</source>
@@ -4642,7 +4642,7 @@
     </message>
     <message>
         <source>Shapes</source>
-        <translation type="unfinished">图形</translation>
+        <translation>图形</translation>
     </message>
     <message>
         <source>Scenes</source>
@@ -4654,7 +4654,7 @@
     </message>
     <message>
         <source>Effects</source>
-        <translation type="unfinished">效果</translation>
+        <translation>效果</translation>
     </message>
     <message>
         <source>Templates</source>
@@ -4662,11 +4662,11 @@
     </message>
     <message>
         <source>Transitions</source>
-        <translation type="unfinished">转场</translation>
+        <translation>转场</translation>
     </message>
     <message>
         <source>Audio FX</source>
-        <translation type="unfinished">音效</translation>
+        <translation>音效</translation>
     </message>
     <message>
         <source>Shortcuts</source>
@@ -5163,7 +5163,7 @@
     <name>BinBreadcrumb</name>
     <message>
         <source>Media</source>
-        <translation type="unfinished">媒体</translation>
+        <translation>媒体</translation>
     </message>
 </context>
 <context>
@@ -5256,7 +5256,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Move</source>
@@ -5317,7 +5317,7 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <source>Reset crop to the full video size</source>
@@ -5325,7 +5325,7 @@
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
 </context>
 <context>
@@ -5340,7 +5340,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Copied to clipboard</source>
@@ -5551,7 +5551,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -5670,7 +5670,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -5699,7 +5699,7 @@
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">重试</translation>
+        <translation>重试</translation>
     </message>
     <message>
         <source>Downloaded, works offline</source>
@@ -5730,7 +5730,7 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <source>%1 s</source>
@@ -5824,7 +5824,7 @@
     <name>DriftAssetsHome</name>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
     <message>
         <source>Add</source>
@@ -6009,11 +6009,11 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished">附加项</translation>
+        <translation>附加项</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished">更新</translation>
+        <translation>更新</translation>
     </message>
     <message>
         <source>Drift %1 is available</source>
@@ -6363,7 +6363,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Download face detection (about 5 MB)</source>
@@ -6744,7 +6744,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Rendering your video. Close to keep editing, or cancel to stop.</source>
@@ -6973,11 +6973,11 @@
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -7037,7 +7037,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Subtitle</source>
@@ -7580,7 +7580,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Language for menus and labels. Takes effect immediately.</source>
@@ -7599,11 +7599,11 @@
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished">继续</translation>
+        <translation>继续</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Decide later</source>
@@ -7812,7 +7812,7 @@
     </message>
     <message>
         <source>Starting…</source>
-        <translation type="unfinished">启动中…</translation>
+        <translation>启动中…</translation>
     </message>
     <message>
         <source>Preparing…</source>
@@ -7938,7 +7938,7 @@
     <name>MarketSearchField</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -8513,7 +8513,7 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <source>Saving…</source>
@@ -8537,11 +8537,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Save</source>
@@ -8560,7 +8560,7 @@
     </message>
     <message>
         <source>Install all</source>
-        <translation type="unfinished">安装全部</translation>
+        <translation>安装全部</translation>
     </message>
     <message>
         <source>Skip</source>
@@ -8572,7 +8572,7 @@
     </message>
     <message>
         <source>%1… %2%</source>
-        <translation type="unfinished">%1… %2%</translation>
+        <translation>%1… %2%</translation>
     </message>
     <message>
         <source>used version %1</source>
@@ -8580,7 +8580,7 @@
     </message>
     <message>
         <source>Install</source>
-        <translation type="unfinished">安装</translation>
+        <translation>安装</translation>
     </message>
     <message>
         <source>Reopen the project once they finish installing.</source>
@@ -8657,7 +8657,7 @@
     </message>
     <message>
         <source>Hide</source>
-        <translation type="unfinished">隐藏</translation>
+        <translation>隐藏</translation>
     </message>
     <message>
         <source>What plays once the animation has run its length</source>
@@ -8843,7 +8843,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Save as separate tracks</source>
@@ -8881,7 +8881,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Subtitle</source>
@@ -8916,7 +8916,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Copying your media into one file so it opens on any computer.</source>
@@ -9018,7 +9018,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Clip</source>
@@ -9084,7 +9084,7 @@
     </message>
     <message>
         <source>Transitions</source>
-        <translation type="unfinished">转场</translation>
+        <translation>转场</translation>
     </message>
     <message numerus="yes">
         <source>Transitions (%n transition(s))</source>
@@ -9352,7 +9352,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Launching Drift with prime-run (or DRI_PRIME=1) puts OpenGL on the same card as the decoder.</source>
@@ -9596,7 +9596,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <source>Restore the size suggested by your first clip</source>
@@ -9611,7 +9611,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Shape</source>
@@ -9627,7 +9627,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">子标题</translation>
+        <translation>子标题</translation>
     </message>
     <message>
         <source>Transform</source>
@@ -9659,11 +9659,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Effects</source>
-        <translation type="unfinished">效果</translation>
+        <translation>效果</translation>
     </message>
     <message>
         <source>Audio FX</source>
-        <translation type="unfinished">音效</translation>
+        <translation>音效</translation>
     </message>
     <message>
         <source>Transition</source>
@@ -10134,7 +10134,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Reverse</source>
@@ -10204,7 +10204,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Most active first</source>
@@ -10335,7 +10335,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Each moment is processed, so longer clips take longer.</source>
@@ -10557,7 +10557,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Extra packs</source>
-        <translation type="unfinished">附加包</translation>
+        <translation>附加包</translation>
     </message>
     <message>
         <source>Remind about essential packs</source>
@@ -11254,7 +11254,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <source>Applied as a copy on a new track — the original clip is left alone.</source>
@@ -11262,11 +11262,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
 </context>
 <context>
@@ -11423,7 +11423,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">移除</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <source>Stabilizing…</source>
@@ -11431,7 +11431,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -11498,7 +11498,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Nothing in this category</source>
-        <translation type="unfinished">此类别中没有内容</translation>
+        <translation>此类别中没有内容</translation>
     </message>
     <message>
         <source>Try a different name.</source>
@@ -11525,7 +11525,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">所有</translation>
+        <translation>所有</translation>
     </message>
     <message>
         <source>%1 (%2 left)</source>
@@ -11651,14 +11651,14 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished">重试</translation>
+        <translation>重试</translation>
     </message>
 </context>
 <context>
     <name>SubtitleCue</name>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">子标题</translation>
+        <translation>子标题</translation>
     </message>
     <message>
         <source>Subtitles (%1)</source>
@@ -11669,7 +11669,7 @@ If playback stutters, try another.</source>
     <name>SubtitleCueLane</name>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">子标题</translation>
+        <translation>子标题</translation>
     </message>
     <message numerus="yes">
         <source>%n captions</source>
@@ -11686,7 +11686,7 @@ If playback stutters, try another.</source>
     <name>SubtitleEditor</name>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">子标题</translation>
+        <translation>子标题</translation>
     </message>
     <message>
         <source>%1 captions</source>
@@ -11801,7 +11801,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Working…</source>
@@ -11872,7 +11872,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Stop creating captions</source>
@@ -12304,7 +12304,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Type your text…</source>
@@ -12312,7 +12312,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
     <message>
         <source>Apply the text to this clip</source>
@@ -12488,7 +12488,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">所有</translation>
+        <translation>所有</translation>
     </message>
     <message>
         <source>Preview this animation</source>
@@ -12527,14 +12527,14 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
     <name>TextParamSlots</name>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
         <source>Text for this slot</source>
@@ -12696,7 +12696,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>My styles</source>
@@ -12741,7 +12741,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -13291,7 +13291,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Subtitles</source>
-        <translation type="unfinished">子标题</translation>
+        <translation>子标题</translation>
     </message>
     <message>
         <source>%1, track %2</source>
@@ -13379,7 +13379,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Subtitle</source>
@@ -13721,7 +13721,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">文本</translation>
+        <translation>文本</translation>
     </message>
     <message>
         <source>Subtitle</source>
@@ -13964,7 +13964,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Nothing in this category</source>
-        <translation type="unfinished">此类别中没有内容</translation>
+        <translation>此类别中没有内容</translation>
     </message>
     <message>
         <source>Try a different name.</source>
@@ -14003,7 +14003,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Save</source>
@@ -14053,7 +14053,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Later</source>
-        <translation type="unfinished">请稍后</translation>
+        <translation>请稍后</translation>
     </message>
     <message>
         <source>Download</source>
@@ -14168,7 +14168,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Hide</source>
-        <translation type="unfinished">隐藏</translation>
+        <translation>隐藏</translation>
     </message>
     <message>
         <source>What plays once the animation has run its length</source>
@@ -14344,7 +14344,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
