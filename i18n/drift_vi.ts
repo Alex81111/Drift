@@ -9302,7 +9302,7 @@
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished">Tự động</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Preview quality — lower is smoother while editing.
@@ -9556,7 +9556,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Tạo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>First clip “%1”. Choose the video size before it is placed.</source>
@@ -9639,7 +9639,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished">Hoạt ảnh</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Audio</source>
@@ -10696,7 +10696,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Texture</source>
-        <translation type="unfinished">Kết cấu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Effect</source>
@@ -10780,11 +10780,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Duplicate layer</source>
-        <translation type="unfinished">Nhân đôi lớp</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remove layer</source>
-        <translation type="unfinished">Xóa lớp</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -10840,7 +10840,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Colour</source>
-        <translation type="unfinished">Màu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Choose the layer colour</source>
@@ -10911,7 +10911,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add layer</source>
-        <translation type="unfinished">Thêm lớp</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add a fill, stroke, shadow, glow or extrude layer</source>
@@ -10970,7 +10970,7 @@ If playback stutters, try another.</source>
     <name>ShapeStyle</name>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Hình chữ nhật</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Rounded rectangle</source>
@@ -10982,7 +10982,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Hình ê-líp</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Circle</source>
@@ -11058,7 +11058,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Star</source>
-        <translation type="unfinished">Ngôi sao</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Burst</source>
@@ -11074,7 +11074,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Heart</source>
-        <translation type="unfinished">Trái tim</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cross</source>
@@ -11086,7 +11086,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Basic</source>
-        <translation type="unfinished">Cơ bản</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Arrows</source>
@@ -11145,7 +11145,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Nothing in this category.</source>
-        <translation type="unfinished">Không có gì trong danh mục này.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 — click to add, or drag to the timeline or preview</source>
@@ -11246,7 +11246,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete point</source>
@@ -11698,7 +11698,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">Nhập</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Replace these captions from a .srt file</source>
@@ -12064,11 +12064,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Tuyến tính</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Snappy</source>
@@ -12080,7 +12080,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Bounce</source>
-        <translation type="unfinished">Nảy</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Text</source>
@@ -12208,7 +12208,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Colour</source>
-        <translation type="unfinished">Màu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Choose the gradient&apos;s first colour</source>
@@ -12248,7 +12248,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Preset</source>
-        <translation type="unfinished">Mẫu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>A whole text style — font, colour and effect — applied in one tap</source>
@@ -12292,7 +12292,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Adjust text look</source>
-        <translation type="unfinished">Điều chỉnh giao diện văn bản</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Layers</source>
@@ -12300,7 +12300,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add layer</source>
-        <translation type="unfinished">Thêm lớp</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add a fill, stroke, shadow, glow or extrude layer</source>
@@ -12472,11 +12472,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>In</source>
-        <translation type="unfinished">Vào</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Out</source>
-        <translation type="unfinished">Ra</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Loop</source>
@@ -12504,7 +12504,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Edit text animation</source>
-        <translation type="unfinished">Chỉnh sửa hoạt ảnh văn bản</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>By</source>
@@ -12605,19 +12605,19 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Đỏ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Xanh lá</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Xanh lam</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished">Alpha</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Gradient angle</source>
@@ -12867,7 +12867,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Paste effects</source>
-        <translation type="unfinished">Dán hiệu ứng</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save effects as preset…</source>
@@ -13185,7 +13185,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Add adjustment layer</source>
-        <translation type="unfinished">Thêm lớp điều chỉnh</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Customize toolbar…</source>
@@ -13826,7 +13826,7 @@ If playback stutters, try another.</source>
     <name>TransitionCatalog</name>
     <message>
         <source>Basic</source>
-        <translation type="unfinished">Cơ bản</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Grid &amp; Geometric</source>
@@ -13846,7 +13846,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Khác</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13893,11 +13893,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished">Tuyến tính</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished">Mượt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Natural</source>
@@ -13909,7 +13909,7 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Bezier</source>
-        <translation type="unfinished">Bezier</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>On</source>
@@ -13921,11 +13921,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Edit transition</source>
-        <translation type="unfinished">Chỉnh sửa hiệu ứng chuyển cảnh</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remove transition</source>
-        <translation type="unfinished">Xóa hiệu ứng chuyển cảnh</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14321,11 +14321,11 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Crop video size</source>
-        <translation type="unfinished">Cắt kích thước video</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Drag the preview edges to change what’s included</source>
-        <translation type="unfinished">Kéo các cạnh xem trước để thay đổi những gì được bao gồm</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Changing size doesn’t shrink your clips — anything outside the new edges is cut off.</source>
@@ -14340,7 +14340,7 @@ If playback stutters, try another.</source>
     <name>VideoSizeDialog</name>
     <message>
         <source>Video</source>
-        <translation type="unfinished">Video</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
