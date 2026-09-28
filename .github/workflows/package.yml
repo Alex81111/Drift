@@ -284,9 +284,23 @@ jobs:
       # entries — never to a dependency's. libavfilter carries no RUNPATH of its own, so nothing
       # found libpostproc.
       - name: Test
+        id: test
         run: |
           export LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/.deps/ffmpeg/lib:${LD_LIBRARY_PATH:-}"
-          QT_QPA_PLATFORM=xcb xvfb-run -a -s "-screen 0 1280x1024x24" ctest --test-dir build --output-on-failure
+          QT_QPA_PLATFORM=xcb xvfb-run -a -s "-screen 0 1280x1024x24" ctest --test-dir build --output-on-failure --output-log ctest.log
+
+      - name: Summarize test failures
+        if: failure() && steps.test.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "### Failed tests"
+            echo '```'
+            sed -n '/^The following tests FAILED:/,/^Errors while running CTest/p' ctest.log | grep -v '^Errors while running CTest'
+            echo
+            grep -E -A1 '^(FAIL!|QFATAL)' ctest.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Stage install tree
         run: |
@@ -515,12 +529,26 @@ jobs:
       # failing suite reports only "***Failed" with not one FAIL! line to say which case or why,
       # and qWarning/qFatal go the same way, so even a fatal startup error is invisible.
       - name: Test
+        id: test
         shell: pwsh
         env:
           QT_FORCE_STDERR_LOGGING: 1
         run: |
           $env:PATH = "${{ github.workspace }}\.deps\ffmpeg\bin;${{ env.QT_ROOT_DIR }}\bin;$env:PATH"
-          ctest --test-dir build -C Release --output-on-failure
+          ctest --test-dir build -C Release --output-on-failure --output-log ctest.log
+
+      - name: Summarize test failures
+        if: failure() && steps.test.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "### Failed tests"
+            echo '```'
+            sed -n '/^The following tests FAILED:/,/^Errors while running CTest/p' ctest.log | grep -v '^Errors while running CTest'
+            echo
+            grep -E -A1 '^(FAIL!|QFATAL)' ctest.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Stage runtime files
         shell: pwsh
@@ -680,7 +708,21 @@ jobs:
         run: cmake --build build-macos --parallel
 
       - name: Test
-        run: ctest --test-dir build-macos --output-on-failure
+        id: test
+        run: ctest --test-dir build-macos --output-on-failure --output-log ctest.log
+
+      - name: Summarize test failures
+        if: failure() && steps.test.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "### Failed tests"
+            echo '```'
+            sed -n '/^The following tests FAILED:/,/^Errors while running CTest/p' ctest.log | grep -v '^Errors while running CTest'
+            echo
+            grep -E -A1 '^(FAIL!|QFATAL)' ctest.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       # Signing and notarisation happen only when the secrets are set. Without them — a fork, or
       # any run that cannot see repository secrets — the image is still built and ad-hoc signed.

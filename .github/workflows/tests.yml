@@ -206,9 +206,23 @@ jobs:
       #
       # Serial, not ctest -j: the suites share QStandardPaths::AppDataLocation test-mode state.
       - name: Test
+        id: test
         run: |
           export LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/.deps/ffmpeg/lib:${LD_LIBRARY_PATH:-}"
-          QT_QPA_PLATFORM=xcb xvfb-run -a -s "-screen 0 1280x1024x24" ctest --test-dir build --output-on-failure
+          QT_QPA_PLATFORM=xcb xvfb-run -a -s "-screen 0 1280x1024x24" ctest --test-dir build --output-on-failure --output-log ctest.log
+
+      - name: Summarize test failures
+        if: failure() && steps.test.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "### Failed tests"
+            echo '```'
+            sed -n '/^The following tests FAILED:/,/^Errors while running CTest/p' ctest.log | grep -v '^Errors while running CTest'
+            echo
+            grep -E -A1 '^(FAIL!|QFATAL)' ctest.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: ccache statistics
         if: always()
@@ -304,4 +318,18 @@ jobs:
       # compositor tests get a genuine OpenGL context. Serial for the same reason as the Linux
       # job — the suites share QStandardPaths::AppDataLocation test-mode state.
       - name: Test
-        run: ctest --test-dir build --output-on-failure
+        id: test
+        run: ctest --test-dir build --output-on-failure --output-log ctest.log
+
+      - name: Summarize test failures
+        if: failure() && steps.test.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "### Failed tests"
+            echo '```'
+            sed -n '/^The following tests FAILED:/,/^Errors while running CTest/p' ctest.log | grep -v '^Errors while running CTest'
+            echo
+            grep -E -A1 '^(FAIL!|QFATAL)' ctest.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

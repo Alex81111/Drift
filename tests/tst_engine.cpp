@@ -7812,6 +7812,9 @@ void EngineTest::timeEchoOnALaneBlendsPriorVideoFrames()
 // the fill showed the ungraded footage around a graded picture.
 void EngineTest::blurredBackgroundCarriesLaneEffects()
 {
+    if (!GpuEffectExecutor::instance().isAvailable())
+        QSKIP("GPU effect executor unavailable");
+
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
     QImage grey(32, 32, QImage::Format_RGB32);
