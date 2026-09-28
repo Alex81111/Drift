@@ -201,8 +201,9 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: Theme.spacingXs
         // Never runs under the right-hand controls; buttons past the
-        // available width are clipped rather than overlapping.
-        width: Math.max(0, rightControls.x - x - Theme.spacingLg)
+        // available width are clipped rather than overlapping. Worked out from
+        // widths, not x: under RTL mirroring the two groups swap edges.
+        width: Math.max(0, toolbar.width - rightControls.width - Theme.spacingLg * 3)
         clip: true
 
         IconButton {
@@ -342,11 +343,15 @@ Item {
         // gap can no longer fit the badge.
         // leftControls is stretched up to rightControls so it can clip, so its buttons
         // end at implicitWidth, not width.
-        readonly property real gapStart: leftControls.x
+        // Worked out left-to-right and flipped at the end: an explicit x is not
+        // mirrored along with the anchors that swap the two groups under RTL.
+        readonly property real gapStart: Theme.spacingLg
                                          + Math.min(leftControls.implicitWidth, leftControls.width) + 12
-        readonly property real gapEnd: rightControls.x - 12
+        readonly property real gapEnd: toolbar.width - Theme.spacingLg - rightControls.width - 12
+        readonly property real ltrX: Math.max(gapStart, Math.min((toolbar.width - width) / 2,
+                                                                  gapEnd - width))
 
-        x: Math.max(gapStart, Math.min((toolbar.width - width) / 2, gapEnd - width))
+        x: Qt.application.layoutDirection === Qt.RightToLeft ? toolbar.width - ltrX - width : ltrX
         anchors.verticalCenter: parent.verticalCenter
         visible: gapEnd - gapStart >= width
         width: sceneRow.implicitWidth + 20
